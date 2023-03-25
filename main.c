@@ -67,9 +67,13 @@ int main(void)
     REG_P1CNT |= 0x4000 | KEY_RIGHT | KEY_LEFT | KEY_UP | KEY_DOWN;
 	REG_IME = 0x1;		// Enable interrupt handling
 
-    //scroll stuff
+    // init map coords
+    map_x = 0;
+    map_y = 0;
+    REG_BG2X = map_x;
+    REG_BG2Y = map_y;
     
-
+    //spawn charac
     drawSprite(PLAYERONE,127,120,80);
     while(1)
     {

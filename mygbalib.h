@@ -14,10 +14,6 @@ int PLAYERONE_x = 120;
 int PLAYERONE_y = 80;
 int PLAYERONE_index = 127;
 
-int cam_offset_x = 0;
-int cam_offset_y = 0;
-
-
 //TODO: add button funcs
 //scrolling
 // #define REG_BG2PA      *(u16*)0x4000020
@@ -27,27 +23,28 @@ int cam_offset_y = 0;
 // #define REG_BG2X       *(u32*)0x4000028
 // #define REG_BG2Y       *(u32*)0x400002C
 
-int x= 0, y= 0;
-    
+int map_x, map_y;
+int movespeed = 0x100; //set to 256, idk why it works math wise but it does (not pixel offset)
+
 void buttonR(void)
 {
-    x+= 10;
-    REG_BG2X  = x;
+    map_x+= movespeed;
+    REG_BG2X  = map_x;
 }
 void buttonL(void)
 {
-    x-= 10;
-    REG_BG2Y  = x;
+    map_x-= movespeed;
+    REG_BG2X  = map_x;
 }
 void buttonU(void)
 {
-    y-= 10;
-    REG_BG2Y  = y;
+    map_y-= movespeed;
+    REG_BG2Y  = map_y;
 }
 void buttonD(void)
 {
-    y+= 10;
-    REG_BG2Y  = y;
+    map_y+= movespeed;
+    REG_BG2Y  = map_y;
 }
 void checkbutton(void)
 {
@@ -88,11 +85,11 @@ void checkbutton(void)
     }
 }
 
-void drawSprite(int numb, int N, int x, int y)
+void drawSprite(int numb, int N, int map_x, int map_y)
 {
 	// Same as CA2, make specific sprite (based on its name/numb) appear on screen, as slide number N (each sprite needs a different, arbitrary, N >= 0)
-    *(unsigned short *)(0x7000000 + 8*N) = y | 0x2000;
-    *(unsigned short *)(0x7000002 + 8*N) = x | 0x4000; 
+    *(unsigned short *)(0x7000000 + 8*N) = map_y | 0x2000;
+    *(unsigned short *)(0x7000002 + 8*N) = map_x | 0x4000; 
     *(unsigned short *)(0x7000004 + 8*N) = numb*8;
 }
 
