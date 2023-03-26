@@ -6,49 +6,46 @@
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
-
-
+#define sprite_size 16
 
 // Global variable to track the movement of the main character in 
 int PLAYERONE_x = 120;
 int PLAYERONE_y = 80;
 int PLAYERONE_index = 127;
+// scrolling
+int map_dx, map_dy;
+u16 movespeed = 256; //set to 256 2**8 as REG_BG2X uses 24.8 fixed point format
 
-//TODO: add button funcs
-//scrolling
-// #define REG_BG2PA      *(u16*)0x4000020
-// #define REG_BG2PB      *(u16*)0x4000022
-// #define REG_BG2PC      *(u16*)0x4000024
-// #define REG_BG2PD      *(u16*)0x4000026
-// #define REG_BG2X       *(u32*)0x4000028
-// #define REG_BG2Y       *(u32*)0x400002C
 
-int map_x, map_y;
-int movespeed = 0x100; //set to 256, idk why it works math wise but it does (not pixel offset)
+/*----------Button Functions----------*/
 
 void buttonR(void)
 {
-    map_x+= movespeed;
-    REG_BG2X  = map_x;
+    map_dx+= movespeed;
+    REG_BG2X  = map_dx;
 }
 void buttonL(void)
 {
-    map_x-= movespeed;
-    REG_BG2X  = map_x;
+    map_dx-= movespeed;
+    REG_BG2X  = map_dx;
 }
 void buttonU(void)
 {
-    map_y-= movespeed;
-    REG_BG2Y  = map_y;
+    map_dy-= movespeed;
+    REG_BG2Y  = map_dy;
 }
 void buttonD(void)
 {
-    map_y+= movespeed;
-    REG_BG2Y  = map_y;
+    if (canPlayerMove())
+    {
+    map_dy+= movespeed;
+    REG_BG2Y  = map_dy;
+    }
 }
+
+// checks which button is pressed and calls a function related to button pressed
 void checkbutton(void)
 {
-	// Gift function to show you how a function that can be called upon button interrupt to detect which button was pressed and run a specific function for each button could look like. You would have to define each buttonA/buttonB/... function yourself.
     u16 buttons = INPUT;
     
     if ((buttons & KEY_A) == KEY_A)
@@ -85,15 +82,18 @@ void checkbutton(void)
     }
 }
 
-void drawSprite(int numb, int N, int map_x, int map_y)
+/*----------Sprite Functions----------*/
+
+// draw a specific sprite from sprite data index at specific coords (N is abitary sprite index, 0 to 127)
+void drawSprite(int numb, int N, int map_dx, int map_dy)
 {
-	// Same as CA2, make specific sprite (based on its name/numb) appear on screen, as slide number N (each sprite needs a different, arbitrary, N >= 0)
-    *(unsigned short *)(0x7000000 + 8*N) = map_y | 0x2000;
-    *(unsigned short *)(0x7000002 + 8*N) = map_x | 0x4000; 
+    *(unsigned short *)(0x7000000 + 8*N) = map_dy | 0x2000;
+    *(unsigned short *)(0x7000002 + 8*N) = map_dx | 0x4000; 
     *(unsigned short *)(0x7000004 + 8*N) = numb*8;
 }
 
-void delSprite(int N) //remove sprite N by replacing with EMPTY outside screen
+// remove sprite N by replacing with EMPTY outside screen (240,160)
+void delSprite(int N)
 {
     *(unsigned short *)(0x7000000 + 8*N) = 240 | 0x2000;
     *(unsigned short *)(0x7000002 + 8*N) = 160 | 0x4000;
@@ -101,11 +101,10 @@ void delSprite(int N) //remove sprite N by replacing with EMPTY outside screen
 	
 }
 
-
+// load sprite palette in GBA memory (custom 256 WEB Safe colour)
 void fillPalette(void)
 {
     int i;
-    // Fill the palette in GBA memory
     for (i = 0; i < LEN_SPRITEPAL; i++)
         spritePal[i] = sprites_palette[i];
 }
@@ -113,18 +112,18 @@ void fillPalette(void)
 void fillSprites(void)
 {
     int     i;
-
 	// Load all sprites in GBA memory
     for (i = 0; i < 128*16*16; i++)
         spriteData[i] = (sprites[i*2+1] << 8) + sprites[i*2];
 
-	// draw all sprites on screen, but all of them outside of the screen (starting at position (240,160) the bottom right corner of the GBA screen)
+	// draw all sprites on screen, but all of them outside screen (240,160)
     for(i = 0; i < 128; i++)
-        drawSprite(EMPTY, i, 0, 0);
+        drawSprite(EMPTY, i, 240, 160);
 }
 
-// Background Init
-//load pal (same custom 256 WEB Safe colour as sprites)
+/*----------Background Functions----------*/
+
+// load BG pal in GBA memory (same custom 256 WEB Safe colour as sprites)
 void fillBGPal(void)
 {
     int i;
@@ -132,7 +131,8 @@ void fillBGPal(void)
         BGPal[i] = tiles_palette[i];
 }
 
-void fillTileMem(void) // file tile
+// load BG tiles data into cbb 0
+void fillTileMem(void)
 {
     int i;
     for (i = 0; i < LEN_TILEDATA; i++)
@@ -140,13 +140,27 @@ void fillTileMem(void) // file tile
 
 }
 
-void fillScreenBlock(void) // mode 2 requires 8 bit tile index but VRAM only can access with 16/32 bits
+// load map data into sbb 8
+// mode 2 requires 8 bit tile index but VRAM only can access with 16/32 bits
+void fillScreenBlock(void)
 {
     int i;
     for (i = 0; i < LEN_MAP/2; i++)
         se_mem[i] = (lvl1_map[i*2+1] << 8) + lvl1_map[i*2];
 }
 
+/*----------Collision Functions----------*/
+
+// check if player is colliding with map
+// UNDONE, only for bot left and right and downwards
+// finish for top left and top right
+bool canPlayerMove(void)
+{   
+    bool bot_left,bot_right;
+    bot_left = lvl1_map[(PLAYERONE_x+map_dx/256)/8 + (PLAYERONE_y + sprite_size + map_dy/256)/8*64] == 0x00;
+    bot_right = lvl1_map[(PLAYERONE_x + sprite_size + map_dx/256)/8 + (PLAYERONE_y + sprite_size + map_dy/256)/8*64] == 0x00;
+    return (bot_left && bot_right);
+}
 
 //TODO: Add game funcs
 

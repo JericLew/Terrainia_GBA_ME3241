@@ -35,7 +35,7 @@ int main(void)
 
  
     // mode 2 only BG2 and BG3 for rotational/affine
-    // set up BG2 for 256x256 using cbb0 and sbb 8
+    // set up BG2 for 512x512 using cbb0 and sbb 8
     // bit 15-14 map size 128x128, 256x256, 512x512, 1024x1024 (for mode 2)
     // bit 13 is cont layer
     // bit 12 - 8 address of map data (which SBB)
@@ -44,12 +44,12 @@ int main(void)
     // bit 5-4 unused
     // bit 3-2 address of tile data (which CBB)
     // bit 1-0 layer priority 00 highest, 11 lowest
-    // 0100 1000 1000 0000
-    REG_BG2CNT |= 0x4880;
+    // 1000 1000 1000 0000
+    REG_BG2CNT |= 0x8880;
 
     fillBGPal();    // load BGpal
     fillTileMem();  // load tiles into cbb 0
-    fillScreenBlock();  //load map into sbb 8
+    fillScreenBlock();  // load map into sbb 8
 
     //sprite stuff//
     fillPalette();  // load sprite pal
@@ -68,10 +68,10 @@ int main(void)
 	REG_IME = 0x1;		// Enable interrupt handling
 
     // init map coords
-    map_x = 0;
-    map_y = 0;
-    REG_BG2X = map_x;
-    REG_BG2Y = map_y;
+    map_dx = 0;
+    map_dy = 0;
+    REG_BG2X = map_dx;
+    REG_BG2Y = map_dy;
     
     //spawn charac
     drawSprite(PLAYERONE,127,120,80);
