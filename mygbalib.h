@@ -6,42 +6,94 @@
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
-#define sprite_size 16
+#define SPRITE_SIZE 16
+// 0 left,1 right, 2 up,3 down
+#define LEFT 0
+#define RIGHT 1
+#define UP 2
+#define DOWN 3
 
 // Global variable to track the movement of the main character in 
 int PLAYERONE_x = 120;
 int PLAYERONE_y = 80;
 int PLAYERONE_index = 127;
+
 // scrolling
 int map_dx, map_dy;
 u16 movespeed = 256; //set to 256 2**8 as REG_BG2X uses 24.8 fixed point format
 
+// jumping and falling
+#define GRAVITY -movespeed * 0.8 // 0.8 pixel/s per 0.1s, 1 pixel/s per 1s
+u8 falling = 0;
+int y_speed = 0;
 
+// downwards button to fall faster is glitchy, removed for now
+// falling fast is glitching into world
+void fallcheck(void)
+{
+    // u16 buttons = INPUT;
+    bool bot_check;
+    if (y_speed > 0 && !canPlayerMove(UP)) // if player is going upwards and head hits smt above, stop upward speed
+    {
+        y_speed = 0;
+    }
+    if (canPlayerMove(DOWN) || y_speed > 0) // if player is floating (nothing below) or player is jumping (upward speed)
+    {   
+        falling = 1;
+        // int fall_mod = 1;
+        // if ((buttons & KEY_DOWN) == KEY_DOWN) // if down button is pressed when midair, increase effect of gravity (fall faster)
+        // {
+        //     fall_mod = 2;
+        // }
+        y_speed += (GRAVITY) ; // change y_speed due to grav
+
+        bot_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y+ (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] == 0x00
+        && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] == 0x00;
+
+        if (!bot_check)
+        {
+            y_speed = -128;
+        }
+        // else
+        // {
+        map_dy -= y_speed;
+        REG_BG2Y  = map_dy;            
+        // }
+    }
+    else
+    {
+        falling = 0;
+        y_speed = 0;
+    }
+}
 /*----------Button Functions----------*/
 
 void buttonR(void)
 {
-    map_dx+= movespeed;
-    REG_BG2X  = map_dx;
+    if (canPlayerMove(RIGHT))
+    {
+        map_dx += movespeed;
+        REG_BG2X  = map_dx;
+    }
 }
 void buttonL(void)
 {
-    map_dx-= movespeed;
-    REG_BG2X  = map_dx;
+    if (canPlayerMove(LEFT))
+    {
+        map_dx -= movespeed;
+        REG_BG2X  = map_dx;
+    }
 }
 void buttonU(void)
 {
-    map_dy-= movespeed;
-    REG_BG2Y  = map_dy;
-}
-void buttonD(void)
-{
-    if (canPlayerMove())
+    if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the grounds
     {
-    map_dy+= movespeed;
-    REG_BG2Y  = map_dy;
+        y_speed = 256*5.6; // inital jump speed 56 pixel per 0.1s, 7 tiles per 1s
     }
 }
+// void buttonD(void)
+// {
+// }
 
 // checks which button is pressed and calls a function related to button pressed
 void checkbutton(void)
@@ -78,7 +130,7 @@ void checkbutton(void)
     }
     if ((buttons & KEY_DOWN) == KEY_DOWN)
     {
-        buttonD();
+        // buttonD();
     }
 }
 
@@ -152,15 +204,44 @@ void fillScreenBlock(void)
 /*----------Collision Functions----------*/
 
 // check if player is colliding with map
-// UNDONE, only for bot left and right and downwards
-// finish for top left and top right
-bool canPlayerMove(void)
+// check specifically pixel 4 and pixel 11 for each direction
+// and see if next pixel in the direction is a empty tile
+bool canPlayerMove(u8 direction)
 {   
-    bool bot_left,bot_right;
-    bot_left = lvl1_map[(PLAYERONE_x+map_dx/256)/8 + (PLAYERONE_y + sprite_size + map_dy/256)/8*64] == 0x00;
-    bot_right = lvl1_map[(PLAYERONE_x + sprite_size + map_dx/256)/8 + (PLAYERONE_y + sprite_size + map_dy/256)/8*64] == 0x00;
-    return (bot_left && bot_right);
+    bool bot_check, top_check, left_check, right_check;
+    bot_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y+ map_dy/256 + SPRITE_SIZE )/8*64] == 0x00
+    && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + map_dy/256 + SPRITE_SIZE)/8*64] == 0x00;
+
+    top_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y + map_dy/256 - 1)/8*64] == 0x00
+    && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + map_dy/256 - 1)/8*64] == 0x00;
+
+    left_check = lvl1_map[(PLAYERONE_x + map_dx/256 - 1)/8 + (PLAYERONE_y + map_dy/256 + 4)/8*64] == 0x00
+    && lvl1_map[(PLAYERONE_x + map_dx/256 - 1)/8 + (PLAYERONE_y + map_dy/256 + 11)/8*64] == 0x00;
+
+    right_check = lvl1_map[(PLAYERONE_x + map_dx/256 + SPRITE_SIZE)/8 + (PLAYERONE_y + map_dy/256 + 4)/8*64] == 0x00
+    && lvl1_map[(PLAYERONE_x + map_dx/256 + SPRITE_SIZE)/8 + (PLAYERONE_y + map_dy/256 + 11)/8*64] == 0x00;
+
+    if (direction == LEFT)
+    {
+        return (left_check);
+    }
+    if (direction == RIGHT)
+    {
+        return (right_check);
+    }
+    if (direction == UP)
+    {
+        return (top_check);
+    }
+    if (direction == DOWN)
+    {
+        return (bot_check);
+    }
+
+    return FALSE;
 }
+
+
 
 //TODO: Add game funcs
 

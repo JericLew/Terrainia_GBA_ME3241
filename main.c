@@ -9,8 +9,13 @@ void Handler(void)
     
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // TODO: replace XXX with the specific interrupt you are handling
     {
-        // TODO: Handle timer interrupt here
 
+        
+    }
+
+    if ((REG_IF & INT_TIMER1) == INT_TIMER1) // Gravity check timer
+    {
+        fallcheck();
     }
 
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
@@ -59,11 +64,16 @@ int main(void)
     // Set Handler Function for interrupts and enable selected interrupts
 	REG_IME = 0x0;		// Disable interrupt handling
     REG_INT = (int)&Handler;
-    REG_IE |= INT_TIMER0 | INT_BUTTON; // Enable Timmer and Button interrupts
+    REG_IE |= INT_TIMER0 | INT_TIMER1 | INT_BUTTON; // Enable Timmer and Button interrupts
    
     // Set Timer Mode (fill that section and replace TMX with selected timer number)
+
     REG_TM0D = 60000;
     REG_TM0CNT = TIMER_FREQUENCY_64 | TIMER_INTERRUPTS | TIMER_ENABLE;
+
+    REG_TM1D = 39222; // every 0.1s
+    REG_TM1CNT = TIMER_FREQUENCY_64 | TIMER_INTERRUPTS | TIMER_ENABLE;   
+
     REG_P1CNT |= 0x4000 | KEY_RIGHT | KEY_LEFT | KEY_UP | KEY_DOWN;
 	REG_IME = 0x1;		// Enable interrupt handling
 
@@ -77,7 +87,10 @@ int main(void)
     drawSprite(PLAYERONE,127,120,80);
     while(1)
     {
-        
+    //    if (jumping == 1)
+    //    {
+    //         jump();
+    //    }
     }
 	return 0;
 }
