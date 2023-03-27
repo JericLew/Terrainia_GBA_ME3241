@@ -79,7 +79,7 @@ int main(void)
 
     // init map coords
     map_dx = 0;
-    map_dy = 0;
+    map_dy = 256*8*4;
     REG_BG2X = map_dx;
     REG_BG2Y = map_dy;
     

@@ -6,56 +6,67 @@
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
-#define SPRITE_SIZE 16
+
+
 // 0 left,1 right, 2 up,3 down
+
+
+/*----------Global Variables----------*/
+// Tracking Player position and sprite index
+#define SPRITE_SIZE 16
+#define PLAYERONE_x 120
+#define PLAYERONE_y 80
+#define PLAYERONE_index 127
+
+// background scrolling variables
 #define LEFT 0
 #define RIGHT 1
 #define UP 2
 #define DOWN 3
+#define MOVESPEED 256 //set to 256 2**8 (1 pixel) as REG_BG2X uses 24.8 fixed point format
+#define GRAV_RATE 40
 
-// Global variable to track the movement of the main character in 
-int PLAYERONE_x = 120;
-int PLAYERONE_y = 80;
-int PLAYERONE_index = 127;
-
-// scrolling
 int map_dx, map_dy;
-u16 movespeed = 256; //set to 256 2**8 as REG_BG2X uses 24.8 fixed point format
 
 // jumping and falling
-#define GRAVITY -movespeed * 0.050 // 0.050 pixel/s per 0.025s, 2 pixel/s per 1s
+#define GRAVITY (-MOVESPEED * 2/GRAV_RATE) // 0.050 pixel/s per 0.025s, 2 pixel/s per 1s
+
 u8 falling = 0;
 int y_speed = 0;
 
-// downwards button to fall faster is glitchy, removed for now
-// falling fast is glitching into world
-// bad ground check
-// issue with changing 40 hz to define
+// function called by TIMER1 at 40hz to check for falling
+// issue with changing 40hz to #define
 void fallcheck(void)
 {
-    // u16 buttons = INPUT;
-    bool bot_check;
+    u16 buttons = INPUT;
+    bool ground_check;
 
-    if (y_speed > 0 && !canPlayerMove(UP)) // if player is going upwards and head hits smt above, stop upward speed
+    // if player is going upwards and head hits smt above, stop upward speed
+    if (y_speed > 0 && !canPlayerMove(UP)) 
     {
         y_speed = 0;
     }
-    if (canPlayerMove(DOWN) || y_speed > 0) // if player is floating (nothing below) or player is jumping (upward speed)
+
+    // if player is floating (nothing below) or player is jumping (upward speed)
+    if (canPlayerMove(DOWN) || y_speed > 0) 
     {   
         falling = 1;
-        // int fall_mod = 1;
-        // if ((buttons & KEY_DOWN) == KEY_DOWN) // if down button is pressed when midair, increase effect of gravity (fall faster)
-        // {
-        //     fall_mod = 2;
-        // }
         y_speed += (GRAVITY) ; // change y_speed due to grav
 
-        bot_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y+ (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] == 0x00
-        && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] == 0x00;
-
-        if (!bot_check) // if will collide on next tick, place on ground
+        // if down button is pressed when midair, fall at faster speed
+        if ((buttons & KEY_DOWN) == KEY_DOWN) 
         {
-            map_dy -= y_speed;
+            y_speed = -256*(56/GRAV_RATE); // inital jump speed 1.4 pixel per 0.025s, 56 pixels/7 tiles per 1s
+        }
+
+        // check if will hit ground after adding displacement this tick
+        ground_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y+ (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] != 0x00
+        && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] != 0x00;
+
+        // if will collide on next tick, place on ground
+        if (ground_check) 
+        {
+            map_dy = (map_dy - y_speed)/256/8*8*256; // make map_dy multiple of 256*8 (aka tile height)
             REG_BG2Y = map_dy;
             falling = 0;
             y_speed = 0;
@@ -66,19 +77,15 @@ void fallcheck(void)
             REG_BG2Y  = map_dy;            
         }
     }
-    else
-    {
-        falling = 0;
-        y_speed = 0;
-    }
 }
+
 /*----------Button Functions----------*/
 
 void buttonR(void)
 {
     if (canPlayerMove(RIGHT))
     {
-        map_dx += movespeed;
+        map_dx += MOVESPEED;
         REG_BG2X  = map_dx;
     }
 }
@@ -86,7 +93,7 @@ void buttonL(void)
 {
     if (canPlayerMove(LEFT))
     {
-        map_dx -= movespeed;
+        map_dx -= MOVESPEED;
         REG_BG2X  = map_dx;
     }
 }
