@@ -23,16 +23,19 @@ int map_dx, map_dy;
 u16 movespeed = 256; //set to 256 2**8 as REG_BG2X uses 24.8 fixed point format
 
 // jumping and falling
-#define GRAVITY -movespeed * 0.8 // 0.8 pixel/s per 0.1s, 1 pixel/s per 1s
+#define GRAVITY -movespeed * 0.050 // 0.050 pixel/s per 0.025s, 2 pixel/s per 1s
 u8 falling = 0;
 int y_speed = 0;
 
 // downwards button to fall faster is glitchy, removed for now
 // falling fast is glitching into world
+// bad ground check
+// issue with changing 40 hz to define
 void fallcheck(void)
 {
     // u16 buttons = INPUT;
     bool bot_check;
+
     if (y_speed > 0 && !canPlayerMove(UP)) // if player is going upwards and head hits smt above, stop upward speed
     {
         y_speed = 0;
@@ -50,15 +53,18 @@ void fallcheck(void)
         bot_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y+ (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] == 0x00
         && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] == 0x00;
 
-        if (!bot_check)
+        if (!bot_check) // if will collide on next tick, place on ground
         {
-            y_speed = -128;
+            map_dy -= y_speed;
+            REG_BG2Y = map_dy;
+            falling = 0;
+            y_speed = 0;
         }
-        // else
-        // {
-        map_dy -= y_speed;
-        REG_BG2Y  = map_dy;            
-        // }
+        else
+        {
+            map_dy -= y_speed;
+            REG_BG2Y  = map_dy;            
+        }
     }
     else
     {
@@ -86,9 +92,9 @@ void buttonL(void)
 }
 void buttonU(void)
 {
-    if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the grounds
+    if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the ground, set upward speed
     {
-        y_speed = 256*5.6; // inital jump speed 56 pixel per 0.1s, 7 tiles per 1s
+        y_speed = 256*1.4; // inital jump speed 1.4 pixel per 0.025s, 56 pixels/7 tiles per 1s
     }
 }
 // void buttonD(void)
