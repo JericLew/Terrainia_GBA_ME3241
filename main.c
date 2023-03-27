@@ -9,8 +9,7 @@ void Handler(void)
     
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // TODO: replace XXX with the specific interrupt you are handling
     {
-
-        
+        animate();
     }
 
     if ((REG_IF & INT_TIMER1) == INT_TIMER1) // Gravity check timer
@@ -68,8 +67,8 @@ int main(void)
    
     // Set Timer Mode (fill that section and replace TMX with selected timer number)
 
-    REG_TM0D = 60000;
-    REG_TM0CNT = TIMER_FREQUENCY_64 | TIMER_INTERRUPTS | TIMER_ENABLE;
+    REG_TM0D = 49510; // every 0.25s 4hz
+    REG_TM0CNT = TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
     REG_TM1D = 58958; // every 0.025s 40hz
     REG_TM1CNT = TIMER_FREQUENCY_64 | TIMER_INTERRUPTS | TIMER_ENABLE;   
@@ -84,13 +83,10 @@ int main(void)
     REG_BG2Y = map_dy;
     
     //spawn charac
-    drawSprite(PLAYERONE,127,120,80);
+    drawSprite(RIGHTIDLE1,127,120,80);
     while(1)
     {
-    //    if (jumping == 1)
-    //    {
-    //         jump();
-    //    }
+
     }
 	return 0;
 }

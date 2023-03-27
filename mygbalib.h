@@ -34,6 +34,11 @@ int map_dx, map_dy;
 u8 falling = 0;
 int y_speed = 0;
 
+// animation
+u8 state = 0;
+u8 pose = 0; // 0 is idle 1 is run
+u8 direction = 0; // 0 is right 1 is left
+
 // function called by TIMER1 at 40hz to check for falling
 // issue with changing 40hz to #define
 void fallcheck(void)
@@ -87,6 +92,8 @@ void buttonR(void)
     {
         map_dx += MOVESPEED;
         REG_BG2X  = map_dx;
+        pose = 1;
+        direction = 0;
     }
 }
 void buttonL(void)
@@ -95,6 +102,8 @@ void buttonL(void)
     {
         map_dx -= MOVESPEED;
         REG_BG2X  = map_dx;
+        pose = 1;
+        direction = 1;
     }
 }
 void buttonU(void)
@@ -254,7 +263,69 @@ bool canPlayerMove(u8 direction)
     return FALSE;
 }
 
+/*----------Animate Functions----------*/
+void animate(void)
+{
+    if (state && !direction)
+    {
+        switch (pose)
+        {
+            case 0:
+                drawSprite(RIGHTIDLE1,127,120,80);
+                break;
+                
+            case 1:
+                drawSprite(RIGHTRUN1,127,120,80);
+                pose = 0;
+                break;
+        }
+        state = 0;
+    }
+    else if(!state && !direction)
+    {
+        switch (pose)
+        {
+            case 0:
+                drawSprite(RIGHTIDLE2,127,120,80);
+                break;
+            case 1:
+                drawSprite(RIGHTRUN2,127,120,80);
+                pose = 0;
+                break;
+        }
+        state = 1;
+    }
 
+        if (state && direction)
+    {
+        switch (pose)
+        {
+            case 0:
+                drawSprite(LEFTIDLE1,127,120,80);
+                break;
+                
+            case 1:
+                drawSprite(LEFTRUN1,127,120,80);
+                pose = 0;
+                break;
+        }
+        state = 0;
+    }
+    else if(!state && direction)
+    {
+        switch (pose)
+        {
+            case 0:
+                drawSprite(LEFTIDLE2,127,120,80);
+                break;
+            case 1:
+                drawSprite(LEFTRUN2,127,120,80);
+                pose = 0;
+                break;
+        }
+        state = 1;
+    }
+}
 
 //TODO: Add game funcs
 
