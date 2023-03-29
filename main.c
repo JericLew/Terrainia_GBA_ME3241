@@ -7,12 +7,14 @@ void Handler(void)
 {
     REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
     
-    if ((REG_IF & INT_TIMER0) == INT_TIMER0) // TODO: replace XXX with the specific interrupt you are handling
-    {
-        animate();
+    if ((REG_IF & INT_TIMER0) == INT_TIMER0) // Animation and CD timer, every 0.25s 4hz
+    {   
+        animate();          
+        cooldown_check();
+
     }
 
-    if ((REG_IF & INT_TIMER1) == INT_TIMER1) // Gravity check timer
+    if ((REG_IF & INT_TIMER1) == INT_TIMER1) // Gravity check timer, every 0.025s 40hz
     {
         fallcheck();
     }
@@ -73,7 +75,7 @@ int main(void)
     REG_TM1D = 58958; // every 0.025s 40hz
     REG_TM1CNT = TIMER_FREQUENCY_64 | TIMER_INTERRUPTS | TIMER_ENABLE;   
 
-    REG_P1CNT |= 0x4000 | KEY_RIGHT | KEY_LEFT | KEY_UP | KEY_DOWN;
+    REG_P1CNT |= 0x4000 | KEY_RIGHT | KEY_LEFT | KEY_UP | KEY_DOWN | KEY_A | KEY_B;
 	REG_IME = 0x1;		// Enable interrupt handling
 
     // init map coords

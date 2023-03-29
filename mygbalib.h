@@ -6,11 +6,6 @@
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
-
-
-// 0 left,1 right, 2 up,3 down
-
-
 /*----------Global Variables----------*/
 // Tracking Player position and sprite index
 #define SPRITE_SIZE 16
@@ -30,15 +25,24 @@ int map_dx, map_dy;
 
 // jumping and falling
 #define GRAVITY (-MOVESPEED * 2/GRAV_RATE) // 0.050 pixel/s per 0.025s, 2 pixel/s per 1s
-
 u8 falling = 0;
 int y_speed = 0;
 
-// animation
+// Animation
+#define IDLE 0
+#define RUN 1
+#define MATTACK 2
 u8 state = 0;
-u8 pose = 0; // 0 is idle 1 is run
-u8 direction = 0; // 0 is right 1 is left
+u8 pose = IDLE; // 0 is idle, 1 is run, 2 is Melee attack
+u8 direction = RIGHT;
 
+// Attack and Cooldown
+#define ATTACK_CD 4 // 4 ticks cd, 1s
+u8 attack_cd_timer = 0; // 4 ticks cd, 1s
+u8 attack_tick = 0; // attack last for 2 tikcs, 0.5s
+
+
+/*----------Fall Functions----------*/
 // function called by TIMER1 at 40hz to check for falling
 // issue with changing 40hz to #define
 void fallcheck(void)
@@ -84,6 +88,33 @@ void fallcheck(void)
     }
 }
 
+/*----------Attack & Cooldown Functions----------*/
+
+// Check if attack is on CD, if CD decreases timer, if Mattack happened, second Mattack
+bool cooldown_check(void)
+{
+    if (attack_cd_timer != 0)
+    {
+        attack_cd_timer -= 1;
+    }
+    if (attack_tick)
+    {
+        pose = MATTACK;
+        attack_tick = 0;
+        attack_cd_timer = ATTACK_CD;   
+    }
+}
+
+void attack(void)
+{    
+    if (attack_cd_timer == 0 && !attack_tick)
+    {
+        pose = MATTACK;
+        attack_tick = 1;
+    }
+}
+
+
 /*----------Button Functions----------*/
 
 void buttonR(void)
@@ -92,7 +123,7 @@ void buttonR(void)
     {
         map_dx += MOVESPEED;
         REG_BG2X  = map_dx;
-        pose = 1;
+        pose = RUN;
         direction = 0;
     }
 }
@@ -102,7 +133,7 @@ void buttonL(void)
     {
         map_dx -= MOVESPEED;
         REG_BG2X  = map_dx;
-        pose = 1;
+        pose = RUN;
         direction = 1;
     }
 }
@@ -113,9 +144,10 @@ void buttonU(void)
         y_speed = 256*1.4; // inital jump speed 1.4 pixel per 0.025s, 56 pixels/7 tiles per 1s
     }
 }
-// void buttonD(void)
-// {
-// }
+void buttonA(void)
+{
+    attack();
+}
 
 // checks which button is pressed and calls a function related to button pressed
 void checkbutton(void)
@@ -124,7 +156,7 @@ void checkbutton(void)
     
     if ((buttons & KEY_A) == KEY_A)
     {
-        //buttonA();
+        buttonA();
     }
     if ((buttons & KEY_B) == KEY_B)
     {
@@ -266,61 +298,87 @@ bool canPlayerMove(u8 direction)
 /*----------Animate Functions----------*/
 void animate(void)
 {
-    if (state && !direction)
+    if (state && direction == RIGHT)
     {
         switch (pose)
         {
-            case 0:
+            case IDLE:
                 drawSprite(RIGHTIDLE1,127,120,80);
+                delSprite(126);
                 break;
-                
-            case 1:
+            case RUN:
                 drawSprite(RIGHTRUN1,127,120,80);
-                pose = 0;
+                delSprite(126);
+                pose = IDLE;
+                break;
+            case MATTACK:
+                drawSprite(RIGHTATTACK1,127,120,80);
+                drawSprite(RIGHTATTACKSWORD1,126,120+SPRITE_SIZE,80);
+                pose = IDLE;
                 break;
         }
         state = 0;
     }
-    else if(!state && !direction)
+    else if(!state && direction == RIGHT) // right 2
     {
         switch (pose)
         {
-            case 0:
+            case IDLE:
                 drawSprite(RIGHTIDLE2,127,120,80);
+                delSprite(126);
                 break;
-            case 1:
+            case RUN:
                 drawSprite(RIGHTRUN2,127,120,80);
-                pose = 0;
+                delSprite(126);
+                pose = IDLE;
+                break;
+            case MATTACK:
+                drawSprite(RIGHTATTACK2,127,120,80);
+                drawSprite(RIGHTATTACKSWORD2,126,120+SPRITE_SIZE,80);
+                pose = IDLE;
                 break;
         }
         state = 1;
     }
 
-        if (state && direction)
+    else if (state && direction == LEFT)
     {
         switch (pose)
         {
-            case 0:
+            case IDLE:
                 drawSprite(LEFTIDLE1,127,120,80);
+                delSprite(126);
                 break;
-                
-            case 1:
+            case RUN:
                 drawSprite(LEFTRUN1,127,120,80);
-                pose = 0;
+                delSprite(126);
+                pose = IDLE;
+                break;
+            case MATTACK:
+                drawSprite(LEFTATTACK1,127,120,80);
+                drawSprite(LEFTATTACKSWORD1,126,120-SPRITE_SIZE,80);
+                pose = IDLE;
                 break;
         }
         state = 0;
     }
-    else if(!state && direction)
+    else if(!state && direction == LEFT)
     {
         switch (pose)
         {
-            case 0:
+            case IDLE:
                 drawSprite(LEFTIDLE2,127,120,80);
+                delSprite(126);
                 break;
-            case 1:
+            case RUN:
                 drawSprite(LEFTRUN2,127,120,80);
-                pose = 0;
+                delSprite(126);
+                pose = IDLE;
+                break;
+            case MATTACK:
+                drawSprite(LEFTATTACK2,127,120,80);
+                drawSprite(LEFTATTACKSWORD2,126,120-SPRITE_SIZE,80);
+                pose = IDLE;
                 break;
         }
         state = 1;
