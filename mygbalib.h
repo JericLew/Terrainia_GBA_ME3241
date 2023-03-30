@@ -5,6 +5,7 @@
 #include "worldmap.h"
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
+extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
 
 /*----------Global Variables----------*/
 // Tracking Player position and sprite index
@@ -19,14 +20,17 @@
 #define UP 2
 #define DOWN 3
 #define MOVESPEED 256 //set to 256 2**8 (1 pixel) as REG_BG2X uses 24.8 fixed point format
-#define GRAV_RATE 40
 
 int map_dx, map_dy;
 
 // jumping and falling
-#define GRAVITY (-MOVESPEED * 2/GRAV_RATE) // 0.050 pixel/s per 0.025s, 2 pixel/s per 1s
-u8 falling = 0;
-int y_speed = 0;
+#define GRAVITY -256/20 // in pixels/s per 1/60s
+int y_speed = 0; // upwards positive
+
+// Attack and Cooldown
+#define ATTACK_CD 4 // 4 ticks cd, 1s
+u8 attack_cd_timer = 0; // 4 ticks cd, 1s
+u8 attack_tick = 0; // attack last for 2 tikcs, 0.5s
 
 // Animation
 #define IDLE 0
@@ -36,14 +40,16 @@ u8 state = 0;
 u8 pose = IDLE; // 0 is idle, 1 is run, 2 is Melee attack
 u8 direction = RIGHT;
 
-// Attack and Cooldown
-#define ATTACK_CD 4 // 4 ticks cd, 1s
-u8 attack_cd_timer = 0; // 4 ticks cd, 1s
-u8 attack_tick = 0; // attack last for 2 tikcs, 0.5s
+/*----------Falling & Jumping Functions----------*/
+void jump(void)
+{
+    if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the ground, set upward speed
+    {
+        y_speed = 256*1.3; // in pixels per 1/60s
+    }
+}
 
-
-/*----------Fall Functions----------*/
-// function called by TIMER1 at 40hz to check for falling
+// function called by VBLANK at ard 60hz to check for falling
 // issue with changing 40hz to #define
 void fallcheck(void)
 {
@@ -59,25 +65,23 @@ void fallcheck(void)
     // if player is floating (nothing below) or player is jumping (upward speed)
     if (canPlayerMove(DOWN) || y_speed > 0) 
     {   
-        falling = 1;
         y_speed += (GRAVITY) ; // change y_speed due to grav
 
         // if down button is pressed when midair, fall at faster speed
         if ((buttons & KEY_DOWN) == KEY_DOWN) 
         {
-            y_speed = -256*(56/GRAV_RATE); // inital jump speed 1.4 pixel per 0.025s, 56 pixels/7 tiles per 1s
+            y_speed = -256*(1.3);
         }
 
         // check if will hit ground after adding displacement this tick
         ground_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y+ (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] != 0x00
         && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] != 0x00;
 
-        // if will collide on next tick, place on ground
+        // if will collide on next tick, place on top of ground to prevent landing inside ground tile
         if (ground_check) 
         {
             map_dy = (map_dy - y_speed)/256/8*8*256; // make map_dy multiple of 256*8 (aka tile height)
             REG_BG2Y = map_dy;
-            falling = 0;
             y_speed = 0;
         }
         else
@@ -124,7 +128,7 @@ void buttonR(void)
         map_dx += MOVESPEED;
         REG_BG2X  = map_dx;
         pose = RUN;
-        direction = 0;
+        direction = RIGHT;
     }
 }
 void buttonL(void)
@@ -134,15 +138,12 @@ void buttonL(void)
         map_dx -= MOVESPEED;
         REG_BG2X  = map_dx;
         pose = RUN;
-        direction = 1;
+        direction = LEFT;
     }
 }
 void buttonU(void)
 {
-    if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the ground, set upward speed
-    {
-        y_speed = 256*1.4; // inital jump speed 1.4 pixel per 0.025s, 56 pixels/7 tiles per 1s
-    }
+    jump();
 }
 void buttonA(void)
 {
@@ -409,3 +410,4 @@ void animate(void)
 //             break;
 //     }
 // }
+

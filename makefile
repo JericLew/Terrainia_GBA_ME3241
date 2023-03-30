@@ -15,7 +15,8 @@ PROGNAME=ME3241_game_project
 #
 # Set a list of files you want to compile
 #
-OFILES +=main.o
+OFILES +=main.o	\
+	asm_code.o
 
 #
 # Set a list of libraries you want to link

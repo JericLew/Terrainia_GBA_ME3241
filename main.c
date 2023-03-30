@@ -7,6 +7,11 @@ void Handler(void)
 {
     REG_IME = 0x00; // Stop all other interrupt handling, while we handle this current one
     
+    if ((REG_IF & INT_VBLANK) == INT_VBLANK) // 59.73 Hz roughly 60hz
+    {
+        fallcheck();
+    }
+    
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // Animation and CD timer, every 0.25s 4hz
     {   
         animate();          
@@ -14,15 +19,11 @@ void Handler(void)
 
     }
 
-    if ((REG_IF & INT_TIMER1) == INT_TIMER1) // Gravity check timer, every 0.025s 40hz
-    {
-        fallcheck();
-    }
-
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     {
         checkbutton();
     }
+
 
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
     
@@ -52,6 +53,7 @@ int main(void)
     // bit 1-0 layer priority 00 highest, 11 lowest
     // 1000 1000 1000 0000
     REG_BG2CNT |= 0x8880;
+    REG_DISPSTAT |= 0x0008;
 
     fillBGPal();    // load BGpal
     fillTileMem();  // load tiles into cbb 0
@@ -65,7 +67,7 @@ int main(void)
     // Set Handler Function for interrupts and enable selected interrupts
 	REG_IME = 0x0;		// Disable interrupt handling
     REG_INT = (int)&Handler;
-    REG_IE |= INT_TIMER0 | INT_TIMER1 | INT_BUTTON; // Enable Timmer and Button interrupts
+    REG_IE |= INT_TIMER0 | INT_TIMER1 | INT_BUTTON | INT_VBLANK; // Enable Timmer and Button interrupts
    
     // Set Timer Mode (fill that section and replace TMX with selected timer number)
 
@@ -80,7 +82,7 @@ int main(void)
 
     // init map coords
     map_dx = 0;
-    map_dy = 256*8*4;
+    map_dy = 0;
     REG_BG2X = map_dx;
     REG_BG2Y = map_dy;
     
