@@ -13,29 +13,30 @@ extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
 #define SPRITE_SIZE 16
 #define PLAYERONE_x 120
 #define PLAYERONE_y 80
-#define PLAYERONE_index 127
+#define PLAYERONE_INDEX 0
+#define PLAYERONE_ATTACK_INDEX 1
 
-float enemy1_x = 260;
+float enemy1_x = 200;
 float enemy1_y = 80;
-#define ENEMY1_index 0
+#define ENEMY1_INDEX 127
+#define ENEMY1_SPRITE PLAYERONE
 
 // background & scrolling variables
 #define LEFT 0
 #define RIGHT 1
 #define UP 2
 #define DOWN 3
-#define MOVESPEED 256 //set to 256 2**8 (1 pixel) as REG_BG2X uses 24.8 fixed point format
-
-int map_dx, map_dy;
+#define FLOATPIXEL 256 //set to 256 2**8 (1 pixel) as REG_BG2X uses 24.8 fixed point format
+float map_dx, map_dy; // in pixel, represents screen displacement from background
 
 // jumping & falling
-#define GRAVITY -256/20 // in pixels per (1/60s)^2, REMINDER IT IS TRUNCATED as its an INT
-float y_speed = 0; // upwards positive
+#define GRAVITY -0.05 // in pixel/s**2
+float y_speed = 0; // upwards positive, in pixels
 
 // Attack & Cooldown
 #define ATTACK_CD 4 // 4 ticks cd, 1s
 u8 attack_cd_timer = 0; // 4 ticks cd, 1s
-u8 attack_tick = 0; // attack last for 2 tikcs, 0.5s
+u8 attack_tick = 0; // attack last for 2 ticks@4hz, 0.5s
 
 // Animation
 #define IDLE 0
@@ -50,7 +51,7 @@ void jump(void)
 {
     if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the ground, set upward speed
     {
-        y_speed = 256*1.3; // in pixels per 1/60s, REMINDER IT IS TRUNCATED as its an INT
+        y_speed = 1.3; // in pixel/s
     }
 }
 
@@ -69,47 +70,43 @@ void fallcheck(void)
     // if player is floating (nothing below) or player is jumping (upward speed)
     if (canPlayerMove(DOWN) || y_speed > 0) 
     {   
-        y_speed += (GRAVITY) ; // add affect of gravity to speed
+        y_speed += GRAVITY ; // add affect of gravity to speed
 
-        // if down button is pressed when midair, fall at fixed faster speed
-        if ((buttons & KEY_DOWN) == KEY_DOWN) 
+        // if falling speed is larger than terminal vel of -1.5 pixel/s or if down button is pressed, fall at terminal vel
+        if (y_speed<-1.5 ||(buttons & KEY_DOWN) == KEY_DOWN)
         {
-            y_speed = -256*(1.3);
+            y_speed = -1.5;
         }
 
-
         // check if will hit ground after adding displacement this tick
-        ground_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y+ (map_dy - (int)y_speed)/256 + SPRITE_SIZE)/8*64] != 0x00
-        && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + (map_dy - (int)y_speed)/256 + SPRITE_SIZE)/8*64] != 0x00;
+        ground_check = lvl1_map[(PLAYERONE_x + (int)(map_dx) + 4)/8 + (PLAYERONE_y+ (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00
+        && lvl1_map[(PLAYERONE_x + (int)(map_dx) + 11)/8 + (PLAYERONE_y + (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00;
 
         // if will collide on next tick, place on top of ground to prevent landing inside ground tile
+        map_dy -= y_speed;
+        enemy1_y += y_speed;
         if (ground_check) 
         {
-            map_dy = (map_dy - y_speed)/256/8*8*256; // make map_dy multiple of 256*8 (aka tile height)
-            REG_BG2Y = map_dy;
-
-            enemy1_y += y_speed/256;
-            drawSprite(enemytest, ENEMY1_index, (int)enemy1_x, (int)enemy1_y); // cast enemey coords to int, but still preserve distance travelled
-
+            REG_BG2Y = FLOATPIXEL * ((int)(map_dy)/8*8); // special stuff to ensure it lands on tile
             y_speed = 0;
         }
         else
         {
-            map_dy -= y_speed;
-            REG_BG2Y  = map_dy;
-
-            enemy1_y += y_speed/256;
-            drawSprite(enemytest, ENEMY1_index, (int)enemy1_x,(int)enemy1_y);
-                 
+            REG_BG2Y  = FLOATPIXEL * (int)(map_dy);
         }
     }
 }
 
-void enemy1Move(void)
-{
-    enemy1_x -= 0;
-    drawSprite(enemytest, ENEMY1_index, (int)enemy1_x,(int)enemy1_y);
+float enemy1_x_movement = 0.5;
 
+void enemy1Move(u16 tick_counter) // move and draw enemy1
+{   
+    if (tick_counter%180 == 0)
+    {
+        enemy1_x_movement *= -1;
+    }
+    enemy1_x += enemy1_x_movement;
+    drawSprite(ENEMY1_SPRITE, ENEMY1_INDEX, (int)enemy1_x,(int)enemy1_y);
 }
 
 /*----------Attack & Cooldown Functions----------*/
@@ -145,13 +142,12 @@ void buttonR(void)
 {
     if (canPlayerMove(RIGHT))
     {
-        map_dx += MOVESPEED;
-        REG_BG2X  = map_dx;
+        map_dx += 1;
+        REG_BG2X  = (int)(map_dx) *FLOATPIXEL;
         pose = RUN;
         direction = RIGHT;
 
-        enemy1_x -= MOVESPEED/256;
-        drawSprite(enemytest,ENEMY1_index, (int)enemy1_x, (int)enemy1_y);
+        enemy1_x -= 1;
     }
 }
 
@@ -159,13 +155,12 @@ void buttonL(void)
 {
     if (canPlayerMove(LEFT))
     {
-        map_dx -= MOVESPEED;
-        REG_BG2X  = map_dx;
+        map_dx -= 1;
+        REG_BG2X  = (int)(map_dx)*FLOATPIXEL;
         pose = RUN;
         direction = LEFT;
 
-        enemy1_x += MOVESPEED/256;
-        drawSprite(enemytest,ENEMY1_index, (int)enemy1_x, (int)enemy1_y);
+        enemy1_x += 1;
     }
 }
 
@@ -293,17 +288,17 @@ void fillScreenBlock(void)
 bool canPlayerMove(u8 direction)
 {   
     bool bot_check, top_check, left_check, right_check;
-    bot_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y+ map_dy/256 + SPRITE_SIZE )/8*64] == 0x00
-    && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + map_dy/256 + SPRITE_SIZE)/8*64] == 0x00;
+    bot_check = lvl1_map[(PLAYERONE_x + (int)map_dx + 4)/8 + (PLAYERONE_y+ (int)map_dy + SPRITE_SIZE )/8*64] == 0x00
+    && lvl1_map[(PLAYERONE_x + (int)map_dx + 11)/8 + (PLAYERONE_y + (int)map_dy + SPRITE_SIZE)/8*64] == 0x00;
 
-    top_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y + map_dy/256 - 1)/8*64] == 0x00
-    && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + map_dy/256 - 1)/8*64] == 0x00;
+    top_check = lvl1_map[(PLAYERONE_x + (int)map_dx + 4)/8 + (PLAYERONE_y + (int)map_dy - 1)/8*64] == 0x00
+    && lvl1_map[(PLAYERONE_x + (int)map_dx + 11)/8 + (PLAYERONE_y + (int)map_dy - 1)/8*64] == 0x00;
 
-    left_check = lvl1_map[(PLAYERONE_x + map_dx/256 - 1)/8 + (PLAYERONE_y + map_dy/256 + 4)/8*64] == 0x00
-    && lvl1_map[(PLAYERONE_x + map_dx/256 - 1)/8 + (PLAYERONE_y + map_dy/256 + 11)/8*64] == 0x00;
+    left_check = lvl1_map[(PLAYERONE_x + (int)map_dx - 1)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == 0x00
+    && lvl1_map[(PLAYERONE_x + (int)map_dx - 1)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == 0x00;
 
-    right_check = lvl1_map[(PLAYERONE_x + map_dx/256 + SPRITE_SIZE)/8 + (PLAYERONE_y + map_dy/256 + 4)/8*64] == 0x00
-    && lvl1_map[(PLAYERONE_x + map_dx/256 + SPRITE_SIZE)/8 + (PLAYERONE_y + map_dy/256 + 11)/8*64] == 0x00;
+    right_check = lvl1_map[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == 0x00
+    && lvl1_map[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == 0x00;
 
     if (direction == LEFT)
     {
@@ -333,17 +328,17 @@ void animate(void)
         switch (pose)
         {
             case IDLE:
-                drawSprite(RIGHTIDLE1,127,120,80);
-                delSprite(126);
+                drawSprite(RIGHTIDLE1,PLAYERONE_INDEX,120,80);
+                delSprite(PLAYERONE_ATTACK_INDEX);
                 break;
             case RUN:
-                drawSprite(RIGHTRUN1,127,120,80);
-                delSprite(126);
+                drawSprite(RIGHTRUN1,PLAYERONE_INDEX,120,80);
+                delSprite(PLAYERONE_ATTACK_INDEX);
                 pose = IDLE;
                 break;
             case MATTACK:
-                drawSprite(RIGHTATTACK1,127,120,80);
-                drawSprite(RIGHTATTACKSWORD1,126,120+SPRITE_SIZE,80);
+                drawSprite(RIGHTATTACK1,PLAYERONE_INDEX,120,80);
+                drawSprite(RIGHTATTACKSWORD1,PLAYERONE_ATTACK_INDEX,120+SPRITE_SIZE,80);
                 pose = IDLE;
                 break;
         }
@@ -354,17 +349,17 @@ void animate(void)
         switch (pose)
         {
             case IDLE:
-                drawSprite(RIGHTIDLE2,127,120,80);
-                delSprite(126);
+                drawSprite(RIGHTIDLE2,PLAYERONE_INDEX,120,80);
+                delSprite(PLAYERONE_ATTACK_INDEX);
                 break;
             case RUN:
-                drawSprite(RIGHTRUN2,127,120,80);
-                delSprite(126);
+                drawSprite(RIGHTRUN2,PLAYERONE_INDEX,120,80);
+                delSprite(PLAYERONE_ATTACK_INDEX);
                 pose = IDLE;
                 break;
             case MATTACK:
-                drawSprite(RIGHTATTACK2,127,120,80);
-                drawSprite(RIGHTATTACKSWORD2,126,120+SPRITE_SIZE,80);
+                drawSprite(RIGHTATTACK2,PLAYERONE_INDEX,120,80);
+                drawSprite(RIGHTATTACKSWORD2,PLAYERONE_ATTACK_INDEX,120+SPRITE_SIZE,80);
                 pose = IDLE;
                 break;
         }
@@ -376,17 +371,17 @@ void animate(void)
         switch (pose)
         {
             case IDLE:
-                drawSprite(LEFTIDLE1,127,120,80);
-                delSprite(126);
+                drawSprite(LEFTIDLE1,PLAYERONE_INDEX,120,80);
+                delSprite(PLAYERONE_ATTACK_INDEX);
                 break;
             case RUN:
-                drawSprite(LEFTRUN1,127,120,80);
-                delSprite(126);
+                drawSprite(LEFTRUN1,PLAYERONE_INDEX,120,80);
+                delSprite(PLAYERONE_ATTACK_INDEX);
                 pose = IDLE;
                 break;
             case MATTACK:
-                drawSprite(LEFTATTACK1,127,120,80);
-                drawSprite(LEFTATTACKSWORD1,126,120-SPRITE_SIZE,80);
+                drawSprite(LEFTATTACK1,PLAYERONE_INDEX,120,80);
+                drawSprite(LEFTATTACKSWORD1,PLAYERONE_ATTACK_INDEX,120-SPRITE_SIZE,80);
                 pose = IDLE;
                 break;
         }
@@ -397,17 +392,17 @@ void animate(void)
         switch (pose)
         {
             case IDLE:
-                drawSprite(LEFTIDLE2,127,120,80);
-                delSprite(126);
+                drawSprite(LEFTIDLE2,PLAYERONE_INDEX,120,80);
+                delSprite(PLAYERONE_ATTACK_INDEX);
                 break;
             case RUN:
-                drawSprite(LEFTRUN2,127,120,80);
-                delSprite(126);
+                drawSprite(LEFTRUN2,PLAYERONE_INDEX,120,80);
+                delSprite(PLAYERONE_ATTACK_INDEX);
                 pose = IDLE;
                 break;
             case MATTACK:
-                drawSprite(LEFTATTACK2,127,120,80);
-                drawSprite(LEFTATTACKSWORD2,126,120-SPRITE_SIZE,80);
+                drawSprite(LEFTATTACK2,PLAYERONE_INDEX,120,80);
+                drawSprite(LEFTATTACKSWORD2,PLAYERONE_ATTACK_INDEX,120-SPRITE_SIZE,80);
                 pose = IDLE;
                 break;
         }

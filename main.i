@@ -516,43 +516,6 @@ u16 sprites[] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 
 
-  0xB9, 0x9B, 0x9B, 0xB9, 0x70, 0x70, 0x9A, 0xB9,
-  0xB9, 0xB9, 0xB9, 0x70, 0x70, 0x70, 0x70, 0x70,
-  0x70, 0xB7, 0xB7, 0x99, 0x99, 0x82, 0x70, 0x70,
-  0xB7, 0xB7, 0x70, 0x99, 0x82, 0x70, 0x70, 0x82,
-  0x9B, 0xB7, 0xB7, 0x82, 0xB7, 0x5E, 0x82, 0x82,
-  0x9B, 0x9B, 0x82, 0x82, 0x9B, 0x82, 0x5E, 0x82,
-  0x8F, 0x9B, 0x9B, 0x5E, 0x82, 0x5E, 0x70, 0x82,
-  0x8F, 0x82, 0x82, 0x5E, 0x82, 0x5E, 0x82, 0x82,
-
-  0xB9, 0xB9, 0x70, 0x70, 0xB9, 0xB9, 0xB9, 0x9B,
-  0x70, 0x70, 0x82, 0x70, 0x70, 0x82, 0x82, 0x9B,
-  0x9A, 0x70, 0x82, 0x99, 0x70, 0x70, 0x82, 0x70,
-  0x5E, 0x70, 0x82, 0x82, 0x70, 0x70, 0x70, 0x70,
-  0x9A, 0x70, 0xCA, 0x82, 0x82, 0x5E, 0x99, 0x82,
-  0x82, 0xCA, 0x70, 0x82, 0x82, 0x82, 0x5E, 0x99,
-  0xCA, 0x7D, 0x7D, 0x7D, 0x7D, 0x7D, 0x82, 0x5E,
-  0x7D, 0x7D, 0x5E, 0x82, 0x82, 0x7D, 0x7D, 0x5E,
-
-  0x82, 0x8F, 0x7D, 0x8F, 0x8F, 0x5E, 0x7D, 0x7D,
-  0x8F, 0x5E, 0x5E, 0x5E, 0x5E, 0x82, 0x5E, 0xB9,
-  0x5E, 0x8F, 0x7D, 0x5E, 0x82, 0x82, 0x7D, 0x7D,
-  0x5E, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E, 0xCA,
-  0x8F, 0x5E, 0x5E, 0x82, 0x82, 0x82, 0x5E, 0x82,
-  0x5E, 0x5E, 0x5E, 0x82, 0x5E, 0x7D, 0x5E, 0x5E,
-  0x5E, 0x5E, 0x82, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E,
-  0x5E, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E,
-
-  0x82, 0x7D, 0x7D, 0x7D, 0x7D, 0x5E, 0x7D, 0x5E,
-  0x7D, 0x82, 0x82, 0x82, 0xCA, 0x5E, 0x5E, 0x5E,
-  0x82, 0x82, 0x82, 0xCA, 0xCA, 0x5E, 0x82, 0x5E,
-  0x5E, 0x5E, 0x5E, 0x5E, 0xCA, 0x5E, 0x5E, 0x5E,
-  0x5E, 0xCA, 0x5E, 0x82, 0x5E, 0x5E, 0x5E, 0x5E,
-  0x82, 0x5E, 0x82, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E,
-  0x5E, 0x82, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E, 0x82,
-  0x5E, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E, 0x5E,
-
-
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x4B, 0x4B, 0x00, 0x00, 0x00,
@@ -1426,11 +1389,11 @@ const u16 lvl1_map[(64*64)] =
 
 
 extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
-# 18 "mygbalib.h"
-float enemy1_x = 260;
+# 19 "mygbalib.h"
+float enemy1_x = 200;
 float enemy1_y = 80;
-# 29 "mygbalib.h"
-int map_dx, map_dy;
+# 30 "mygbalib.h"
+float map_dx, map_dy;
 
 
 
@@ -1454,7 +1417,7 @@ void jump(void)
 {
     if (canPlayerMove(2) && !canPlayerMove(3))
     {
-        y_speed = 256*1.3;
+        y_speed = 1.3;
     }
 }
 
@@ -1473,47 +1436,43 @@ void fallcheck(void)
 
     if (canPlayerMove(3) || y_speed > 0)
     {
-        y_speed += (-256/20) ;
+        y_speed += -0.05 ;
 
 
-        if ((buttons & 0x080) == 0x080)
+        if (y_speed<-1.5 ||(buttons & 0x080) == 0x080)
         {
-            y_speed = -256*(1.3);
+            y_speed = -1.5;
         }
 
 
+        ground_check = lvl1_map[(120 + (int)(map_dx) + 4)/8 + (80 + (int)(map_dy - y_speed) + 16)/8*64] != 0x00
+        && lvl1_map[(120 + (int)(map_dx) + 11)/8 + (80 + (int)(map_dy - y_speed) + 16)/8*64] != 0x00;
 
-        ground_check = lvl1_map[(120 + map_dx/256 + 4)/8 + (80 + (map_dy - (int)y_speed)/256 + 16)/8*64] != 0x00
-        && lvl1_map[(120 + map_dx/256 + 11)/8 + (80 + (map_dy - (int)y_speed)/256 + 16)/8*64] != 0x00;
 
-
+        map_dy -= y_speed;
+        enemy1_y += y_speed;
         if (ground_check)
         {
-            map_dy = (map_dy - y_speed)/256/8*8*256;
-            *(u32*)0x400002C = map_dy;
-
-            enemy1_y += y_speed/256;
-            drawSprite(10 +1 +1 +1 +1 +1 +1 +1 +1 +1, 0, (int)enemy1_x, (int)enemy1_y);
-
+            *(u32*)0x400002C = 256 * ((int)(map_dy)/8*8);
             y_speed = 0;
         }
         else
         {
-            map_dy -= y_speed;
-            *(u32*)0x400002C = map_dy;
-
-            enemy1_y += y_speed/256;
-            drawSprite(10 +1 +1 +1 +1 +1 +1 +1 +1 +1, 0, (int)enemy1_x,(int)enemy1_y);
-
+            *(u32*)0x400002C = 256 * (int)(map_dy);
         }
     }
 }
 
-void enemy1Move(void)
-{
-    enemy1_x -= 0;
-    drawSprite(10 +1 +1 +1 +1 +1 +1 +1 +1 +1, 0, (int)enemy1_x,(int)enemy1_y);
+float enemy1_x_movement = 0.5;
 
+void enemy1Move(u16 tick_counter)
+{
+    if (tick_counter%180 == 0)
+    {
+        enemy1_x_movement *= -1;
+    }
+    enemy1_x += enemy1_x_movement;
+    drawSprite(0 +1, 127, (int)enemy1_x,(int)enemy1_y);
 }
 
 
@@ -1549,13 +1508,12 @@ void buttonR(void)
 {
     if (canPlayerMove(1))
     {
-        map_dx += 256;
-        *(u32*)0x4000028 = map_dx;
+        map_dx += 1;
+        *(u32*)0x4000028 = (int)(map_dx) *256;
         pose = 1;
         direction = 1;
 
-        enemy1_x -= 256/256;
-        drawSprite(10 +1 +1 +1 +1 +1 +1 +1 +1 +1,0, (int)enemy1_x, (int)enemy1_y);
+        enemy1_x -= 1;
     }
 }
 
@@ -1563,13 +1521,12 @@ void buttonL(void)
 {
     if (canPlayerMove(0))
     {
-        map_dx -= 256;
-        *(u32*)0x4000028 = map_dx;
+        map_dx -= 1;
+        *(u32*)0x4000028 = (int)(map_dx)*256;
         pose = 1;
         direction = 0;
 
-        enemy1_x += 256/256;
-        drawSprite(10 +1 +1 +1 +1 +1 +1 +1 +1 +1,0, (int)enemy1_x, (int)enemy1_y);
+        enemy1_x += 1;
     }
 }
 
@@ -1697,17 +1654,17 @@ void fillScreenBlock(void)
 _Bool canPlayerMove(u8 direction)
 {
     _Bool bot_check, top_check, left_check, right_check;
-    bot_check = lvl1_map[(120 + map_dx/256 + 4)/8 + (80 + map_dy/256 + 16 )/8*64] == 0x00
-    && lvl1_map[(120 + map_dx/256 + 11)/8 + (80 + map_dy/256 + 16)/8*64] == 0x00;
+    bot_check = lvl1_map[(120 + (int)map_dx + 4)/8 + (80 + (int)map_dy + 16 )/8*64] == 0x00
+    && lvl1_map[(120 + (int)map_dx + 11)/8 + (80 + (int)map_dy + 16)/8*64] == 0x00;
 
-    top_check = lvl1_map[(120 + map_dx/256 + 4)/8 + (80 + map_dy/256 - 1)/8*64] == 0x00
-    && lvl1_map[(120 + map_dx/256 + 11)/8 + (80 + map_dy/256 - 1)/8*64] == 0x00;
+    top_check = lvl1_map[(120 + (int)map_dx + 4)/8 + (80 + (int)map_dy - 1)/8*64] == 0x00
+    && lvl1_map[(120 + (int)map_dx + 11)/8 + (80 + (int)map_dy - 1)/8*64] == 0x00;
 
-    left_check = lvl1_map[(120 + map_dx/256 - 1)/8 + (80 + map_dy/256 + 4)/8*64] == 0x00
-    && lvl1_map[(120 + map_dx/256 - 1)/8 + (80 + map_dy/256 + 11)/8*64] == 0x00;
+    left_check = lvl1_map[(120 + (int)map_dx - 1)/8 + (80 + (int)map_dy + 4)/8*64] == 0x00
+    && lvl1_map[(120 + (int)map_dx - 1)/8 + (80 + (int)map_dy + 11)/8*64] == 0x00;
 
-    right_check = lvl1_map[(120 + map_dx/256 + 16)/8 + (80 + map_dy/256 + 4)/8*64] == 0x00
-    && lvl1_map[(120 + map_dx/256 + 16)/8 + (80 + map_dy/256 + 11)/8*64] == 0x00;
+    right_check = lvl1_map[(120 + (int)map_dx + 16)/8 + (80 + (int)map_dy + 4)/8*64] == 0x00
+    && lvl1_map[(120 + (int)map_dx + 16)/8 + (80 + (int)map_dy + 11)/8*64] == 0x00;
 
     if (direction == 0)
     {
@@ -1737,17 +1694,17 @@ void animate(void)
         switch (pose)
         {
             case 0:
-                drawSprite(3,127,120,80);
-                delSprite(126);
+                drawSprite(0 +1 +1,0,120,80);
+                delSprite(1);
                 break;
             case 1:
-                drawSprite(5,127,120,80);
-                delSprite(126);
+                drawSprite(0 +1 +1 +1 +1,0,120,80);
+                delSprite(1);
                 pose = 0;
                 break;
             case 2:
-                drawSprite(10 +1,127,120,80);
-                drawSprite(10 +1 +1 +1,126,120+16,80);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1,0,120,80);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1,1,120+16,80);
                 pose = 0;
                 break;
         }
@@ -1758,17 +1715,17 @@ void animate(void)
         switch (pose)
         {
             case 0:
-                drawSprite(4,127,120,80);
-                delSprite(126);
+                drawSprite(0 +1 +1 +1,0,120,80);
+                delSprite(1);
                 break;
             case 1:
-                drawSprite(6,127,120,80);
-                delSprite(126);
+                drawSprite(0 +1 +1 +1 +1 +1,0,120,80);
+                delSprite(1);
                 pose = 0;
                 break;
             case 2:
-                drawSprite(10 +1 +1,127,120,80);
-                drawSprite(10 +1 +1 +1 +1,126,120+16,80);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1,0,120,80);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1,1,120+16,80);
                 pose = 0;
                 break;
         }
@@ -1780,17 +1737,17 @@ void animate(void)
         switch (pose)
         {
             case 0:
-                drawSprite(7,127,120,80);
-                delSprite(126);
+                drawSprite(0 +1 +1 +1 +1 +1 +1,0,120,80);
+                delSprite(1);
                 break;
             case 1:
-                drawSprite(9,127,120,80);
-                delSprite(126);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1 +1,0,120,80);
+                delSprite(1);
                 pose = 0;
                 break;
             case 2:
-                drawSprite(10 +1 +1 +1 +1 +1,127,120,80);
-                drawSprite(10 +1 +1 +1 +1 +1 +1 +1,126,120-16,80);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1,0,120,80);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1,1,120-16,80);
                 pose = 0;
                 break;
         }
@@ -1801,17 +1758,17 @@ void animate(void)
         switch (pose)
         {
             case 0:
-                drawSprite(8,127,120,80);
-                delSprite(126);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1,0,120,80);
+                delSprite(1);
                 break;
             case 1:
-                drawSprite(10,127,120,80);
-                delSprite(126);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1 +1 +1,0,120,80);
+                delSprite(1);
                 pose = 0;
                 break;
             case 2:
-                drawSprite(10 +1 +1 +1 +1 +1 +1,127,120,80);
-                drawSprite(10 +1 +1 +1 +1 +1 +1 +1 +1,126,120-16,80);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1,0,120,80);
+                drawSprite(0 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1,1,120-16,80);
                 pose = 0;
                 break;
         }
@@ -1819,8 +1776,7 @@ void animate(void)
     }
 }
 # 5 "main.c" 2
-u8 animate_counter = 0;
-
+u16 FOUR_HZ_TICK_COUNTER = 0;
 
 void Handler(void)
 {
@@ -1829,13 +1785,14 @@ void Handler(void)
     if ((*(volatile u16*)0x4000202 & 0x1) == 0x1)
     {
         fallcheck();
-        enemy1Move();
-        if (animate_counter == 15)
-            {
-                animate_counter = 0;
-                animate();
-            }
-        animate_counter += 1;
+        enemy1Move(FOUR_HZ_TICK_COUNTER);
+
+        if (FOUR_HZ_TICK_COUNTER%15 == 0)
+        {
+        animate();
+        }
+
+        FOUR_HZ_TICK_COUNTER += 1;
     }
 
     if ((*(volatile u16*)0x4000202 & 0x8) == 0x8)
@@ -1900,8 +1857,8 @@ int main(void)
     *(u32*)0x400002C = map_dy;
 
 
-    drawSprite(3,127,120,80);
-    drawSprite(10 +1 +1 +1 +1 +1 +1 +1 +1 +1,0,enemy1_x,enemy1_y);
+    drawSprite(0 +1 +1,0,120,80);
+    drawSprite(0 +1,127,enemy1_x,enemy1_y);
     while(1)
     {
 

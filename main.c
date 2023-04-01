@@ -2,8 +2,7 @@
 // C-Skeleton to be used with HAM Library from www.ngine.de
 // -----------------------------------------------------------------------------
 #include "mygbalib.h"
-u8 animate_counter = 0;
-
+u16 FOUR_HZ_TICK_COUNTER = 0;
 
 void Handler(void)
 {
@@ -11,14 +10,15 @@ void Handler(void)
     
     if ((REG_IF & INT_VBLANK) == INT_VBLANK) // 59.73 Hz roughly 60hz
     {
-        fallcheck();
-        enemy1Move();
-        if (animate_counter == 15)
-            {
-                animate_counter = 0;
-                animate();
-            }
-        animate_counter += 1;
+        fallcheck(); // calulate y coords for bg and sprites
+        enemy1Move(FOUR_HZ_TICK_COUNTER); // move and draw sprites
+        // animate main charac
+        if (FOUR_HZ_TICK_COUNTER%15 == 0)
+        {
+        animate();
+        }
+        
+        FOUR_HZ_TICK_COUNTER += 1;
     }
     
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // Animation and CD timer, every 0.25s 4hz
@@ -95,8 +95,8 @@ int main(void)
     REG_BG2Y = map_dy;
     
     //spawn charac
-    drawSprite(RIGHTIDLE1,127,PLAYERONE_x,PLAYERONE_y);
-    drawSprite(enemytest,0,enemy1_x,enemy1_y);
+    drawSprite(RIGHTIDLE1,PLAYERONE_INDEX,PLAYERONE_x,PLAYERONE_y);
+    drawSprite(ENEMY1_SPRITE,ENEMY1_INDEX,enemy1_x,enemy1_y);
     while(1)
     {
 
