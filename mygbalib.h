@@ -5,6 +5,7 @@
 #include "worldmap.h"
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
+
 extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
 
 /*----------Global Variables----------*/
@@ -14,7 +15,11 @@ extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
 #define PLAYERONE_y 80
 #define PLAYERONE_index 127
 
-// background scrolling variables
+float enemy1_x = 260;
+float enemy1_y = 80;
+#define ENEMY1_index 0
+
+// background & scrolling variables
 #define LEFT 0
 #define RIGHT 1
 #define UP 2
@@ -23,11 +28,11 @@ extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
 
 int map_dx, map_dy;
 
-// jumping and falling
-#define GRAVITY -256/20 // in pixels/s per 1/60s
-int y_speed = 0; // upwards positive
+// jumping & falling
+#define GRAVITY -256/20 // in pixels per (1/60s)^2, REMINDER IT IS TRUNCATED as its an INT
+float y_speed = 0; // upwards positive
 
-// Attack and Cooldown
+// Attack & Cooldown
 #define ATTACK_CD 4 // 4 ticks cd, 1s
 u8 attack_cd_timer = 0; // 4 ticks cd, 1s
 u8 attack_tick = 0; // attack last for 2 tikcs, 0.5s
@@ -45,12 +50,11 @@ void jump(void)
 {
     if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the ground, set upward speed
     {
-        y_speed = 256*1.3; // in pixels per 1/60s
+        y_speed = 256*1.3; // in pixels per 1/60s, REMINDER IT IS TRUNCATED as its an INT
     }
 }
 
 // function called by VBLANK at ard 60hz to check for falling
-// issue with changing 40hz to #define
 void fallcheck(void)
 {
     u16 buttons = INPUT;
@@ -65,31 +69,47 @@ void fallcheck(void)
     // if player is floating (nothing below) or player is jumping (upward speed)
     if (canPlayerMove(DOWN) || y_speed > 0) 
     {   
-        y_speed += (GRAVITY) ; // change y_speed due to grav
+        y_speed += (GRAVITY) ; // add affect of gravity to speed
 
-        // if down button is pressed when midair, fall at faster speed
+        // if down button is pressed when midair, fall at fixed faster speed
         if ((buttons & KEY_DOWN) == KEY_DOWN) 
         {
             y_speed = -256*(1.3);
         }
 
+
         // check if will hit ground after adding displacement this tick
-        ground_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y+ (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] != 0x00
-        && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + (map_dy - y_speed)/256 + SPRITE_SIZE)/8*64] != 0x00;
+        ground_check = lvl1_map[(PLAYERONE_x + map_dx/256 + 4)/8 + (PLAYERONE_y+ (map_dy - (int)y_speed)/256 + SPRITE_SIZE)/8*64] != 0x00
+        && lvl1_map[(PLAYERONE_x + map_dx/256 + 11)/8 + (PLAYERONE_y + (map_dy - (int)y_speed)/256 + SPRITE_SIZE)/8*64] != 0x00;
 
         // if will collide on next tick, place on top of ground to prevent landing inside ground tile
         if (ground_check) 
         {
             map_dy = (map_dy - y_speed)/256/8*8*256; // make map_dy multiple of 256*8 (aka tile height)
             REG_BG2Y = map_dy;
+
+            enemy1_y += y_speed/256;
+            drawSprite(enemytest, ENEMY1_index, (int)enemy1_x, (int)enemy1_y); // cast enemey coords to int, but still preserve distance travelled
+
             y_speed = 0;
         }
         else
         {
             map_dy -= y_speed;
-            REG_BG2Y  = map_dy;            
+            REG_BG2Y  = map_dy;
+
+            enemy1_y += y_speed/256;
+            drawSprite(enemytest, ENEMY1_index, (int)enemy1_x,(int)enemy1_y);
+                 
         }
     }
+}
+
+void enemy1Move(void)
+{
+    enemy1_x -= 0;
+    drawSprite(enemytest, ENEMY1_index, (int)enemy1_x,(int)enemy1_y);
+
 }
 
 /*----------Attack & Cooldown Functions----------*/
@@ -129,8 +149,12 @@ void buttonR(void)
         REG_BG2X  = map_dx;
         pose = RUN;
         direction = RIGHT;
+
+        enemy1_x -= MOVESPEED/256;
+        drawSprite(enemytest,ENEMY1_index, (int)enemy1_x, (int)enemy1_y);
     }
 }
+
 void buttonL(void)
 {
     if (canPlayerMove(LEFT))
@@ -139,12 +163,17 @@ void buttonL(void)
         REG_BG2X  = map_dx;
         pose = RUN;
         direction = LEFT;
+
+        enemy1_x += MOVESPEED/256;
+        drawSprite(enemytest,ENEMY1_index, (int)enemy1_x, (int)enemy1_y);
     }
 }
+
 void buttonU(void)
 {
     jump();
 }
+
 void buttonA(void)
 {
     attack();
@@ -192,10 +221,10 @@ void checkbutton(void)
 /*----------Sprite Functions----------*/
 
 // draw a specific sprite from sprite data index at specific coords (N is abitary sprite index, 0 to 127)
-void drawSprite(int numb, int N, int map_dx, int map_dy)
+void drawSprite(int numb, int N, int x_coord, int y_coord)
 {
-    *(unsigned short *)(0x7000000 + 8*N) = map_dy | 0x2000;
-    *(unsigned short *)(0x7000002 + 8*N) = map_dx | 0x4000; 
+    *(unsigned short *)(0x7000000 + 8*N) = y_coord | 0x2000;
+    *(unsigned short *)(0x7000002 + 8*N) = x_coord | 0x4000; 
     *(unsigned short *)(0x7000004 + 8*N) = numb*8;
 }
 
@@ -385,8 +414,6 @@ void animate(void)
         state = 1;
     }
 }
-
-//TODO: Add game funcs
 
 // void drawLaser(void)
 // {

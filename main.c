@@ -2,6 +2,8 @@
 // C-Skeleton to be used with HAM Library from www.ngine.de
 // -----------------------------------------------------------------------------
 #include "mygbalib.h"
+u8 animate_counter = 0;
+
 
 void Handler(void)
 {
@@ -10,13 +12,19 @@ void Handler(void)
     if ((REG_IF & INT_VBLANK) == INT_VBLANK) // 59.73 Hz roughly 60hz
     {
         fallcheck();
+        enemy1Move();
+        if (animate_counter == 15)
+            {
+                animate_counter = 0;
+                animate();
+            }
+        animate_counter += 1;
     }
     
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // Animation and CD timer, every 0.25s 4hz
     {   
-        animate();          
+        // animate();          
         cooldown_check();
-
     }
 
     if ((REG_IF & INT_BUTTON) == INT_BUTTON)
@@ -74,8 +82,8 @@ int main(void)
     REG_TM0D = 49510; // every 0.25s 4hz
     REG_TM0CNT = TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
-    REG_TM1D = 58958; // every 0.025s 40hz
-    REG_TM1CNT = TIMER_FREQUENCY_64 | TIMER_INTERRUPTS | TIMER_ENABLE;   
+    // REG_TM1D = 58958; // every 0.025s 40hz
+    // REG_TM1CNT = TIMER_FREQUENCY_64 | TIMER_INTERRUPTS | TIMER_ENABLE;   
 
     REG_P1CNT |= 0x4000 | KEY_RIGHT | KEY_LEFT | KEY_UP | KEY_DOWN | KEY_A | KEY_B;
 	REG_IME = 0x1;		// Enable interrupt handling
@@ -87,7 +95,8 @@ int main(void)
     REG_BG2Y = map_dy;
     
     //spawn charac
-    drawSprite(RIGHTIDLE1,127,120,80);
+    drawSprite(RIGHTIDLE1,127,PLAYERONE_x,PLAYERONE_y);
+    drawSprite(enemytest,0,enemy1_x,enemy1_y);
     while(1)
     {
 
