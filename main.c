@@ -12,7 +12,8 @@ void Handler(void)
     {
         fallcheck(); // calulate y coords for bg and sprites
         enemy1Move(FOUR_HZ_TICK_COUNTER); // move and draw sprites
-        // animate main charac
+
+        // animate and draws main charac @ 4hz, every 0.25
         if (FOUR_HZ_TICK_COUNTER%15 == 0)
         {
         animate();
@@ -44,11 +45,9 @@ void Handler(void)
 // -----------------------------------------------------------------------------
 int main(void)
 {
-
     // Set Mode 2 (0x2), enable OBJ (0x40 and 0x1000) and BG2
     *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000 | BG2_ENABLE;
 
- 
     // mode 2 only BG2 and BG3 for rotational/affine
     // set up BG2 for 512x512 using cbb0 and sbb 8
     // bit 15-14 map size 128x128, 256x256, 512x512, 1024x1024 (for mode 2)
@@ -71,7 +70,6 @@ int main(void)
     fillPalette();  // load sprite pal
     fillSprites();  // load sprites
 
-
     // Set Handler Function for interrupts and enable selected interrupts
 	REG_IME = 0x0;		// Disable interrupt handling
     REG_INT = (int)&Handler;
@@ -81,9 +79,6 @@ int main(void)
 
     REG_TM0D = 49510; // every 0.25s 4hz
     REG_TM0CNT = TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
-
-    // REG_TM1D = 58958; // every 0.025s 40hz
-    // REG_TM1CNT = TIMER_FREQUENCY_64 | TIMER_INTERRUPTS | TIMER_ENABLE;   
 
     REG_P1CNT |= 0x4000 | KEY_RIGHT | KEY_LEFT | KEY_UP | KEY_DOWN | KEY_A | KEY_B;
 	REG_IME = 0x1;		// Enable interrupt handling
@@ -97,6 +92,7 @@ int main(void)
     //spawn charac
     drawSprite(RIGHTIDLE1,PLAYERONE_INDEX,PLAYERONE_x,PLAYERONE_y);
     drawSprite(ENEMY1_SPRITE,ENEMY1_INDEX,enemy1_x,enemy1_y);
+    
     while(1)
     {
 

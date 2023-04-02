@@ -1472,8 +1472,14 @@ void enemy1Move(u16 tick_counter)
         enemy1_x_movement *= -1;
     }
     enemy1_x += enemy1_x_movement;
-    drawSprite(0 +1, 127, (int)enemy1_x,(int)enemy1_y);
-}
+    if (enemy1_x < 0 || enemy1_y < 0)
+    {
+        delSprite(127);
+    }
+    else
+    {
+        drawSprite(0 +1, 127, (int)enemy1_x,(int)enemy1_y);
+    }}
 
 
 
@@ -1787,6 +1793,7 @@ void Handler(void)
         fallcheck();
         enemy1Move(FOUR_HZ_TICK_COUNTER);
 
+
         if (FOUR_HZ_TICK_COUNTER%15 == 0)
         {
         animate();
@@ -1819,9 +1826,8 @@ void Handler(void)
 int main(void)
 {
 
-
     *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000 | 0x400;
-# 63 "main.c"
+# 62 "main.c"
     *(u16*)0x400000C |= 0x8880;
     *(u16*)0x4000004 |= 0x0008;
 
@@ -1834,7 +1840,6 @@ int main(void)
     fillSprites();
 
 
-
         *(u16*)0x4000208 = 0x0;
     (*(unsigned int*)0x3007FFC) = (int)&Handler;
     *(u16*)0x4000200 |= 0x8 | 0x10 | 0x1000 | 0x1;
@@ -1843,9 +1848,6 @@ int main(void)
 
     *(u16*)0x4000100 = 49510;
     *(u16*)0x4000102 = 0x0002 | 0x0040 | 0x0080;
-
-
-
 
     *(u16*)0x4000132 |= 0x4000 | 0x010 | 0x020 | 0x040 | 0x080 | 0x001 | 0x002;
         *(u16*)0x4000208 = 0x1;
@@ -1859,6 +1861,7 @@ int main(void)
 
     drawSprite(0 +1 +1,0,120,80);
     drawSprite(0 +1,127,enemy1_x,enemy1_y);
+
     while(1)
     {
 

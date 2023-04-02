@@ -106,8 +106,14 @@ void enemy1Move(u16 tick_counter) // move and draw enemy1
         enemy1_x_movement *= -1;
     }
     enemy1_x += enemy1_x_movement;
-    drawSprite(ENEMY1_SPRITE, ENEMY1_INDEX, (int)enemy1_x,(int)enemy1_y);
-}
+    if (enemy1_x < 0 || enemy1_y < 0)
+    {
+        delSprite(ENEMY1_INDEX);
+    }
+    else
+    {
+        drawSprite(ENEMY1_SPRITE, ENEMY1_INDEX, (int)enemy1_x,(int)enemy1_y);
+    }}
 
 /*----------Attack & Cooldown Functions----------*/
 
