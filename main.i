@@ -1392,8 +1392,9 @@ extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
 # 19 "mygbalib.h"
 float enemy1_x = 200;
 float enemy1_y = 80;
-# 30 "mygbalib.h"
+# 34 "mygbalib.h"
 float map_dx, map_dy;
+
 
 
 
@@ -1410,180 +1411,8 @@ u8 attack_tick = 0;
 
 u8 state = 0;
 u8 pose = 0;
-u8 direction = 1;
+u8 player_direction = 1;
 
-
-void jump(void)
-{
-    if (canPlayerMove(2) && !canPlayerMove(3))
-    {
-        y_speed = 1.3;
-    }
-}
-
-
-void fallcheck(void)
-{
-    u16 buttons = (0x3FF & (~*(volatile u16*)0x4000130));
-    _Bool ground_check;
-
-
-    if (y_speed > 0 && !canPlayerMove(2))
-    {
-        y_speed = 0;
-    }
-
-
-    if (canPlayerMove(3) || y_speed > 0)
-    {
-        y_speed += -0.05 ;
-
-
-        if (y_speed<-1.5 ||(buttons & 0x080) == 0x080)
-        {
-            y_speed = -1.5;
-        }
-
-
-        ground_check = lvl1_map[(120 + (int)(map_dx) + 4)/8 + (80 + (int)(map_dy - y_speed) + 16)/8*64] != 0x00
-        && lvl1_map[(120 + (int)(map_dx) + 11)/8 + (80 + (int)(map_dy - y_speed) + 16)/8*64] != 0x00;
-
-
-        map_dy -= y_speed;
-        enemy1_y += y_speed;
-        if (ground_check)
-        {
-            *(u32*)0x400002C = 256 * ((int)(map_dy)/8*8);
-            y_speed = 0;
-        }
-        else
-        {
-            *(u32*)0x400002C = 256 * (int)(map_dy);
-        }
-    }
-}
-
-float enemy1_x_movement = 0.5;
-
-void enemy1Move(u16 tick_counter)
-{
-    if (tick_counter%180 == 0)
-    {
-        enemy1_x_movement *= -1;
-    }
-    enemy1_x += enemy1_x_movement;
-    if (enemy1_x < 0 || enemy1_y < 0)
-    {
-        delSprite(127);
-    }
-    else
-    {
-        drawSprite(0 +1, 127, (int)enemy1_x,(int)enemy1_y);
-    }}
-
-
-
-
-_Bool cooldown_check(void)
-{
-    if (attack_cd_timer != 0)
-    {
-        attack_cd_timer -= 1;
-    }
-    if (attack_tick)
-    {
-        pose = 2;
-        attack_tick = 0;
-        attack_cd_timer = 4;
-    }
-}
-
-void attack(void)
-{
-    if (attack_cd_timer == 0 && !attack_tick)
-    {
-        pose = 2;
-        attack_tick = 1;
-    }
-}
-
-
-
-
-void buttonR(void)
-{
-    if (canPlayerMove(1))
-    {
-        map_dx += 1;
-        *(u32*)0x4000028 = (int)(map_dx) *256;
-        pose = 1;
-        direction = 1;
-
-        enemy1_x -= 1;
-    }
-}
-
-void buttonL(void)
-{
-    if (canPlayerMove(0))
-    {
-        map_dx -= 1;
-        *(u32*)0x4000028 = (int)(map_dx)*256;
-        pose = 1;
-        direction = 0;
-
-        enemy1_x += 1;
-    }
-}
-
-void buttonU(void)
-{
-    jump();
-}
-
-void buttonA(void)
-{
-    attack();
-}
-
-
-void checkbutton(void)
-{
-    u16 buttons = (0x3FF & (~*(volatile u16*)0x4000130));
-
-    if ((buttons & 0x001) == 0x001)
-    {
-        buttonA();
-    }
-    if ((buttons & 0x002) == 0x002)
-    {
-
-    }
-    if ((buttons & 0x004) == 0x004)
-    {
-
-    }
-    if ((buttons & 0x008) == 0x008)
-    {
-
-    }
-    if ((buttons & 0x010) == 0x010)
-    {
-        buttonR();
-    }
-    if ((buttons & 0x020) == 0x020)
-    {
-        buttonL();
-    }
-    if ((buttons & 0x040) == 0x040)
-    {
-        buttonU();
-    }
-    if ((buttons & 0x080) == 0x080)
-    {
-
-    }
-}
 
 
 
@@ -1693,9 +1522,195 @@ _Bool canPlayerMove(u8 direction)
 }
 
 
+void move(u8 direction)
+{
+    switch (direction)
+    {
+    case 1:
+        if (canPlayerMove(1))
+        {
+            map_dx += 1;
+            *(u32*)0x4000028 = (int)(map_dx) *256;
+            pose = 1;
+            player_direction = 1;
+
+            enemy1_x -= 1;
+        }
+        break;
+    case 0:
+        if (canPlayerMove(0))
+        {
+            map_dx -= 1;
+            *(u32*)0x4000028 = (int)(map_dx)*256;
+            pose = 1;
+            player_direction = 0;
+
+            enemy1_x += 1;
+        }
+        break;
+    }
+}
+void jump(void)
+{
+    if (canPlayerMove(2) && !canPlayerMove(3))
+    {
+        y_speed = 1.3;
+    }
+}
+
+
+void fallcheck(void)
+{
+    u16 buttons = (0x3FF & (~*(volatile u16*)0x4000130));
+    _Bool ground_check;
+
+
+    if (y_speed > 0 && !canPlayerMove(2))
+    {
+        y_speed = 0;
+    }
+
+
+    if (canPlayerMove(3) || y_speed > 0)
+    {
+        y_speed += -0.05 ;
+
+
+        if (y_speed< -1.5 ||(buttons & 0x080) == 0x080)
+        {
+            y_speed = -1.5;
+        }
+
+
+        ground_check = lvl1_map[(120 + (int)(map_dx) + 4)/8 + (80 + (int)(map_dy - y_speed) + 16)/8*64] != 0x00
+        && lvl1_map[(120 + (int)(map_dx) + 11)/8 + (80 + (int)(map_dy - y_speed) + 16)/8*64] != 0x00;
+
+
+        map_dy -= y_speed;
+        enemy1_y += y_speed;
+        if (ground_check)
+        {
+            *(u32*)0x400002C = 256 * ((int)(map_dy)/8*8);
+            y_speed = 0;
+        }
+        else
+        {
+            *(u32*)0x400002C = 256 * (int)(map_dy);
+        }
+    }
+}
+
+float enemy1_x_movement = 0.5;
+
+void enemy1Move(u16 tick_counter)
+{
+    if (tick_counter%180 == 0)
+    {
+        enemy1_x_movement *= -1;
+    }
+    enemy1_x += enemy1_x_movement;
+    if (enemy1_x < 0 || enemy1_y < 0)
+    {
+        delSprite(127);
+    }
+    else
+    {
+        drawSprite(0 +1, 127, (int)enemy1_x,(int)enemy1_y);
+    }
+}
+
+
+
+
+void cooldown_check(void)
+{
+    if (attack_cd_timer != 0)
+    {
+        attack_cd_timer -= 1;
+    }
+    if (attack_tick)
+    {
+        pose = 2;
+        attack_tick = 0;
+        attack_cd_timer = 4;
+    }
+}
+
+void attack(void)
+{
+    if (attack_cd_timer == 0 && !attack_tick)
+    {
+        pose = 2;
+        attack_tick = 1;
+    }
+}
+
+
+
+
+void buttonR(void)
+{
+    move(1);
+}
+
+void buttonL(void)
+{
+    move(0);
+}
+
+void buttonU(void)
+{
+    jump();
+}
+
+void buttonA(void)
+{
+    attack();
+}
+
+
+void checkbutton(void)
+{
+    u16 buttons = (0x3FF & (~*(volatile u16*)0x4000130));
+
+    if ((buttons & 0x001) == 0x001)
+    {
+        buttonA();
+    }
+    if ((buttons & 0x002) == 0x002)
+    {
+
+    }
+    if ((buttons & 0x004) == 0x004)
+    {
+
+    }
+    if ((buttons & 0x008) == 0x008)
+    {
+
+    }
+    if ((buttons & 0x010) == 0x010)
+    {
+        buttonR();
+    }
+    if ((buttons & 0x020) == 0x020)
+    {
+        buttonL();
+    }
+    if ((buttons & 0x040) == 0x040)
+    {
+        buttonU();
+    }
+    if ((buttons & 0x080) == 0x080)
+    {
+
+    }
+}
+
+
 void animate(void)
 {
-    if (state && direction == 1)
+    if (state && player_direction == 1)
     {
         switch (pose)
         {
@@ -1716,7 +1731,7 @@ void animate(void)
         }
         state = 0;
     }
-    else if(!state && direction == 1)
+    else if(!state && player_direction == 1)
     {
         switch (pose)
         {
@@ -1738,7 +1753,7 @@ void animate(void)
         state = 1;
     }
 
-    else if (state && direction == 0)
+    else if (state && player_direction == 0)
     {
         switch (pose)
         {
@@ -1759,7 +1774,7 @@ void animate(void)
         }
         state = 0;
     }
-    else if(!state && direction == 0)
+    else if(!state && player_direction == 0)
     {
         switch (pose)
         {
@@ -1790,6 +1805,7 @@ void Handler(void)
 
     if ((*(volatile u16*)0x4000202 & 0x1) == 0x1)
     {
+        checkbutton();
         fallcheck();
         enemy1Move(FOUR_HZ_TICK_COUNTER);
 
@@ -1808,10 +1824,10 @@ void Handler(void)
         cooldown_check();
     }
 
-    if ((*(volatile u16*)0x4000202 & 0x1000) == 0x1000)
-    {
-        checkbutton();
-    }
+
+
+
+
 
 
     *(volatile u16*)0x4000202 = *(volatile u16*)0x4000202;
@@ -1827,7 +1843,7 @@ int main(void)
 {
 
     *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000 | 0x400;
-# 62 "main.c"
+# 63 "main.c"
     *(u16*)0x400000C |= 0x8880;
     *(u16*)0x4000004 |= 0x0008;
 

@@ -27,7 +27,12 @@ float enemy1_y = 80;
 #define UP 2
 #define DOWN 3
 #define FLOATPIXEL 256 //set to 256 2**8 (1 pixel) as REG_BG2X uses 24.8 fixed point format
+#define PLAYER_MOVESPEED 1
+#define TERM_VEL -1.5
+#define JUMP_VEL 1.3
+
 float map_dx, map_dy; // in pixel, represents screen displacement from background
+
 
 // jumping & falling
 #define GRAVITY -0.05 // in pixel/s**2
@@ -44,180 +49,8 @@ u8 attack_tick = 0; // attack last for 2 ticks@4hz, 0.5s
 #define MATTACK 2
 u8 state = 0;
 u8 pose = IDLE; // 0 is idle, 1 is run, 2 is Melee attack
-u8 direction = RIGHT;
+u8 player_direction = RIGHT;
 
-/*----------Falling & Jumping Functions----------*/
-void jump(void)
-{
-    if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the ground, set upward speed
-    {
-        y_speed = 1.3; // in pixel/s
-    }
-}
-
-// function called by VBLANK at ard 60hz to check for falling
-void fallcheck(void)
-{
-    u16 buttons = INPUT;
-    bool ground_check;
-
-    // if player is going upwards and head hits smt above, stop upward speed
-    if (y_speed > 0 && !canPlayerMove(UP)) 
-    {
-        y_speed = 0;
-    }
-
-    // if player is floating (nothing below) or player is jumping (upward speed)
-    if (canPlayerMove(DOWN) || y_speed > 0) 
-    {   
-        y_speed += GRAVITY ; // add affect of gravity to speed
-
-        // if falling speed is larger than terminal vel of -1.5 pixel/s or if down button is pressed, fall at terminal vel
-        if (y_speed<-1.5 ||(buttons & KEY_DOWN) == KEY_DOWN)
-        {
-            y_speed = -1.5;
-        }
-
-        // check if will hit ground after adding displacement this tick
-        ground_check = lvl1_map[(PLAYERONE_x + (int)(map_dx) + 4)/8 + (PLAYERONE_y+ (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00
-        && lvl1_map[(PLAYERONE_x + (int)(map_dx) + 11)/8 + (PLAYERONE_y + (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00;
-
-        // if will collide on next tick, place on top of ground to prevent landing inside ground tile
-        map_dy -= y_speed;
-        enemy1_y += y_speed;
-        if (ground_check) 
-        {
-            REG_BG2Y = FLOATPIXEL * ((int)(map_dy)/8*8); // special stuff to ensure it lands on tile
-            y_speed = 0;
-        }
-        else
-        {
-            REG_BG2Y  = FLOATPIXEL * (int)(map_dy);
-        }
-    }
-}
-
-float enemy1_x_movement = 0.5;
-
-void enemy1Move(u16 tick_counter) // move and draw enemy1
-{   
-    if (tick_counter%180 == 0)
-    {
-        enemy1_x_movement *= -1;
-    }
-    enemy1_x += enemy1_x_movement;
-    if (enemy1_x < 0 || enemy1_y < 0)
-    {
-        delSprite(ENEMY1_INDEX);
-    }
-    else
-    {
-        drawSprite(ENEMY1_SPRITE, ENEMY1_INDEX, (int)enemy1_x,(int)enemy1_y);
-    }}
-
-/*----------Attack & Cooldown Functions----------*/
-
-// Check if attack is on CD, if CD decreases timer, if Mattack happened, second Mattack
-bool cooldown_check(void)
-{
-    if (attack_cd_timer != 0)
-    {
-        attack_cd_timer -= 1;
-    }
-    if (attack_tick)
-    {
-        pose = MATTACK;
-        attack_tick = 0;
-        attack_cd_timer = ATTACK_CD;   
-    }
-}
-
-void attack(void)
-{    
-    if (attack_cd_timer == 0 && !attack_tick)
-    {
-        pose = MATTACK;
-        attack_tick = 1;
-    }
-}
-
-
-/*----------Button Functions----------*/
-
-void buttonR(void)
-{
-    if (canPlayerMove(RIGHT))
-    {
-        map_dx += 1;
-        REG_BG2X  = (int)(map_dx) *FLOATPIXEL;
-        pose = RUN;
-        direction = RIGHT;
-
-        enemy1_x -= 1;
-    }
-}
-
-void buttonL(void)
-{
-    if (canPlayerMove(LEFT))
-    {
-        map_dx -= 1;
-        REG_BG2X  = (int)(map_dx)*FLOATPIXEL;
-        pose = RUN;
-        direction = LEFT;
-
-        enemy1_x += 1;
-    }
-}
-
-void buttonU(void)
-{
-    jump();
-}
-
-void buttonA(void)
-{
-    attack();
-}
-
-// checks which button is pressed and calls a function related to button pressed
-void checkbutton(void)
-{
-    u16 buttons = INPUT;
-    
-    if ((buttons & KEY_A) == KEY_A)
-    {
-        buttonA();
-    }
-    if ((buttons & KEY_B) == KEY_B)
-    {
-        // buttonB();
-    }
-    if ((buttons & KEY_SELECT) == KEY_SELECT)
-    {
-        // buttonSel();
-    }
-    if ((buttons & KEY_START) == KEY_START)
-    {
-        // buttonS();
-    }
-    if ((buttons & KEY_RIGHT) == KEY_RIGHT)
-    {
-        buttonR();
-    }
-    if ((buttons & KEY_LEFT) == KEY_LEFT)
-    {
-        buttonL();
-    }
-    if ((buttons & KEY_UP) == KEY_UP)
-    {
-        buttonU();
-    }
-    if ((buttons & KEY_DOWN) == KEY_DOWN)
-    {
-        // buttonD();
-    }
-}
 
 /*----------Sprite Functions----------*/
 
@@ -326,10 +159,196 @@ bool canPlayerMove(u8 direction)
     return FALSE;
 }
 
+/*----------Falling & Jumping Functions----------*/
+void move(u8 direction)
+{   
+    switch (direction)
+    {
+    case RIGHT:
+        if (canPlayerMove(RIGHT))
+        {
+            map_dx += PLAYER_MOVESPEED;
+            REG_BG2X  = (int)(map_dx) *FLOATPIXEL;
+            pose = RUN;
+            player_direction = RIGHT;
+
+            enemy1_x -= PLAYER_MOVESPEED;
+        }
+        break;
+    case LEFT:
+        if (canPlayerMove(LEFT))
+        {
+            map_dx -= PLAYER_MOVESPEED;
+            REG_BG2X  = (int)(map_dx)*FLOATPIXEL;
+            pose = RUN;
+            player_direction = LEFT;
+
+            enemy1_x += PLAYER_MOVESPEED;
+        }
+        break;
+    }
+}
+void jump(void)
+{
+    if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the ground, set upward speed
+    {
+        y_speed = JUMP_VEL; // in pixel/s
+    }
+}
+
+// function called by VBLANK at ard 60hz to check for falling
+void fallcheck(void)
+{
+    u16 buttons = INPUT;
+    bool ground_check;
+
+    // if player is going upwards and head hits smt above, stop upward speed
+    if (y_speed > 0 && !canPlayerMove(UP)) 
+    {
+        y_speed = 0;
+    }
+
+    // if player is floating (nothing below) or player is jumping (upward speed)
+    if (canPlayerMove(DOWN) || y_speed > 0) 
+    {   
+        y_speed += GRAVITY ; // add affect of gravity to speed
+
+        // if falling speed is larger than terminal vel of -1.5 pixel/s or if down button is pressed, fall at terminal vel
+        if (y_speed< TERM_VEL ||(buttons & KEY_DOWN) == KEY_DOWN)
+        {
+            y_speed = TERM_VEL;
+        }
+
+        // check if will hit ground after adding displacement this tick
+        ground_check = lvl1_map[(PLAYERONE_x + (int)(map_dx) + 4)/8 + (PLAYERONE_y+ (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00
+        && lvl1_map[(PLAYERONE_x + (int)(map_dx) + 11)/8 + (PLAYERONE_y + (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00;
+
+        // if will collide on next tick, place on top of ground to prevent landing inside ground tile
+        map_dy -= y_speed;
+        enemy1_y += y_speed;
+        if (ground_check) 
+        {
+            REG_BG2Y = FLOATPIXEL * ((int)(map_dy)/8*8); // special stuff to ensure it lands on tile
+            y_speed = 0;
+        }
+        else
+        {
+            REG_BG2Y  = FLOATPIXEL * (int)(map_dy);
+        }
+    }
+}
+
+float enemy1_x_movement = 0.5;
+
+void enemy1Move(u16 tick_counter) // move and draw enemy1
+{   
+    if (tick_counter%180 == 0)
+    {
+        enemy1_x_movement *= -1;
+    }
+    enemy1_x += enemy1_x_movement;
+    if (enemy1_x < 0 || enemy1_y < 0)
+    {
+        delSprite(ENEMY1_INDEX);
+    }
+    else
+    {
+        drawSprite(ENEMY1_SPRITE, ENEMY1_INDEX, (int)enemy1_x,(int)enemy1_y);
+    }
+}
+
+/*----------Attack & Cooldown Functions----------*/
+
+// Check if attack is on CD, if CD decreases timer, if Mattack happened, second Mattack
+void cooldown_check(void)
+{
+    if (attack_cd_timer != 0)
+    {
+        attack_cd_timer -= 1;
+    }
+    if (attack_tick)
+    {
+        pose = MATTACK;
+        attack_tick = 0;
+        attack_cd_timer = ATTACK_CD;   
+    }
+}
+
+void attack(void)
+{    
+    if (attack_cd_timer == 0 && !attack_tick)
+    {
+        pose = MATTACK;
+        attack_tick = 1;
+    }
+}
+
+
+/*----------Button Functions----------*/
+
+void buttonR(void)
+{
+    move(RIGHT);
+}
+
+void buttonL(void)
+{
+    move(LEFT);
+}
+
+void buttonU(void)
+{
+    jump();
+}
+
+void buttonA(void)
+{
+    attack();
+}
+
+// checks which button is pressed and calls a function related to button pressed
+void checkbutton(void)
+{
+    u16 buttons = INPUT;
+    
+    if ((buttons & KEY_A) == KEY_A)
+    {
+        buttonA();
+    }
+    if ((buttons & KEY_B) == KEY_B)
+    {
+        // buttonB();
+    }
+    if ((buttons & KEY_SELECT) == KEY_SELECT)
+    {
+        // buttonSel();
+    }
+    if ((buttons & KEY_START) == KEY_START)
+    {
+        // buttonS();
+    }
+    if ((buttons & KEY_RIGHT) == KEY_RIGHT)
+    {
+        buttonR();
+    }
+    if ((buttons & KEY_LEFT) == KEY_LEFT)
+    {
+        buttonL();
+    }
+    if ((buttons & KEY_UP) == KEY_UP)
+    {
+        buttonU();
+    }
+    if ((buttons & KEY_DOWN) == KEY_DOWN)
+    {
+        // buttonD();
+    }
+}
+
 /*----------Animate Functions----------*/
 void animate(void)
 {
-    if (state && direction == RIGHT)
+    if (state && player_direction == RIGHT)
     {
         switch (pose)
         {
@@ -350,7 +369,7 @@ void animate(void)
         }
         state = 0;
     }
-    else if(!state && direction == RIGHT) // right 2
+    else if(!state && player_direction == RIGHT) // right 2
     {
         switch (pose)
         {
@@ -372,7 +391,7 @@ void animate(void)
         state = 1;
     }
 
-    else if (state && direction == LEFT)
+    else if (state && player_direction == LEFT)
     {
         switch (pose)
         {
@@ -393,7 +412,7 @@ void animate(void)
         }
         state = 0;
     }
-    else if(!state && direction == LEFT)
+    else if(!state && player_direction == LEFT)
     {
         switch (pose)
         {

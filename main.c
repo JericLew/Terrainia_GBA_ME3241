@@ -10,6 +10,7 @@ void Handler(void)
     
     if ((REG_IF & INT_VBLANK) == INT_VBLANK) // 59.73 Hz roughly 60hz
     {
+        checkbutton();
         fallcheck(); // calulate y coords for bg and sprites
         enemy1Move(FOUR_HZ_TICK_COUNTER); // move and draw sprites
 
@@ -28,10 +29,12 @@ void Handler(void)
         cooldown_check();
     }
 
-    if ((REG_IF & INT_BUTTON) == INT_BUTTON)
-    {
-        checkbutton();
-    }
+
+    // BUTTON INTERRUPT DOES NOT WORK WELL ON ACTUAL GBA
+    // if ((REG_IF & INT_BUTTON) == INT_BUTTON)
+    // {
+    //     checkbutton();
+    // }
 
 
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt

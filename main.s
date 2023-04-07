@@ -9883,576 +9883,13 @@ state:
 	.size	pose, 1
 pose:
 	.space	1
-	.global	direction
+	.global	player_direction
 	.data
-	.type	direction, %object
-	.size	direction, 1
-direction:
+	.type	player_direction, %object
+	.size	player_direction, 1
+player_direction:
 	.byte	1
 	.text
-	.align	2
-	.global	jump
-	.type	jump, %function
-jump:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 1, uses_anonymous_args = 0
-	mov	ip, sp
-	stmfd	sp!, {r4, fp, ip, lr, pc}
-	mov	r0, #2
-	sub	fp, ip, #-4294967292
-	ldr	r4, .L4
-	mov	lr, pc
-	bx	r4
-	mov	r3, r0
-	cmp	r3, #0
-	mov	r0, #3
-	bne	.L3
-.L1:
-	ldmea	fp, {r4, fp, sp, lr}
-	bx	lr
-.L3:
-	mov	lr, pc
-	bx	r4
-	cmp	r0, #0
-	ldreq	r2, .L4+4
-	ldreq	r3, .L4+8
-	streq	r2, [r3, #0]	@ float	@  y_speed
-	b	.L1
-.L5:
-	.align	2
-.L4:
-	.word	canPlayerMove
-	.word	1067869798
-	.word	y_speed
-	.size	jump, .-jump
-	.global	__gtsf2
-	.global	__extendsfdf2
-	.global	__adddf3
-	.global	__truncdfsf2
-	.global	__ltdf2
-	.global	__fixsfsi
-	.global	__subsf3
-	.global	__addsf3
-	.align	2
-	.global	fallcheck
-	.type	fallcheck, %function
-fallcheck:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 1, uses_anonymous_args = 0
-	mov	ip, sp
-	stmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, ip, lr, pc}
-	mov	r3, #67108864
-	add	r3, r3, #304
-	ldrh	r2, [r3, #0]
-	ldr	r8, .L17+16
-	mvn	r2, r2
-	sub	fp, ip, #-4294967292
-	ldr	r0, [r8, #0]	@ float	@  y_speed
-	ldr	r6, .L17+20
-	mov	r1, #0
-	mov	r5, r2, asl #22	@  buttons
-	mov	lr, pc
-	bx	r6
-	cmp	r0, #0
-	mov	r5, r5, lsr #22	@  buttons,  buttons
-	ldrle	r4, .L17+24
-	ble	.L7
-	ldr	r4, .L17+24
-	mov	r0, #2
-	mov	lr, pc
-	bx	r4
-	cmp	r0, #0
-	moveq	r3, #0
-	streq	r3, [r8, #0]	@ float	@  y_speed
-.L7:
-	mov	r0, #3
-	mov	lr, pc
-	bx	r4
-	cmp	r0, #0
-	bne	.L10
-	ldr	r0, [r8, #0]	@ float	@  y_speed
-	mov	r1, #0
-	mov	lr, pc
-	bx	r6
-	cmp	r0, #0
-	ble	.L6
-.L10:
-	ldr	r4, .L17+28
-	ldr	r0, [r8, #0]	@ float	@  y_speed
-	mov	lr, pc
-	bx	r4
-	adr	r2, .L17
-	ldmia	r2, {r2-r3}
-	ldr	ip, .L17+32
-	mov	lr, pc
-	bx	ip
-	ldr	r3, .L17+36
-	mov	lr, pc
-	bx	r3
-	str	r0, [r8, #0]	@ float	@  y_speed
-	mov	lr, pc
-	bx	r4
-	adr	r2, .L17+8
-	ldmia	r2, {r2-r3}
-	ldr	ip, .L17+40
-	mov	lr, pc
-	bx	ip
-	cmp	r0, #0
-	blt	.L12
-	tst	r5, #128	@  buttons
-	beq	.L11
-.L12:
-	mov	r2, #-1090519040
-	ldr	r3, .L17+16
-	add	r2, r2, #12582912
-	str	r2, [r3, #0]	@ float	@  y_speed
-.L11:
-	ldr	r3, .L17+44
-	ldr	r9, .L17+48
-	ldr	r0, [r3, #0]	@ float	@  map_dx
-	mov	lr, pc
-	bx	r9
-	ldr	sl, .L17+52
-	add	r4, r0, #124
-	mov	r3, r4, asr #31
-	ldr	r1, [r8, #0]	@ float	@  y_speed
-	mov	r6, r0
-	ldr	r7, .L17+56
-	ldr	r0, [sl, #0]	@ float	@  map_dy
-	add	r4, r4, r3, lsr #29
-	mov	lr, pc
-	bx	r7
-	mov	lr, pc
-	bx	r9
-	add	r0, r0, #96
-	mov	r3, r0, asr #31
-	add	r0, r0, r3, lsr #29
-	mov	r0, r0, asr #3
-	mov	r4, r4, asr #3
-	mov	r0, r0, asl #6
-	add	r4, r0, r4
-	ldr	r1, .L17+60
-	mov	r4, r4, asl #1
-	ldrh	r3, [r4, r1]	@  lvl1_map
-	cmp	r3, #0
-	mov	r5, #0
-	beq	.L13
-	add	r3, r6, #131
-	mov	r2, r3, asr #31
-	add	r3, r3, r2, lsr #29
-	add	r3, r0, r3, asr #3
-	mov	r3, r3, asl #1
-	ldrh	r2, [r3, r1]	@  lvl1_map
-	cmp	r2, #0
-	movne	r5, #1
-.L13:
-	ldr	r4, [r8, #0]	@ float	@  y_speed
-	ldr	r0, [sl, #0]	@ float	@  map_dy
-	mov	r1, r4
-	mov	lr, pc
-	bx	r7
-	ldr	r6, .L17+64
-	mov	r7, r0
-	mov	r1, r4
-	ldr	r0, [r6, #0]	@ float	@  enemy1_y
-	str	r7, [sl, #0]	@ float	@  map_dy
-	ldr	r3, .L17+68
-	mov	lr, pc
-	bx	r3
-	and	r5, r5, #255	@  ground_check
-	cmp	r5, #0	@  ground_check
-	str	r0, [r6, #0]	@ float	@  enemy1_y
-	beq	.L14
-	mov	r0, r7
-	mov	lr, pc
-	bx	r9
-	mov	r3, r0, asr #31
-	add	r0, r0, r3, lsr #29
-	mov	r0, r0, asr #3
-	mov	r0, r0, asl #11
-	mov	r3, #67108864
-	mov	r2, #0
-	str	r0, [r3, #44]
-	str	r2, [r8, #0]	@ float	@  y_speed
-.L6:
-	ldmea	fp, {r4, r5, r6, r7, r8, r9, sl, fp, sp, lr}
-	bx	lr
-.L14:
-	mov	r0, r7
-	mov	lr, pc
-	bx	r9
-	mov	r3, #67108864
-	mov	r0, r0, asl #8
-	str	r0, [r3, #44]
-	b	.L6
-.L18:
-	.align	2
-.L17:
-	.word	-1079404135
-	.word	2576980378
-	.word	-1074266112
-	.word	0
-	.word	y_speed
-	.word	__gtsf2
-	.word	canPlayerMove
-	.word	__extendsfdf2
-	.word	__adddf3
-	.word	__truncdfsf2
-	.word	__ltdf2
-	.word	map_dx
-	.word	__fixsfsi
-	.word	map_dy
-	.word	__subsf3
-	.word	lvl1_map
-	.word	enemy1_y
-	.word	__addsf3
-	.size	fallcheck, .-fallcheck
-	.global	enemy1_x_movement
-	.data
-	.align	2
-	.type	enemy1_x_movement, %object
-	.size	enemy1_x_movement, 4
-enemy1_x_movement:
-	.word	1056964608
-	.global	__negsf2
-	.global	__ltsf2
-	.text
-	.align	2
-	.global	enemy1Move
-	.type	enemy1Move, %function
-enemy1Move:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 1, uses_anonymous_args = 0
-	mov	r2, #381681664
-	mov	r0, r0, asl #16
-	add	r2, r2, #93184
-	mov	ip, sp
-	mov	r1, r0, lsr #18
-	add	r2, r2, #23
-	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
-	sub	fp, ip, #-4294967292
-	umull	ip, r3, r2, r1
-	mov	r3, r3, lsr #2
-	add	r3, r3, r3, asl #1
-	rsb	r3, r3, r3, asl #4
-	mov	r3, r3, asl #2
-	rsb	r3, r3, r0, lsr #16
-	movs	r3, r3, asl #16
-	ldr	r5, .L25
-	ldrne	r5, .L25
-	bne	.L20
-	ldr	r0, [r5, #0]	@ float	@  enemy1_x_movement
-	ldr	r3, .L25+4
-	mov	lr, pc
-	bx	r3
-	str	r0, [r5, #0]	@ float	@  enemy1_x_movement
-.L20:
-	ldr	r4, .L25+8
-	ldr	r1, [r5, #0]	@ float	@  enemy1_x_movement
-	ldr	r0, [r4, #0]	@ float	@  enemy1_x
-	ldr	r3, .L25+12
-	mov	lr, pc
-	bx	r3
-	ldr	r8, .L25+16
-	mov	r1, #0
-	str	r0, [r4, #0]	@ float	@  enemy1_x
-	mov	r5, r0
-	mov	lr, pc
-	bx	r8
-	cmp	r0, #0
-	mov	r1, #0
-	blt	.L22
-	ldr	r3, .L25+20
-	ldr	r6, [r3, #0]	@ float	@  enemy1_y
-	mov	r0, r6
-	mov	lr, pc
-	bx	r8
-	mov	r3, r0
-	cmp	r3, #0
-	ldr	r7, .L25+24
-	mov	r0, r5
-	blt	.L22
-	mov	lr, pc
-	bx	r7
-	mov	r4, r0
-	mov	r0, r6
-	mov	lr, pc
-	bx	r7
-	mov	r2, r4
-	mov	r3, r0
-	mov	r1, #127
-	mov	r0, #1
-	ldr	ip, .L25+28
-	mov	lr, pc
-	bx	ip
-.L19:
-	ldmea	fp, {r4, r5, r6, r7, r8, fp, sp, lr}
-	bx	lr
-.L22:
-	ldr	r3, .L25+32
-	mov	r0, #127
-	mov	lr, pc
-	bx	r3
-	b	.L19
-.L26:
-	.align	2
-.L25:
-	.word	enemy1_x_movement
-	.word	__negsf2
-	.word	enemy1_x
-	.word	__addsf3
-	.word	__ltsf2
-	.word	enemy1_y
-	.word	__fixsfsi
-	.word	drawSprite
-	.word	delSprite
-	.size	enemy1Move, .-enemy1Move
-	.align	2
-	.global	cooldown_check
-	.type	cooldown_check, %function
-cooldown_check:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	ip, .L30
-	str	lr, [sp, #-4]!
-	ldr	lr, .L30+4
-	ldrb	r3, [ip, #0]	@ zero_extendqisi2	@  attack_cd_timer
-	ldrb	r2, [lr, #0]	@ zero_extendqisi2	@  attack_tick
-	cmp	r3, #0
-	sub	r3, r3, #1
-	strneb	r3, [ip, #0]	@  attack_cd_timer
-	cmp	r2, #0
-	beq	.L29
-	ldr	r3, .L30+8
-	mov	r1, #2
-	strb	r1, [r3, #0]	@  pose
-	mov	r2, #0
-	mov	r3, #4
-	strb	r2, [lr, #0]	@  attack_tick
-	strb	r3, [ip, #0]	@  attack_cd_timer
-.L29:
-	ldr	lr, [sp], #4
-	bx	lr
-.L31:
-	.align	2
-.L30:
-	.word	attack_cd_timer
-	.word	attack_tick
-	.word	pose
-	.size	cooldown_check, .-cooldown_check
-	.align	2
-	.global	attack
-	.type	attack, %function
-attack:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 0, uses_anonymous_args = 0
-	@ link register save eliminated.
-	ldr	r3, .L34
-	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  attack_cd_timer
-	cmp	r2, #0
-	@ lr needed for prologue
-	ldr	r0, .L34+4
-	bxne	lr
-	ldrb	r3, [r0, #0]	@ zero_extendqisi2	@  attack_tick
-	cmp	r3, #0
-	ldreq	r2, .L34+8
-	moveq	r3, #2
-	moveq	r1, #1
-	streqb	r3, [r2, #0]	@  pose
-	streqb	r1, [r0, #0]	@  attack_tick
-	bx	lr
-.L35:
-	.align	2
-.L34:
-	.word	attack_cd_timer
-	.word	attack_tick
-	.word	pose
-	.size	attack, .-attack
-	.align	2
-	.global	buttonR
-	.type	buttonR, %function
-buttonR:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 1, uses_anonymous_args = 0
-	mov	ip, sp
-	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
-	mov	r0, #1
-	sub	fp, ip, #-4294967292
-	ldr	r3, .L38
-	mov	lr, pc
-	bx	r3
-	cmp	r0, #0
-	ldr	r4, .L38+4
-	ldr	r5, .L38+8
-	mov	r1, #1065353216
-	beq	.L36
-	ldr	r0, [r4, #0]	@ float	@  map_dx
-	ldr	r3, .L38+12
-	mov	lr, pc
-	bx	r3
-	ldr	r3, .L38+16
-	str	r0, [r4, #0]	@ float	@  map_dx
-	mov	lr, pc
-	bx	r3
-	mov	ip, r0
-	mov	ip, ip, asl #8
-	mov	r3, #67108864
-	str	ip, [r3, #40]
-	ldr	r2, .L38+20
-	ldr	r3, .L38+24
-	mov	lr, #1
-	ldr	r0, [r5, #0]	@ float	@  enemy1_x
-	strb	lr, [r2, #0]	@  direction
-	mov	r1, #1065353216
-	strb	lr, [r3, #0]	@  pose
-	ldr	r2, .L38+28
-	mov	lr, pc
-	bx	r2
-	str	r0, [r5, #0]	@ float	@  enemy1_x
-.L36:
-	ldmea	fp, {r4, r5, fp, sp, lr}
-	bx	lr
-.L39:
-	.align	2
-.L38:
-	.word	canPlayerMove
-	.word	map_dx
-	.word	enemy1_x
-	.word	__addsf3
-	.word	__fixsfsi
-	.word	direction
-	.word	pose
-	.word	__subsf3
-	.size	buttonR, .-buttonR
-	.align	2
-	.global	buttonL
-	.type	buttonL, %function
-buttonL:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 1, uses_anonymous_args = 0
-	mov	ip, sp
-	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
-	mov	r0, #0
-	sub	fp, ip, #-4294967292
-	ldr	r3, .L42
-	mov	lr, pc
-	bx	r3
-	cmp	r0, #0
-	ldr	r4, .L42+4
-	ldr	r5, .L42+8
-	mov	r1, #1065353216
-	beq	.L40
-	ldr	r0, [r4, #0]	@ float	@  map_dx
-	ldr	r3, .L42+12
-	mov	lr, pc
-	bx	r3
-	ldr	r3, .L42+16
-	str	r0, [r4, #0]	@ float	@  map_dx
-	mov	lr, pc
-	bx	r3
-	mov	r2, r0
-	mov	r2, r2, asl #8
-	mov	r3, #67108864
-	str	r2, [r3, #40]
-	ldr	r3, .L42+20
-	mov	ip, #1
-	strb	ip, [r3, #0]	@  pose
-	ldr	r3, .L42+24
-	mov	lr, #0
-	ldr	r0, [r5, #0]	@ float	@  enemy1_x
-	mov	r1, #1065353216
-	strb	lr, [r3, #0]	@  direction
-	ldr	r2, .L42+28
-	mov	lr, pc
-	bx	r2
-	str	r0, [r5, #0]	@ float	@  enemy1_x
-.L40:
-	ldmea	fp, {r4, r5, fp, sp, lr}
-	bx	lr
-.L43:
-	.align	2
-.L42:
-	.word	canPlayerMove
-	.word	map_dx
-	.word	enemy1_x
-	.word	__subsf3
-	.word	__fixsfsi
-	.word	pose
-	.word	direction
-	.word	__addsf3
-	.size	buttonL, .-buttonL
-	.align	2
-	.global	buttonU
-	.type	buttonU, %function
-buttonU:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 0, uses_anonymous_args = 0
-	@ link register save eliminated.
-	@ lr needed for prologue
-	b	jump
-	.size	buttonU, .-buttonU
-	.align	2
-	.global	buttonA
-	.type	buttonA, %function
-buttonA:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 0, uses_anonymous_args = 0
-	@ link register save eliminated.
-	@ lr needed for prologue
-	b	attack
-	.size	buttonA, .-buttonA
-	.align	2
-	.global	checkbutton
-	.type	checkbutton, %function
-checkbutton:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 1, uses_anonymous_args = 0
-	mov	ip, sp
-	stmfd	sp!, {r4, fp, ip, lr, pc}
-	mov	r2, #67108864
-	add	r2, r2, #304
-	ldrh	r3, [r2, #0]
-	mvn	r3, r3
-	mov	r4, r3, asl #22
-	mov	r4, r4, lsr #22
-	tst	r4, #1
-	sub	fp, ip, #-4294967292
-	bne	.L55
-.L47:
-	tst	r4, #16
-	bne	.L56
-.L51:
-	tst	r4, #32
-	bne	.L57
-.L52:
-	tst	r4, #64
-	bne	.L58
-.L53:
-	ldmea	fp, {r4, fp, sp, lr}
-	bx	lr
-.L58:
-	bl	buttonU
-	b	.L53
-.L57:
-	bl	buttonL
-	b	.L52
-.L56:
-	bl	buttonR
-	b	.L51
-.L55:
-	bl	buttonA
-	b	.L47
-	.size	checkbutton, .-checkbutton
 	.align	2
 	.global	drawSprite
 	.type	drawSprite, %function
@@ -10508,22 +9945,22 @@ fillPalette:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	mov	r0, #83886080
-	ldr	ip, .L69
+	ldr	ip, .L11
 	@ lr needed for prologue
 	mov	r1, #0	@  i
 	add	r0, r0, #512
-.L66:
+.L8:
 	mov	r3, r1, asl #2	@  i
 	mov	r2, r1, asl #1	@  i
 	ldrh	r3, [r3, ip]	@  sprites_palette
 	add	r1, r1, #1	@  i,  i
 	cmp	r1, #255	@  i
 	strh	r3, [r2, r0]	@ movhi 
-	ble	.L66
+	ble	.L8
 	bx	lr
-.L70:
+.L12:
 	.align	2
-.L69:
+.L11:
 	.word	sprites_palette
 	.size	fillPalette, .-fillPalette
 	.align	2
@@ -10538,11 +9975,11 @@ fillSprites:
 	sub	fp, ip, #-4294967292
 	mov	r5, #32512
 	mov	lr, #100663296
-	ldr	ip, .L86
+	ldr	ip, .L28
 	mov	r4, #0	@  i
 	add	r5, r5, #255
 	add	lr, lr, #65536
-.L76:
+.L18:
 	mov	r1, r4, asl #2	@  i
 	add	r3, r1, ip
 	ldrh	r0, [r3, #2]	@  sprites
@@ -10552,9 +9989,9 @@ fillSprites:
 	add	r2, r2, r0, asl #8
 	cmp	r4, r5	@  i
 	strh	r2, [r3, lr]	@ movhi 
-	ble	.L76
+	ble	.L18
 	mov	r4, #0	@  i
-.L81:
+.L23:
 	mov	r1, r4	@  i
 	mov	r0, #0
 	mov	r2, #240
@@ -10562,12 +9999,12 @@ fillSprites:
 	add	r4, r4, #1	@  i,  i
 	bl	drawSprite
 	cmp	r4, #127	@  i
-	ble	.L81
+	ble	.L23
 	ldmea	fp, {r4, r5, fp, sp, lr}
 	bx	lr
-.L87:
+.L29:
 	.align	2
-.L86:
+.L28:
 	.word	sprites
 	.size	fillSprites, .-fillSprites
 	.align	2
@@ -10578,21 +10015,21 @@ fillBGPal:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	ldr	r0, .L96
+	ldr	r0, .L38
 	@ lr needed for prologue
 	mov	r1, #0	@  i
-.L93:
+.L35:
 	mov	r2, r1, asl #1	@  i
 	add	r3, r2, #83886080
 	add	r1, r1, #1	@  i,  i
 	ldrh	r2, [r2, r0]	@  tiles_palette
 	cmp	r1, #255	@  i
 	strh	r2, [r3, #0]	@ movhi 
-	ble	.L93
+	ble	.L35
 	bx	lr
-.L97:
+.L39:
 	.align	2
-.L96:
+.L38:
 	.word	tiles_palette
 	.size	fillBGPal, .-fillBGPal
 	.align	2
@@ -10604,22 +10041,22 @@ fillTileMem:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	mov	r0, #316
-	ldr	ip, .L106
+	ldr	ip, .L48
 	@ lr needed for prologue
 	mov	r1, #0	@  i
 	add	r0, r0, #3
-.L103:
+.L45:
 	mov	r2, r1, asl #1	@  i
 	add	r3, r2, #100663296
 	add	r1, r1, #1	@  i,  i
 	ldrh	r2, [r2, ip]	@  tiles_data
 	cmp	r1, r0	@  i
 	strh	r2, [r3, #0]	@ movhi 
-	ble	.L103
+	ble	.L45
 	bx	lr
-.L107:
+.L49:
 	.align	2
-.L106:
+.L48:
 	.word	tiles_data
 	.size	fillTileMem, .-fillTileMem
 	.align	2
@@ -10632,11 +10069,11 @@ fillScreenBlock:
 	stmfd	sp!, {r4, r5, lr}
 	mov	r5, #2032
 	mov	r4, #100663296
-	ldr	lr, .L116
+	ldr	lr, .L58
 	mov	ip, #0	@  i
 	add	r5, r5, #15
 	add	r4, r4, #16384
-.L113:
+.L55:
 	mov	r1, ip, asl #2	@  i
 	add	r3, r1, lr
 	ldrh	r0, [r3, #2]	@  lvl1_map
@@ -10646,14 +10083,15 @@ fillScreenBlock:
 	add	r2, r2, r0, asl #8
 	cmp	ip, r5	@  i
 	strh	r2, [r3, r4]	@ movhi 
-	ble	.L113
+	ble	.L55
 	ldmfd	sp!, {r4, r5, lr}
 	bx	lr
-.L117:
+.L59:
 	.align	2
-.L116:
+.L58:
 	.word	lvl1_map
 	.size	fillScreenBlock, .-fillScreenBlock
+	.global	__fixsfsi
 	.align	2
 	.global	canPlayerMove
 	.type	canPlayerMove, %function
@@ -10665,15 +10103,15 @@ canPlayerMove:
 	stmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, ip, lr, pc}
 	sub	fp, ip, #-4294967292
 	sub	sp, sp, #16
-	ldr	r8, .L127
+	ldr	r8, .L69
 	ldr	r3, [r8, #0]	@ float	@  left_check,  map_dx
 	mov	r2, r0	@  left_check
-	ldr	r5, .L127+4
+	ldr	r5, .L69+4
 	mov	r0, r3	@  left_check
 	and	r9, r2, #255	@  direction,  left_check
 	mov	lr, pc
 	bx	r5
-	ldr	sl, .L127+8
+	ldr	sl, .L69+8
 	add	r4, r0, #124	@  left_check
 	mov	r3, r4, asr #31
 	mov	r6, r0	@  left_check
@@ -10688,13 +10126,13 @@ canPlayerMove:
 	mov	r4, r4, asr #3
 	mov	r0, r0, asl #6
 	add	r4, r0, r4
-	ldr	r7, .L127+12
+	ldr	r7, .L69+12
 	mov	r4, r4, asl #1
 	ldrh	r3, [r4, r7]	@  lvl1_map
 	cmp	r3, #0
 	mov	r3, #0
 	strb	r3, [fp, #-52]
-	bne	.L119
+	bne	.L61
 	add	r3, r6, #131	@  left_check
 	mov	r2, r3, asr #31
 	add	r3, r3, r2, lsr #29
@@ -10704,7 +10142,7 @@ canPlayerMove:
 	cmp	r2, #0
 	moveq	r3, #1
 	streqb	r3, [fp, #-52]
-.L119:
+.L61:
 	ldr	r0, [r8, #0]	@ float	@  left_check,  map_dx
 	mov	lr, pc
 	bx	r5
@@ -10730,7 +10168,7 @@ canPlayerMove:
 	str	r3, [fp, #-44]	@  bot_check
 	mov	r3, #0
 	strb	r3, [fp, #-56]
-	bne	.L120
+	bne	.L62
 	add	r3, r6, #131	@  left_check
 	mov	r2, r3, asr #31
 	add	r3, r3, r2, lsr #29
@@ -10740,7 +10178,7 @@ canPlayerMove:
 	cmp	r2, #0
 	moveq	r3, #1
 	streqb	r3, [fp, #-56]
-.L120:
+.L62:
 	ldr	r0, [r8, #0]	@ float	@  left_check,  map_dx
 	mov	lr, pc
 	bx	r5
@@ -10763,7 +10201,7 @@ canPlayerMove:
 	and	r3, r3, #255
 	str	r3, [fp, #-48]	@  top_check
 	mov	r6, #0
-	bne	.L121
+	bne	.L63
 	add	r3, r0, #91	@  left_check
 	mov	r2, r3, asr #31
 	add	r3, r3, r2, lsr #29
@@ -10773,7 +10211,7 @@ canPlayerMove:
 	ldrh	r2, [r3, r7]	@  lvl1_map
 	cmp	r2, #0
 	moveq	r6, #1
-.L121:
+.L63:
 	ldr	r0, [r8, #0]	@ float	@  left_check,  map_dx
 	mov	lr, pc
 	bx	r5
@@ -10794,7 +10232,7 @@ canPlayerMove:
 	cmp	r2, #0
 	and	r1, r6, #255	@  left_check
 	mov	ip, #0
-	bne	.L122
+	bne	.L64
 	add	r3, r0, #91	@  left_check
 	mov	r2, r3, asr #31
 	add	r3, r3, r2, lsr #29
@@ -10804,30 +10242,572 @@ canPlayerMove:
 	ldrh	r2, [r3, r7]	@  lvl1_map
 	cmp	r2, #0
 	moveq	ip, #1
-.L122:
+.L64:
 	cmp	r9, #0	@  direction
 	and	r0, ip, #255	@  right_check
 	moveq	r0, r1	@  left_check,  left_check
-	beq	.L118
+	beq	.L60
 	cmp	r9, #1	@  direction
-	beq	.L118
+	beq	.L60
 	cmp	r9, #2	@  direction
 	ldreq	r0, [fp, #-48]	@  left_check,  top_check
-	beq	.L118
+	beq	.L60
 	cmp	r9, #3	@  direction
 	ldr	r0, [fp, #-44]	@  left_check,  bot_check
 	movne	r0, #0	@  left_check
-.L118:
+.L60:
 	ldmea	fp, {r4, r5, r6, r7, r8, r9, sl, fp, sp, lr}
 	bx	lr
-.L128:
+.L70:
 	.align	2
-.L127:
+.L69:
 	.word	map_dx
 	.word	__fixsfsi
 	.word	map_dy
 	.word	lvl1_map
 	.size	canPlayerMove, .-canPlayerMove
+	.global	__addsf3
+	.global	__subsf3
+	.align	2
+	.global	move
+	.type	move, %function
+move:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+	ands	r4, r0, #255	@  direction,  direction
+	sub	fp, ip, #-4294967292
+	mov	r0, r4	@  direction
+	beq	.L75
+	cmp	r4, #1	@  direction
+	beq	.L80
+.L71:
+	ldmea	fp, {r4, r5, r6, fp, sp, lr}
+	bx	lr
+.L80:
+	bl	canPlayerMove
+	tst	r0, #255	@  direction
+	ldr	r5, .L81
+	ldr	r6, .L81+4
+	mov	r1, #1065353216
+	beq	.L71
+	ldr	r0, [r5, #0]	@ float	@  direction,  map_dx
+	ldr	r3, .L81+8
+	mov	lr, pc
+	bx	r3
+	ldr	r3, .L81+12
+	str	r0, [r5, #0]	@ float	@  direction,  map_dx
+	mov	lr, pc
+	bx	r3
+	mov	ip, r0	@  direction
+	mov	ip, ip, asl #8	@  direction
+	mov	r3, #67108864
+	str	ip, [r3, #40]
+	ldr	r2, .L81+16
+	ldr	r3, .L81+20
+	strb	r4, [r2, #0]	@  direction,  player_direction
+	ldr	r0, [r6, #0]	@ float	@  direction,  enemy1_x
+	mov	r1, #1065353216
+	strb	r4, [r3, #0]	@  direction,  pose
+	ldr	r2, .L81+24
+	mov	lr, pc
+	bx	r2
+.L79:
+	str	r0, [r6, #0]	@ float	@  direction,  enemy1_x
+	b	.L71
+.L75:
+	bl	canPlayerMove
+	tst	r0, #255	@  direction
+	ldr	r5, .L81
+	ldr	r6, .L81+4
+	mov	r1, #1065353216
+	beq	.L71
+	ldr	r0, [r5, #0]	@ float	@  direction,  map_dx
+	ldr	r3, .L81+24
+	mov	lr, pc
+	bx	r3
+	ldr	r3, .L81+12
+	str	r0, [r5, #0]	@ float	@  direction,  map_dx
+	mov	lr, pc
+	bx	r3
+	mov	r2, r0	@  direction
+	mov	r2, r2, asl #8	@  direction
+	mov	r3, #67108864
+	str	r2, [r3, #40]
+	ldr	r3, .L81+20
+	ldr	r2, .L81+16
+	mov	ip, #1
+	strb	ip, [r3, #0]	@  pose
+	ldr	r0, [r6, #0]	@ float	@  direction,  enemy1_x
+	mov	r1, #1065353216
+	strb	r4, [r2, #0]	@  direction,  player_direction
+	ldr	r3, .L81+8
+	mov	lr, pc
+	bx	r3
+	b	.L79
+.L82:
+	.align	2
+.L81:
+	.word	map_dx
+	.word	enemy1_x
+	.word	__addsf3
+	.word	__fixsfsi
+	.word	player_direction
+	.word	pose
+	.word	__subsf3
+	.size	move, .-move
+	.align	2
+	.global	jump
+	.type	jump, %function
+jump:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	mov	r0, #2
+	sub	fp, ip, #-4294967292
+	bl	canPlayerMove
+	mov	r3, r0
+	tst	r3, #255
+	mov	r0, #3
+	beq	.L83
+	bl	canPlayerMove
+	tst	r0, #255
+	ldreq	r2, .L85
+	ldreq	r3, .L85+4
+	streq	r2, [r3, #0]	@ float	@  y_speed
+.L83:
+	ldmea	fp, {fp, sp, lr}
+	bx	lr
+.L86:
+	.align	2
+.L85:
+	.word	1067869798
+	.word	y_speed
+	.size	jump, .-jump
+	.global	__gtsf2
+	.global	__extendsfdf2
+	.global	__adddf3
+	.global	__truncdfsf2
+	.global	__ltdf2
+	.align	2
+	.global	fallcheck
+	.type	fallcheck, %function
+fallcheck:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, ip, lr, pc}
+	mov	r3, #67108864
+	add	r3, r3, #304
+	ldrh	r2, [r3, #0]
+	ldr	r8, .L97+16
+	mvn	r2, r2
+	sub	fp, ip, #-4294967292
+	ldr	r0, [r8, #0]	@ float	@  y_speed
+	ldr	r4, .L97+20
+	mov	r1, #0
+	mov	r5, r2, asl #22	@  buttons
+	mov	lr, pc
+	bx	r4
+	cmp	r0, #0
+	mov	r5, r5, lsr #22	@  buttons,  buttons
+	ble	.L88
+	mov	r0, #2
+	bl	canPlayerMove
+	tst	r0, #255
+	moveq	r3, #0
+	streq	r3, [r8, #0]	@ float	@  y_speed
+.L88:
+	mov	r0, #3
+	bl	canPlayerMove
+	tst	r0, #255
+	bne	.L91
+	ldr	r0, [r8, #0]	@ float	@  y_speed
+	mov	r1, #0
+	mov	lr, pc
+	bx	r4
+	cmp	r0, #0
+	ble	.L87
+.L91:
+	ldr	r4, .L97+24
+	ldr	r0, [r8, #0]	@ float	@  y_speed
+	mov	lr, pc
+	bx	r4
+	adr	r2, .L97
+	ldmia	r2, {r2-r3}
+	ldr	ip, .L97+28
+	mov	lr, pc
+	bx	ip
+	ldr	r3, .L97+32
+	mov	lr, pc
+	bx	r3
+	str	r0, [r8, #0]	@ float	@  y_speed
+	mov	lr, pc
+	bx	r4
+	adr	r2, .L97+8
+	ldmia	r2, {r2-r3}
+	ldr	ip, .L97+36
+	mov	lr, pc
+	bx	ip
+	cmp	r0, #0
+	blt	.L93
+	tst	r5, #128	@  buttons
+	beq	.L92
+.L93:
+	mov	r2, #-1090519040
+	ldr	r3, .L97+16
+	add	r2, r2, #12582912
+	str	r2, [r3, #0]	@ float	@  y_speed
+.L92:
+	ldr	r3, .L97+40
+	ldr	r9, .L97+44
+	ldr	r0, [r3, #0]	@ float	@  map_dx
+	mov	lr, pc
+	bx	r9
+	ldr	sl, .L97+48
+	add	r4, r0, #124
+	mov	r3, r4, asr #31
+	ldr	r1, [r8, #0]	@ float	@  y_speed
+	mov	r6, r0
+	ldr	r7, .L97+52
+	ldr	r0, [sl, #0]	@ float	@  map_dy
+	add	r4, r4, r3, lsr #29
+	mov	lr, pc
+	bx	r7
+	mov	lr, pc
+	bx	r9
+	add	r0, r0, #96
+	mov	r3, r0, asr #31
+	add	r0, r0, r3, lsr #29
+	mov	r0, r0, asr #3
+	mov	r4, r4, asr #3
+	mov	r0, r0, asl #6
+	add	r4, r0, r4
+	ldr	r1, .L97+56
+	mov	r4, r4, asl #1
+	ldrh	r3, [r4, r1]	@  lvl1_map
+	cmp	r3, #0
+	mov	r5, #0
+	beq	.L94
+	add	r3, r6, #131
+	mov	r2, r3, asr #31
+	add	r3, r3, r2, lsr #29
+	add	r3, r0, r3, asr #3
+	mov	r3, r3, asl #1
+	ldrh	r2, [r3, r1]	@  lvl1_map
+	cmp	r2, #0
+	movne	r5, #1
+.L94:
+	ldr	r4, [r8, #0]	@ float	@  y_speed
+	ldr	r0, [sl, #0]	@ float	@  map_dy
+	mov	r1, r4
+	mov	lr, pc
+	bx	r7
+	ldr	r6, .L97+60
+	mov	r7, r0
+	mov	r1, r4
+	ldr	r0, [r6, #0]	@ float	@  enemy1_y
+	str	r7, [sl, #0]	@ float	@  map_dy
+	ldr	r3, .L97+64
+	mov	lr, pc
+	bx	r3
+	and	r5, r5, #255	@  ground_check
+	cmp	r5, #0	@  ground_check
+	str	r0, [r6, #0]	@ float	@  enemy1_y
+	beq	.L95
+	mov	r0, r7
+	mov	lr, pc
+	bx	r9
+	mov	r3, r0, asr #31
+	add	r0, r0, r3, lsr #29
+	mov	r0, r0, asr #3
+	mov	r0, r0, asl #11
+	mov	r3, #67108864
+	mov	r2, #0
+	str	r0, [r3, #44]
+	str	r2, [r8, #0]	@ float	@  y_speed
+.L87:
+	ldmea	fp, {r4, r5, r6, r7, r8, r9, sl, fp, sp, lr}
+	bx	lr
+.L95:
+	mov	r0, r7
+	mov	lr, pc
+	bx	r9
+	mov	r3, #67108864
+	mov	r0, r0, asl #8
+	str	r0, [r3, #44]
+	b	.L87
+.L98:
+	.align	2
+.L97:
+	.word	-1079404135
+	.word	2576980378
+	.word	-1074266112
+	.word	0
+	.word	y_speed
+	.word	__gtsf2
+	.word	__extendsfdf2
+	.word	__adddf3
+	.word	__truncdfsf2
+	.word	__ltdf2
+	.word	map_dx
+	.word	__fixsfsi
+	.word	map_dy
+	.word	__subsf3
+	.word	lvl1_map
+	.word	enemy1_y
+	.word	__addsf3
+	.size	fallcheck, .-fallcheck
+	.global	enemy1_x_movement
+	.data
+	.align	2
+	.type	enemy1_x_movement, %object
+	.size	enemy1_x_movement, 4
+enemy1_x_movement:
+	.word	1056964608
+	.global	__negsf2
+	.global	__ltsf2
+	.text
+	.align	2
+	.global	enemy1Move
+	.type	enemy1Move, %function
+enemy1Move:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	mov	r2, #381681664
+	mov	r0, r0, asl #16
+	add	r2, r2, #93184
+	mov	ip, sp
+	mov	r1, r0, lsr #18
+	add	r2, r2, #23
+	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
+	sub	fp, ip, #-4294967292
+	umull	ip, r3, r2, r1
+	mov	r3, r3, lsr #2
+	add	r3, r3, r3, asl #1
+	rsb	r3, r3, r3, asl #4
+	mov	r3, r3, asl #2
+	rsb	r3, r3, r0, lsr #16
+	movs	r3, r3, asl #16
+	ldr	r5, .L105
+	ldrne	r5, .L105
+	bne	.L100
+	ldr	r0, [r5, #0]	@ float	@  enemy1_x_movement
+	ldr	r3, .L105+4
+	mov	lr, pc
+	bx	r3
+	str	r0, [r5, #0]	@ float	@  enemy1_x_movement
+.L100:
+	ldr	r4, .L105+8
+	ldr	r1, [r5, #0]	@ float	@  enemy1_x_movement
+	ldr	r0, [r4, #0]	@ float	@  enemy1_x
+	ldr	r3, .L105+12
+	mov	lr, pc
+	bx	r3
+	ldr	r7, .L105+16
+	mov	r1, #0
+	str	r0, [r4, #0]	@ float	@  enemy1_x
+	mov	r5, r0
+	mov	lr, pc
+	bx	r7
+	cmp	r0, #0
+	mov	r1, #0
+	blt	.L102
+	ldr	r3, .L105+20
+	ldr	r6, [r3, #0]	@ float	@  enemy1_y
+	mov	r0, r6
+	mov	lr, pc
+	bx	r7
+	mov	r3, r0
+	cmp	r3, #0
+	ldr	r8, .L105+24
+	mov	r0, r5
+	bge	.L101
+.L102:
+	mov	r0, #127
+	ldmea	fp, {r4, r5, r6, r7, r8, fp, sp, lr}
+	b	delSprite
+.L101:
+	mov	lr, pc
+	bx	r8
+	mov	r4, r0
+	mov	r0, r6
+	mov	lr, pc
+	bx	r8
+	mov	r2, r4
+	mov	r3, r0
+	mov	r1, #127
+	mov	r0, #1
+	ldmea	fp, {r4, r5, r6, r7, r8, fp, sp, lr}
+	b	drawSprite
+.L106:
+	.align	2
+.L105:
+	.word	enemy1_x_movement
+	.word	__negsf2
+	.word	enemy1_x
+	.word	__addsf3
+	.word	__ltsf2
+	.word	enemy1_y
+	.word	__fixsfsi
+	.size	enemy1Move, .-enemy1Move
+	.align	2
+	.global	cooldown_check
+	.type	cooldown_check, %function
+cooldown_check:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	ldr	r0, .L110
+	ldr	ip, .L110+4
+	ldrb	r3, [r0, #0]	@ zero_extendqisi2	@  attack_cd_timer
+	ldrb	r2, [ip, #0]	@ zero_extendqisi2	@  attack_tick
+	cmp	r3, #0
+	sub	r3, r3, #1
+	strneb	r3, [r0, #0]	@  attack_cd_timer
+	cmp	r2, #0
+	@ lr needed for prologue
+	bxeq	lr
+	ldr	r3, .L110+8
+	mov	r1, #2
+	strb	r1, [r3, #0]	@  pose
+	mov	r2, #0
+	mov	r3, #4
+	strb	r2, [ip, #0]	@  attack_tick
+	strb	r3, [r0, #0]	@  attack_cd_timer
+	bx	lr
+.L111:
+	.align	2
+.L110:
+	.word	attack_cd_timer
+	.word	attack_tick
+	.word	pose
+	.size	cooldown_check, .-cooldown_check
+	.align	2
+	.global	attack
+	.type	attack, %function
+attack:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	ldr	r3, .L114
+	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  attack_cd_timer
+	cmp	r2, #0
+	@ lr needed for prologue
+	ldr	r0, .L114+4
+	bxne	lr
+	ldrb	r3, [r0, #0]	@ zero_extendqisi2	@  attack_tick
+	cmp	r3, #0
+	ldreq	r2, .L114+8
+	moveq	r3, #2
+	moveq	r1, #1
+	streqb	r3, [r2, #0]	@  pose
+	streqb	r1, [r0, #0]	@  attack_tick
+	bx	lr
+.L115:
+	.align	2
+.L114:
+	.word	attack_cd_timer
+	.word	attack_tick
+	.word	pose
+	.size	attack, .-attack
+	.align	2
+	.global	buttonR
+	.type	buttonR, %function
+buttonR:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	mov	r0, #1
+	@ lr needed for prologue
+	b	move
+	.size	buttonR, .-buttonR
+	.align	2
+	.global	buttonL
+	.type	buttonL, %function
+buttonL:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	mov	r0, #0
+	@ lr needed for prologue
+	b	move
+	.size	buttonL, .-buttonL
+	.align	2
+	.global	buttonU
+	.type	buttonU, %function
+buttonU:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	@ lr needed for prologue
+	b	jump
+	.size	buttonU, .-buttonU
+	.align	2
+	.global	buttonA
+	.type	buttonA, %function
+buttonA:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	@ lr needed for prologue
+	b	attack
+	.size	buttonA, .-buttonA
+	.align	2
+	.global	checkbutton
+	.type	checkbutton, %function
+checkbutton:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	mov	ip, sp
+	stmfd	sp!, {r4, fp, ip, lr, pc}
+	mov	r2, #67108864
+	add	r2, r2, #304
+	ldrh	r3, [r2, #0]
+	mvn	r3, r3
+	mov	r4, r3, asl #22
+	mov	r4, r4, lsr #22
+	tst	r4, #1
+	sub	fp, ip, #-4294967292
+	bne	.L129
+.L121:
+	tst	r4, #16
+	bne	.L130
+.L125:
+	tst	r4, #32
+	bne	.L131
+.L126:
+	tst	r4, #64
+	bne	.L132
+.L127:
+	ldmea	fp, {r4, fp, sp, lr}
+	bx	lr
+.L132:
+	bl	buttonU
+	b	.L127
+.L131:
+	bl	buttonL
+	b	.L126
+.L130:
+	bl	buttonR
+	b	.L125
+.L129:
+	bl	buttonA
+	b	.L121
+	.size	checkbutton, .-checkbutton
 	.align	2
 	.global	animate
 	.type	animate, %function
@@ -10837,58 +10817,58 @@ animate:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
 	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
-	ldr	r6, .L176
+	ldr	r6, .L180
 	ldrb	r3, [r6, #0]	@ zero_extendqisi2	@  state
 	cmp	r3, #0
 	sub	fp, ip, #-4294967292
-	beq	.L130
-	ldr	r3, .L176+4
-	ldrb	r4, [r3, #0]	@ zero_extendqisi2	@  direction
+	beq	.L134
+	ldr	r3, .L180+4
+	ldrb	r4, [r3, #0]	@ zero_extendqisi2	@  player_direction
 	cmp	r4, #1
-	beq	.L174
-.L130:
+	beq	.L178
+.L134:
 	ldrb	r4, [r6, #0]	@ zero_extendqisi2	@  state
 	cmp	r4, #0
-	bne	.L165
-	ldr	r3, .L176+4
-	ldrb	r5, [r3, #0]	@ zero_extendqisi2	@  direction
+	bne	.L169
+	ldr	r3, .L180+4
+	ldrb	r5, [r3, #0]	@ zero_extendqisi2	@  player_direction
 	cmp	r5, #1
-	beq	.L175
+	beq	.L179
 	ldrb	r3, [r6, #0]	@ zero_extendqisi2	@  state
 	cmp	r3, #0
-	bne	.L165
-.L166:
-	ldr	r3, .L176+4
-	ldrb	r5, [r3, #0]	@ zero_extendqisi2	@  direction
+	bne	.L169
+.L170:
+	ldr	r3, .L180+4
+	ldrb	r5, [r3, #0]	@ zero_extendqisi2	@  player_direction
 	cmp	r5, #0
-	bne	.L129
-	ldr	r7, .L176+8
+	bne	.L133
+	ldr	r7, .L180+8
 	ldrb	r4, [r7, #0]	@ zero_extendqisi2	@  pose
 	cmp	r4, #1
-	beq	.L160
-	bgt	.L164
+	beq	.L164
+	bgt	.L168
 	cmp	r4, #0
-	beq	.L159
-.L158:
+	beq	.L163
+.L162:
 	mov	r3, #1
-.L171:
+.L175:
 	strb	r3, [r6, #0]	@  state
-.L129:
+.L133:
 	ldmea	fp, {r4, r5, r6, r7, fp, sp, lr}
 	bx	lr
-.L159:
+.L163:
 	mov	r0, #7
 	mov	r1, r5
 	mov	r2, #120
 	mov	r3, #80
 	bl	drawSprite
 	mov	r0, #1
-.L173:
+.L177:
 	bl	delSprite
-	b	.L158
-.L164:
+	b	.L162
+.L168:
 	cmp	r4, #2
-	bne	.L158
+	bne	.L162
 	mov	r0, #15
 	mov	r1, r5
 	mov	r2, #120
@@ -10899,10 +10879,10 @@ animate:
 	mov	r2, #104
 	mov	r3, #80
 	bl	drawSprite
-.L170:
+.L174:
 	strb	r5, [r7, #0]	@  pose
-	b	.L158
-.L160:
+	b	.L162
+.L164:
 	mov	r1, r5
 	mov	r2, #120
 	mov	r3, #80
@@ -10910,35 +10890,35 @@ animate:
 	bl	drawSprite
 	mov	r0, r4
 	bl	delSprite
-	b	.L170
-.L165:
-	ldr	r3, .L176+4
-	ldrb	r5, [r3, #0]	@ zero_extendqisi2	@  direction
+	b	.L174
+.L169:
+	ldr	r3, .L180+4
+	ldrb	r5, [r3, #0]	@ zero_extendqisi2	@  player_direction
 	cmp	r5, #0
-	bne	.L148
-	ldr	r7, .L176+8
+	bne	.L152
+	ldr	r7, .L180+8
 	ldrb	r4, [r7, #0]	@ zero_extendqisi2	@  pose
 	cmp	r4, #1
-	beq	.L151
-	bgt	.L155
+	beq	.L155
+	bgt	.L159
 	cmp	r4, #0
-	beq	.L150
-.L149:
+	beq	.L154
+.L153:
 	mov	r3, #0
-	b	.L171
-.L150:
+	b	.L175
+.L154:
 	mov	r0, #6
 	mov	r1, r5
 	mov	r2, #120
 	mov	r3, #80
 	bl	drawSprite
 	mov	r0, #1
-.L172:
+.L176:
 	bl	delSprite
-	b	.L149
-.L155:
+	b	.L153
+.L159:
 	cmp	r4, #2
-	bne	.L149
+	bne	.L153
 	mov	r0, #14
 	mov	r1, r5
 	mov	r2, #120
@@ -10949,10 +10929,10 @@ animate:
 	mov	r2, #104
 	mov	r3, #80
 	bl	drawSprite
-.L169:
+.L173:
 	strb	r5, [r7, #0]	@  pose
-	b	.L149
-.L151:
+	b	.L153
+.L155:
 	mov	r1, r5
 	mov	r2, #120
 	mov	r3, #80
@@ -10960,30 +10940,30 @@ animate:
 	bl	drawSprite
 	mov	r0, r4
 	bl	delSprite
-	b	.L169
-.L148:
+	b	.L173
+.L152:
 	ldrb	r3, [r6, #0]	@ zero_extendqisi2	@  state
 	cmp	r3, #0
-	bne	.L129
-	b	.L166
-.L175:
-	ldr	r7, .L176+8
+	bne	.L133
+	b	.L170
+.L179:
+	ldr	r7, .L180+8
 	ldrb	r3, [r7, #0]	@ zero_extendqisi2	@  pose
 	cmp	r3, #1
-	beq	.L142
-	bgt	.L146
+	beq	.L146
+	bgt	.L150
 	cmp	r3, #0
-	bne	.L158
+	bne	.L162
 	mov	r0, #3
 	mov	r1, r4
 	mov	r2, #120
 	mov	r3, #80
 	bl	drawSprite
 	mov	r0, r5
-	b	.L173
-.L146:
+	b	.L177
+.L150:
 	cmp	r3, #2
-	bne	.L158
+	bne	.L162
 	mov	r0, #11
 	mov	r1, r4
 	mov	r2, #120
@@ -10994,10 +10974,10 @@ animate:
 	mov	r2, #136
 	mov	r3, #80
 	bl	drawSprite
-.L168:
+.L172:
 	strb	r4, [r7, #0]	@  pose
-	b	.L158
-.L142:
+	b	.L162
+.L146:
 	mov	r1, r4
 	mov	r2, #120
 	mov	r3, #80
@@ -11005,24 +10985,24 @@ animate:
 	bl	drawSprite
 	mov	r0, r5
 	bl	delSprite
-	b	.L168
-.L174:
-	ldr	r5, .L176+8
+	b	.L172
+.L178:
+	ldr	r5, .L180+8
 	ldrb	r1, [r5, #0]	@ zero_extendqisi2	@  pose
 	cmp	r1, #1
-	beq	.L133
-	bgt	.L137
+	beq	.L137
+	bgt	.L141
 	cmp	r1, #0
-	bne	.L149
+	bne	.L153
 	mov	r0, #2
 	mov	r2, #120
 	mov	r3, #80
 	bl	drawSprite
 	mov	r0, r4
-	b	.L172
-.L137:
+	b	.L176
+.L141:
 	cmp	r1, #2
-	bne	.L149
+	bne	.L153
 	mov	r0, #10
 	mov	r1, #0
 	mov	r2, #120
@@ -11033,11 +11013,11 @@ animate:
 	mov	r2, #136
 	mov	r3, #80
 	bl	drawSprite
-.L167:
+.L171:
 	mov	r3, #0
 	strb	r3, [r5, #0]	@  pose
-	b	.L149
-.L133:
+	b	.L153
+.L137:
 	mov	r1, #0
 	mov	r2, #120
 	mov	r3, #80
@@ -11045,12 +11025,12 @@ animate:
 	bl	drawSprite
 	mov	r0, r4
 	bl	delSprite
-	b	.L167
-.L177:
+	b	.L171
+.L181:
 	.align	2
-.L176:
+.L180:
 	.word	state
-	.word	direction
+	.word	player_direction
 	.word	pose
 	.size	animate, .-animate
 	.global	FOUR_HZ_TICK_COUNTER
@@ -11081,18 +11061,14 @@ Handler:
 	ldrh	r3, [r2, #0]
 	tst	r3, #1
 	sub	fp, ip, #-4294967292
-	ldr	r5, .L187
+	ldr	r5, .L189
 	add	r4, r4, #67108866
-	bne	.L183
-.L179:
+	bne	.L186
+.L183:
 	ldrh	r3, [r4, #0]
 	tst	r3, #8
-	bne	.L184
-.L181:
-	ldrh	r3, [r4, #0]
-	tst	r3, #4096
-	bne	.L185
-.L182:
+	bne	.L187
+.L185:
 	ldrh	r2, [r4, #0]
 	mov	r3, #67108864
 	add	r3, r3, #520
@@ -11101,35 +11077,33 @@ Handler:
 	strh	r1, [r3, #0]	@ movhi 
 	ldmea	fp, {r4, r5, fp, sp, lr}
 	bx	lr
-.L185:
-	bl	checkbutton
-	b	.L182
-.L184:
+.L187:
 	bl	cooldown_check
-	b	.L181
-.L183:
+	b	.L185
+.L186:
+	bl	checkbutton
 	bl	fallcheck
 	ldrh	r0, [r5, #0]	@  FOUR_HZ_TICK_COUNTER
 	bl	enemy1Move
 	ldrh	r0, [r5, #0]	@  FOUR_HZ_TICK_COUNTER
-	ldr	r2, .L187+4
+	ldr	r2, .L189+4
 	umull	ip, r3, r2, r0
 	mov	r3, r3, lsr #3
 	rsb	r3, r3, r3, asl #4
 	rsb	r1, r3, r0
 	movs	r1, r1, asl #16
-	beq	.L186
-.L180:
+	beq	.L188
+.L184:
 	add	r3, r0, #1
 	strh	r3, [r5, #0]	@ movhi 	@  FOUR_HZ_TICK_COUNTER
-	b	.L179
-.L186:
+	b	.L183
+.L188:
 	bl	animate
 	ldrh	r0, [r5, #0]	@  FOUR_HZ_TICK_COUNTER
-	b	.L180
-.L188:
+	b	.L184
+.L190:
 	.align	2
-.L187:
+.L189:
 	.word	FOUR_HZ_TICK_COUNTER
 	.word	-2004318071
 	.size	Handler, .-Handler
@@ -11178,7 +11152,7 @@ main:
 	strh	r3, [r2, #0]	@ movhi 
 	add	ip, ip, #67108866
 	ldrh	r2, [ip, #0]
-	ldr	r3, .L193
+	ldr	r3, .L195
 	orr	r2, r2, #16384
 	mov	r1, #50331648
 	mov	r0, #0
@@ -11188,9 +11162,9 @@ main:
 	str	r3, [r1, #252]
 	strh	r2, [ip, #0]	@ movhi 
 	str	r0, [r4, #44]
-	ldr	ip, .L193+4
+	ldr	ip, .L195+4
 	str	r0, [r4, #40]
-	ldr	r4, .L193+8
+	ldr	r4, .L195+8
 	mov	r5, #0
 	mov	r3, #1	@ movhi
 	mov	r1, r0
@@ -11201,12 +11175,12 @@ main:
 	mov	r3, #80
 	mov	r0, #2
 	bl	drawSprite
-	ldr	r3, .L193+12
-	ldr	r4, .L193+16
+	ldr	r3, .L195+12
+	ldr	r4, .L195+16
 	ldr	r0, [r3, #0]	@ float	@  enemy1_x
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L193+20
+	ldr	r3, .L195+20
 	mov	r5, r0
 	ldr	r0, [r3, #0]	@ float	@  enemy1_y
 	mov	lr, pc
@@ -11216,11 +11190,11 @@ main:
 	mov	r1, #127
 	mov	r0, #1
 	bl	drawSprite
-.L190:
-	b	.L190
-.L194:
+.L192:
+	b	.L192
+.L196:
 	.align	2
-.L193:
+.L195:
 	.word	Handler
 	.word	map_dy
 	.word	map_dx
