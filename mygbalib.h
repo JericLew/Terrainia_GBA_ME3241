@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "sprites.h"
-#include "tiles.h"
 #include "worldmap.h"
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
@@ -9,6 +8,18 @@
 extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
 
 /*----------Global Variables----------*/
+// Game state
+#define START_SCREEN 0
+#define LEVEL_ONE 1
+#define LEVEL_TWO 2
+#define END_SCREEN 3
+#define DEATH_SCREEN 4
+u8 game_state = START_SCREEN;
+
+
+// start screen
+#define LETTER_SPRITE_INDEX 20
+
 // Tracking Player position and sprite index
 #define SPRITE_SIZE 16
 #define PLAYERONE_x 120
@@ -16,10 +27,16 @@ extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
 #define PLAYERONE_INDEX 0
 #define PLAYERONE_ATTACK_INDEX 1
 
+// Enemy position and variable
 float enemy1_x = 200;
-float enemy1_y = 80;
+float enemy1_y = 112;
 #define ENEMY1_INDEX 127
 #define ENEMY1_SPRITE PLAYERONE
+
+float enemy2_x = 336;
+float enemy2_y = 200;
+#define ENEMY2_INDEX 126
+#define ENEMY2_SPRITE PLAYERONE
 
 // background & scrolling variables
 #define LEFT 0
@@ -119,6 +136,49 @@ void fillScreenBlock(void)
         se_mem[i] = (lvl1_map[i*2+1] << 8) + lvl1_map[i*2];
 }
 
+/*----------Start Screen Functions----------*/
+void drawStartScreen(void)
+{
+    drawSprite(letter_p,LETTER_SPRITE_INDEX,80+16*0,10);
+    drawSprite(letter_r,LETTER_SPRITE_INDEX+1,80+16*1,10);
+    drawSprite(letter_e,LETTER_SPRITE_INDEX+2,80+16*2,10);
+    drawSprite(letter_s,LETTER_SPRITE_INDEX+3,80+16*3,10);
+    drawSprite(letter_s,LETTER_SPRITE_INDEX+4,80+16*4,10);
+    drawSprite(letter_s,LETTER_SPRITE_INDEX+5,80+16*0,26);
+    drawSprite(letter_t,LETTER_SPRITE_INDEX+6,80+16*1,26);
+    drawSprite(letter_a,LETTER_SPRITE_INDEX+7,80+16*2,26);
+    drawSprite(letter_r,LETTER_SPRITE_INDEX+8,80+16*3,26);
+    drawSprite(letter_t,LETTER_SPRITE_INDEX+9,80+16*4,26);
+}
+
+void delStartScreen(void)
+{
+    delSprite(LETTER_SPRITE_INDEX);
+    delSprite(LETTER_SPRITE_INDEX+1);
+    delSprite(LETTER_SPRITE_INDEX+2);
+    delSprite(LETTER_SPRITE_INDEX+3);
+    delSprite(LETTER_SPRITE_INDEX+4);
+    delSprite(LETTER_SPRITE_INDEX+5);
+    delSprite(LETTER_SPRITE_INDEX+6);
+    delSprite(LETTER_SPRITE_INDEX+7);
+    delSprite(LETTER_SPRITE_INDEX+8);
+    delSprite(LETTER_SPRITE_INDEX+9);
+}
+
+void animateStart(void)
+{
+    if (state == 0)
+    {
+        drawStartScreen();
+        state = 1;
+    }
+    else
+    {
+        delStartScreen();
+        state = 0;
+    }
+}
+
 /*----------Collision Functions----------*/
 
 // check if player is colliding with map
@@ -173,6 +233,7 @@ void move(u8 direction)
             player_direction = RIGHT;
 
             enemy1_x -= PLAYER_MOVESPEED;
+            enemy2_x -= PLAYER_MOVESPEED;
         }
         break;
     case LEFT:
@@ -184,10 +245,12 @@ void move(u8 direction)
             player_direction = LEFT;
 
             enemy1_x += PLAYER_MOVESPEED;
+            enemy2_x += PLAYER_MOVESPEED;
         }
         break;
     }
 }
+
 void jump(void)
 {
     if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the ground, set upward speed
@@ -226,6 +289,7 @@ void fallcheck(void)
         // if will collide on next tick, place on top of ground to prevent landing inside ground tile
         map_dy -= y_speed;
         enemy1_y += y_speed;
+        enemy2_y += y_speed;
         if (ground_check) 
         {
             REG_BG2Y = FLOATPIXEL * ((int)(map_dy)/8*8); // special stuff to ensure it lands on tile
@@ -237,6 +301,8 @@ void fallcheck(void)
         }
     }
 }
+
+/*----------Enemy Functions----------*/
 
 float enemy1_x_movement = 0.5;
 
@@ -254,6 +320,25 @@ void enemy1Move(u16 tick_counter) // move and draw enemy1
     else
     {
         drawSprite(ENEMY1_SPRITE, ENEMY1_INDEX, (int)enemy1_x,(int)enemy1_y);
+    }
+}
+
+float enemy2_x_movement = 0.75;
+
+void enemy2Move(u16 tick_counter) // move and draw enemy2
+{   
+    if (tick_counter%180 == 0)
+    {
+        enemy2_x_movement *= -1;
+    }
+    enemy2_x += enemy2_x_movement;
+    if (enemy2_x < 0 || enemy2_y < 0)
+    {
+        delSprite(ENEMY2_INDEX);
+    }
+    else
+    {
+        drawSprite(ENEMY2_SPRITE, ENEMY2_INDEX, (int)enemy2_x,(int)enemy2_y);
     }
 }
 
@@ -306,42 +391,61 @@ void buttonA(void)
     attack();
 }
 
+void buttonS(void)
+{
+    if (game_state == 0)
+    {
+        game_state = 1;
+        delStartScreen();
+    }
+}
+
 // checks which button is pressed and calls a function related to button pressed
 void checkbutton(void)
 {
     u16 buttons = INPUT;
-    
-    if ((buttons & KEY_A) == KEY_A)
+
+    // Start Button only works when in START, END or DEATH SCREEN
+    if (game_state == START_SCREEN || game_state == END_SCREEN || game_state == DEATH_SCREEN)
     {
-        buttonA();
+        if ((buttons & KEY_START) == KEY_START)
+        {
+            buttonS();
+        }
     }
-    if ((buttons & KEY_B) == KEY_B)
+
+    // all other game buttons work only when in LEVEL ONE or TWO
+    if (game_state == LEVEL_ONE || game_state == LEVEL_TWO)
     {
-        // buttonB();
-    }
-    if ((buttons & KEY_SELECT) == KEY_SELECT)
-    {
-        // buttonSel();
-    }
-    if ((buttons & KEY_START) == KEY_START)
-    {
-        // buttonS();
-    }
-    if ((buttons & KEY_RIGHT) == KEY_RIGHT)
-    {
-        buttonR();
-    }
-    if ((buttons & KEY_LEFT) == KEY_LEFT)
-    {
-        buttonL();
-    }
-    if ((buttons & KEY_UP) == KEY_UP)
-    {
-        buttonU();
-    }
-    if ((buttons & KEY_DOWN) == KEY_DOWN)
-    {
-        // buttonD();
+        if ((buttons & KEY_A) == KEY_A)
+        {
+            buttonA();
+        }
+        if ((buttons & KEY_B) == KEY_B)
+        {
+            // buttonB();
+        }
+        if ((buttons & KEY_SELECT) == KEY_SELECT)
+        {
+            // buttonSel();
+        }
+
+        if ((buttons & KEY_RIGHT) == KEY_RIGHT)
+        {
+            buttonR();
+        }
+        if ((buttons & KEY_LEFT) == KEY_LEFT)
+        {
+            buttonL();
+        }
+        if ((buttons & KEY_UP) == KEY_UP)
+        {
+            buttonU();
+        }
+        if ((buttons & KEY_DOWN) == KEY_DOWN)
+        {
+            // buttonD();
+        }
     }
 }
 

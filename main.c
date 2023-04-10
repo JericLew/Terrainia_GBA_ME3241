@@ -2,7 +2,7 @@
 // C-Skeleton to be used with HAM Library from www.ngine.de
 // -----------------------------------------------------------------------------
 #include "mygbalib.h"
-u16 FOUR_HZ_TICK_COUNTER = 0;
+u16 TICK_COUNTER = 0;
 
 void Handler(void)
 {
@@ -11,16 +11,33 @@ void Handler(void)
     if ((REG_IF & INT_VBLANK) == INT_VBLANK) // 59.73 Hz roughly 60hz
     {
         checkbutton();
-        fallcheck(); // calulate y coords for bg and sprites
-        enemy1Move(FOUR_HZ_TICK_COUNTER); // move and draw sprites
 
-        // animate and draws main charac @ 4hz, every 0.25
-        if (FOUR_HZ_TICK_COUNTER%15 == 0)
+        // only when in start, end or death screen
+        if (game_state == START_SCREEN || game_state == END_SCREEN || game_state == DEATH_SCREEN)
         {
-        animate();
+            // add functions to draw start, end and death screen screen
+
+            // flash start screen at 2hz
+            if (TICK_COUNTER%30 == 0)
+            {
+                animateStart();
+            }
         }
-        
-        FOUR_HZ_TICK_COUNTER += 1;
+
+        // game functions for in level one or two
+        if (game_state == LEVEL_ONE || game_state == LEVEL_TWO)
+        {
+            fallcheck(); // calulate y coords for bg and sprites
+            enemy1Move(TICK_COUNTER); // move and draw sprites
+            enemy2Move(TICK_COUNTER); 
+            // animate and draws main charac @ 4hz, every 0.25
+            if (TICK_COUNTER%15 == 0)
+            {
+                animate();
+            }
+        }
+
+        TICK_COUNTER += 1;
     }
     
     if ((REG_IF & INT_TIMER0) == INT_TIMER0) // Animation and CD timer, every 0.25s 4hz
@@ -83,19 +100,20 @@ int main(void)
     REG_TM0D = 49510; // every 0.25s 4hz
     REG_TM0CNT = TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
-    REG_P1CNT |= 0x4000 | KEY_RIGHT | KEY_LEFT | KEY_UP | KEY_DOWN | KEY_A | KEY_B;
+    REG_P1CNT |= 0x4000 | KEY_RIGHT | KEY_LEFT | KEY_UP | KEY_DOWN | KEY_A | KEY_B | KEY_START;
 	REG_IME = 0x1;		// Enable interrupt handling
 
     // init map coords
     map_dx = 0;
     map_dy = 0;
-    REG_BG2X = map_dx;
-    REG_BG2Y = map_dy;
+    REG_BG2X = (int)map_dx;
+    REG_BG2Y = (int)map_dy;
     
     //spawn charac
     drawSprite(RIGHTIDLE1,PLAYERONE_INDEX,PLAYERONE_x,PLAYERONE_y);
-    drawSprite(ENEMY1_SPRITE,ENEMY1_INDEX,enemy1_x,enemy1_y);
-    
+    drawSprite(ENEMY1_SPRITE,ENEMY1_INDEX,(int)enemy1_x,(int)enemy1_y);
+    drawSprite(ENEMY2_SPRITE,ENEMY2_INDEX,(int)enemy2_x,(int)enemy2_y);
+
     while(1)
     {
 
