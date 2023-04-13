@@ -10,6 +10,7 @@ void Handler(void)
     
     if ((REG_IF & INT_VBLANK) == INT_VBLANK) // 59.73 Hz roughly 60hz
     {
+        check_map_change();
         checkbutton();
 
         // only when in start, end or death screen
@@ -46,13 +47,11 @@ void Handler(void)
         cooldown_check();
     }
 
-
     // BUTTON INTERRUPT DOES NOT WORK WELL ON ACTUAL GBA
     // if ((REG_IF & INT_BUTTON) == INT_BUTTON)
     // {
     //     checkbutton();
     // }
-
 
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
     
@@ -84,7 +83,7 @@ int main(void)
 
     fillBGPal();    // load BGpal
     fillTileMem();  // load tiles into cbb 0
-    fillScreenBlock();  // load map into sbb 8
+    fillScreenBlock(lvl1_map); // load map into sbb 8
 
     //sprite stuff//
     fillPalette();  // load sprite pal

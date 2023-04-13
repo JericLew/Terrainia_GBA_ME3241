@@ -68,7 +68,6 @@ u8 state = 0;
 u8 pose = IDLE; // 0 is idle, 1 is run, 2 is Melee attack
 u8 player_direction = RIGHT;
 
-
 /*----------Sprite Functions----------*/
 
 // draw a specific sprite from sprite data index at specific coords (N is abitary sprite index, 0 to 127)
@@ -129,11 +128,47 @@ void fillTileMem(void)
 
 // load map data into sbb 8
 // mode 2 requires 8 bit tile index but VRAM only can access with 16/32 bits
-void fillScreenBlock(void)
+void fillScreenBlock(u16 *map_ptr)
 {
     int i;
     for (i = 0; i < LEN_MAP/2; i++)
-        se_mem[i] = (lvl1_map[i*2+1] << 8) + lvl1_map[i*2];
+        se_mem[i] = (map_ptr[i*2+1] << 8) + map_ptr[i*2];
+}
+
+/*----------Map Check Functions----------*/
+u16 *map_ptr;
+
+void map_update(u8 game_state)
+{
+    if (game_state == LEVEL_ONE)
+    {
+        map_ptr = lvl1_map;
+    }
+    if (game_state == LEVEL_TWO)
+    {
+        map_ptr = lvl2_map;
+    }
+    fillScreenBlock(map_ptr);
+}
+
+bool check_map_change(void)
+{
+    if (game_state == LEVEL_ONE)
+    {
+        if (map_dy >= 10*4*8 && map_dx >= 0 && map_dx<= 256)
+        {
+            game_state = LEVEL_TWO;
+            map_update(game_state);
+            map_dx = 0;
+            map_dy = 0;
+            REG_BG2X = (int)map_dx;
+            REG_BG2Y = (int)map_dy;
+        }
+    }
+    // if (game_state == LEVEL_TWO)
+    // {
+    //     map_ptr = lvl2_map;
+    // }
 }
 
 /*----------Start Screen Functions----------*/
@@ -181,23 +216,24 @@ void animateStart(void)
 
 /*----------Collision Functions----------*/
 
+
 // check if player is colliding with map
 // check specifically pixel 4 and pixel 11 for each direction
 // and see if next pixel in the direction is a empty tile
-bool canPlayerMove(u8 direction)
+bool canPlayerMove(u8 direction, u16 *map_ptr)
 {   
     bool bot_check, top_check, left_check, right_check;
-    bot_check = lvl1_map[(PLAYERONE_x + (int)map_dx + 4)/8 + (PLAYERONE_y+ (int)map_dy + SPRITE_SIZE )/8*64] == 0x00
-    && lvl1_map[(PLAYERONE_x + (int)map_dx + 11)/8 + (PLAYERONE_y + (int)map_dy + SPRITE_SIZE)/8*64] == 0x00;
+    bot_check = map_ptr[(PLAYERONE_x + (int)map_dx + 4)/8 + (PLAYERONE_y+ (int)map_dy + SPRITE_SIZE )/8*64] == 0x00
+    && map_ptr[(PLAYERONE_x + (int)map_dx + 11)/8 + (PLAYERONE_y + (int)map_dy + SPRITE_SIZE)/8*64] == 0x00;
 
-    top_check = lvl1_map[(PLAYERONE_x + (int)map_dx + 4)/8 + (PLAYERONE_y + (int)map_dy - 1)/8*64] == 0x00
-    && lvl1_map[(PLAYERONE_x + (int)map_dx + 11)/8 + (PLAYERONE_y + (int)map_dy - 1)/8*64] == 0x00;
+    top_check = map_ptr[(PLAYERONE_x + (int)map_dx + 4)/8 + (PLAYERONE_y + (int)map_dy - 1)/8*64] == 0x00
+    && map_ptr[(PLAYERONE_x + (int)map_dx + 11)/8 + (PLAYERONE_y + (int)map_dy - 1)/8*64] == 0x00;
 
-    left_check = lvl1_map[(PLAYERONE_x + (int)map_dx - 1)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == 0x00
-    && lvl1_map[(PLAYERONE_x + (int)map_dx - 1)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == 0x00;
+    left_check = map_ptr[(PLAYERONE_x + (int)map_dx - 1)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == 0x00
+    && map_ptr[(PLAYERONE_x + (int)map_dx - 1)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == 0x00;
 
-    right_check = lvl1_map[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == 0x00
-    && lvl1_map[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == 0x00;
+    right_check = map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == 0x00
+    && map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == 0x00;
 
     if (direction == LEFT)
     {
@@ -225,7 +261,7 @@ void move(u8 direction)
     switch (direction)
     {
     case RIGHT:
-        if (canPlayerMove(RIGHT))
+        if (canPlayerMove(RIGHT,map_ptr))
         {
             map_dx += PLAYER_MOVESPEED;
             REG_BG2X  = (int)(map_dx) *FLOATPIXEL;
@@ -237,7 +273,7 @@ void move(u8 direction)
         }
         break;
     case LEFT:
-        if (canPlayerMove(LEFT))
+        if (canPlayerMove(LEFT,map_ptr))
         {
             map_dx -= PLAYER_MOVESPEED;
             REG_BG2X  = (int)(map_dx)*FLOATPIXEL;
@@ -253,7 +289,7 @@ void move(u8 direction)
 
 void jump(void)
 {
-    if (canPlayerMove(UP) && !canPlayerMove(DOWN)) // if player can move up and player is on the ground, set upward speed
+    if (canPlayerMove(UP,map_ptr) && !canPlayerMove(DOWN,map_ptr)) // if player can move up and player is on the ground, set upward speed
     {
         y_speed = JUMP_VEL; // in pixel/s
     }
@@ -266,13 +302,13 @@ void fallcheck(void)
     bool ground_check;
 
     // if player is going upwards and head hits smt above, stop upward speed
-    if (y_speed > 0 && !canPlayerMove(UP)) 
+    if (y_speed > 0 && !canPlayerMove(UP,map_ptr)) 
     {
         y_speed = 0;
     }
 
     // if player is floating (nothing below) or player is jumping (upward speed)
-    if (canPlayerMove(DOWN) || y_speed > 0) 
+    if (canPlayerMove(DOWN,map_ptr) || y_speed > 0) 
     {   
         y_speed += GRAVITY ; // add affect of gravity to speed
 
@@ -283,8 +319,8 @@ void fallcheck(void)
         }
 
         // check if will hit ground after adding displacement this tick
-        ground_check = lvl1_map[(PLAYERONE_x + (int)(map_dx) + 4)/8 + (PLAYERONE_y+ (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00
-        && lvl1_map[(PLAYERONE_x + (int)(map_dx) + 11)/8 + (PLAYERONE_y + (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00;
+        ground_check = map_ptr[(PLAYERONE_x + (int)(map_dx) + 4)/8 + (PLAYERONE_y+ (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00
+        && map_ptr[(PLAYERONE_x + (int)(map_dx) + 11)/8 + (PLAYERONE_y + (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00;
 
         // if will collide on next tick, place on top of ground to prevent landing inside ground tile
         map_dy -= y_speed;
@@ -391,11 +427,28 @@ void buttonA(void)
     attack();
 }
 
+// temp func to change map (works with collision and all)
+// void buttonB(void)
+// {
+//     if (game_state == LEVEL_ONE)
+//     {
+//         game_state = LEVEL_TWO;
+//         map_update(game_state);     
+//     }
+
+//     else if (game_state == LEVEL_TWO)
+//     {
+//         game_state = LEVEL_ONE;
+//         map_update(game_state);      
+//     }
+// }
+
 void buttonS(void)
 {
     if (game_state == 0)
     {
         game_state = 1;
+        map_update(game_state);
         delStartScreen();
     }
 }
