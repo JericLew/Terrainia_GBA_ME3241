@@ -1627,8 +1627,8 @@ const u16 lvl2_map[(64*64)] =
 
     0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0,0,0 +1 +1,0 +1,0 +1,0 +1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0,0,0 +1 +1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0,0,0 +1 +1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0,0,0 +1 +1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 
     0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0 +1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1 +1,0 +1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -1694,19 +1694,24 @@ const u16 lvl2_map[(64*64)] =
 
 
 
-extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
+extern void damagePlayer(u32 x,u32 y, u32 width, u32 height);
 # 17 "mygbalib.h"
 u8 game_state = 0;
-# 31 "mygbalib.h"
+# 32 "mygbalib.h"
 float enemy1_x = 200;
 float enemy1_y = 112;
+float enemy1_x_ms = 0.5;
+u8 enemy1_hp = 2;
 
 
 
 float enemy2_x = 336;
 float enemy2_y = 200;
-# 51 "mygbalib.h"
+float enemy2_x_ms = 0.5;
+u8 enemy2_hp = 2;
+# 55 "mygbalib.h"
 float map_dx, map_dy;
+
 
 
 
@@ -1796,7 +1801,7 @@ void fillScreenBlock(u16 *map_ptr)
 
 u16 *map_ptr;
 
-void map_update(u8 game_state)
+void map_update(void)
 {
     if (game_state == 1)
     {
@@ -1809,14 +1814,39 @@ void map_update(u8 game_state)
     fillScreenBlock(map_ptr);
 }
 
-_Bool check_map_change(void)
+void enemy_update(void)
+{
+    if (game_state == 1)
+    {
+        enemy1_hp = 2;
+        enemy2_hp = 2;
+        enemy1_x = 200;
+        enemy1_y = 112;
+
+        enemy2_x = 336;
+        enemy2_y = 200;
+    }
+    if (game_state == 2)
+    {
+        enemy1_hp = 2;
+        enemy2_hp = 2;
+        enemy1_x = 200;
+        enemy1_y = 112;
+
+        enemy2_x = 336;
+        enemy2_y = 200;
+    }
+}
+
+void check_map_change(void)
 {
     if (game_state == 1)
     {
         if (map_dy >= 10*4*8 && map_dx >= 0 && map_dx<= 256)
         {
             game_state = 2;
-            map_update(game_state);
+            map_update();
+            enemy_update();
             map_dx = 0;
             map_dy = 0;
             *(u32*)0x4000028 = (int)map_dx;
@@ -1871,7 +1901,6 @@ void animateStart(void)
         state = 0;
     }
 }
-
 
 
 
@@ -1971,7 +2000,7 @@ void fallcheck(void)
         y_speed += -0.05 ;
 
 
-        if (y_speed< -1.5 ||(buttons & 0x080) == 0x080)
+        if (y_speed< -1.5 || (buttons & 0x080) == 0x080)
         {
             y_speed = -1.5;
         }
@@ -1998,16 +2027,15 @@ void fallcheck(void)
 
 
 
-float enemy1_x_movement = 0.5;
-
 void enemy1Move(u16 tick_counter)
 {
     if (tick_counter%180 == 0)
     {
-        enemy1_x_movement *= -1;
+        enemy1_x_ms *= -1;
     }
-    enemy1_x += enemy1_x_movement;
-    if (enemy1_x < 0 || enemy1_y < 0)
+    enemy1_x += enemy1_x_ms;
+
+    if (enemy1_x < 0 || enemy1_y < 0 || enemy1_hp == 0)
     {
         delSprite(127);
     }
@@ -2017,16 +2045,16 @@ void enemy1Move(u16 tick_counter)
     }
 }
 
-float enemy2_x_movement = 0.75;
-
 void enemy2Move(u16 tick_counter)
 {
     if (tick_counter%180 == 0)
     {
-        enemy2_x_movement *= -1;
+        enemy2_x_ms *= -1;
     }
-    enemy2_x += enemy2_x_movement;
-    if (enemy2_x < 0 || enemy2_y < 0)
+    enemy2_x += enemy2_x_ms;
+
+
+    if (enemy2_x < 0 || enemy2_y < 0 || enemy2_hp == 0)
     {
         delSprite(126);
     }
@@ -2062,6 +2090,36 @@ void attack(void)
     }
 }
 
+u8 player_hp = 6;
+
+void damage_check(void)
+{
+
+    if (pose == 2 && player_direction == 1)
+    {
+
+        if (enemy1_hp>0 && (int)enemy1_x >= 120 + 16/2 && (int)enemy1_x <= 120 + 16*2 && (int)enemy1_y >= 80 - 16/2 && (int)enemy1_y <= 80 + 16*1.5)
+        {
+            enemy1_hp -= 1;
+        }
+
+        if (enemy2_hp>0 && (int)enemy2_x >= 120 + 16/2 && (int)enemy2_x <= 120 + 16*2 && (int)enemy2_y >= 80 - 16/2 && (int)enemy2_y <= 80 + 16*1.5)
+        {
+            enemy2_hp -= 1;
+        }
+    }
+
+
+    if (player_hp > 0 && enemy1_hp > 0 && enemy1_x >= 120 && enemy1_x <= 120 + 16 && enemy1_y >= 80 - 16/2 && enemy1_y <= 80 + 16*1.5)
+    {
+        player_hp -=1;
+    }
+
+    if (player_hp == 0)
+    {
+        drawSprite(0 +1,50,0,0);
+    }
+}
 
 
 
@@ -2084,13 +2142,13 @@ void buttonA(void)
 {
     attack();
 }
-# 446 "mygbalib.h"
+
 void buttonS(void)
 {
     if (game_state == 0)
     {
         game_state = 1;
-        map_update(game_state);
+        map_update();
         delStartScreen();
     }
 }
@@ -2266,25 +2324,15 @@ void Handler(void)
 
             if (TICK_COUNTER%15 == 0)
             {
+                damage_check();
                 animate();
+                cooldown_check();
             }
         }
 
         TICK_COUNTER += 1;
     }
-
-    if ((*(volatile u16*)0x4000202 & 0x8) == 0x8)
-    {
-
-        cooldown_check();
-    }
-
-
-
-
-
-
-
+# 57 "main.c"
     *(volatile u16*)0x4000202 = *(volatile u16*)0x4000202;
 
     *(u16*)0x4000208 = 0x01;
@@ -2298,7 +2346,7 @@ int main(void)
 {
 
     *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000 | 0x400;
-# 81 "main.c"
+# 82 "main.c"
     *(u16*)0x400000C |= 0x8880;
     *(u16*)0x4000004 |= 0x0008;
 

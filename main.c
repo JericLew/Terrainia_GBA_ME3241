@@ -25,27 +25,28 @@ void Handler(void)
             }
         }
 
-        // game functions for in level one or two
+        // game functions for level one or two
         if (game_state == LEVEL_ONE || game_state == LEVEL_TWO)
         {
             fallcheck(); // calulate y coords for bg and sprites
-            enemy1Move(TICK_COUNTER); // move and draw sprites
+            enemy1Move(TICK_COUNTER); // s and draw sprites
             enemy2Move(TICK_COUNTER); 
             // animate and draws main charac @ 4hz, every 0.25
             if (TICK_COUNTER%15 == 0)
             {
+                damage_check();
                 animate();
+                cooldown_check();
             }
         }
 
         TICK_COUNTER += 1;
     }
     
-    if ((REG_IF & INT_TIMER0) == INT_TIMER0) // Animation and CD timer, every 0.25s 4hz
-    {   
-        // animate();          
-        cooldown_check();
-    }
+    // if ((REG_IF & INT_TIMER0) == INT_TIMER0) // Animation and CD timer, every 0.25s 4hz
+    // {          
+    //     cooldown_check();
+    // }
 
     // BUTTON INTERRUPT DOES NOT WORK WELL ON ACTUAL GBA
     // if ((REG_IF & INT_BUTTON) == INT_BUTTON)

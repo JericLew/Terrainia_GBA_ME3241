@@ -5,7 +5,7 @@
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
-extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
+extern void damagePlayer(u32 x,u32 y, u32 width, u32 height);
 
 /*----------Global Variables----------*/
 // Game state
@@ -16,7 +16,6 @@ extern void damagePlayer(u32 x,u32 y, u32 width, u32 height, u32 color);
 #define DEATH_SCREEN 4
 u8 game_state = START_SCREEN;
 
-
 // start screen
 #define LETTER_SPRITE_INDEX 20
 
@@ -26,15 +25,23 @@ u8 game_state = START_SCREEN;
 #define PLAYERONE_y 80
 #define PLAYERONE_INDEX 0
 #define PLAYERONE_ATTACK_INDEX 1
+u8 player_hp = 6;
+
 
 // Enemy position and variable
+#define ENEMY_HP 2
+
 float enemy1_x = 200;
 float enemy1_y = 112;
+float enemy1_x_ms = 0.5;
+u8 enemy1_hp = ENEMY_HP;
 #define ENEMY1_INDEX 127
 #define ENEMY1_SPRITE PLAYERONE
 
 float enemy2_x = 336;
 float enemy2_y = 200;
+float enemy2_x_ms = 0.5;
+u8 enemy2_hp = ENEMY_HP;
 #define ENEMY2_INDEX 126
 #define ENEMY2_SPRITE PLAYERONE
 
@@ -45,18 +52,18 @@ float enemy2_y = 200;
 #define DOWN 3
 #define FLOATPIXEL 256 //set to 256 2**8 (1 pixel) as REG_BG2X uses 24.8 fixed point format
 #define PLAYER_MOVESPEED 1
-#define TERM_VEL -1.5
-#define JUMP_VEL 1.3
+
 
 float map_dx, map_dy; // in pixel, represents screen displacement from background
 
-
 // jumping & falling
+#define TERM_VEL -1.5
+#define JUMP_VEL 1.3
 #define GRAVITY -0.05 // in pixel/s**2
 float y_speed = 0; // upwards positive, in pixels
 
 // Attack & Cooldown
-#define ATTACK_CD 4 // 4 ticks cd, 1s
+#define ATTACK_CD 4 // 4 ticks cd @ 0.25s/4Hz, 1s
 u8 attack_cd_timer = 0; // 4 ticks cd, 1s
 u8 attack_tick = 0; // attack last for 2 ticks@4hz, 0.5s
 
@@ -135,10 +142,10 @@ void fillScreenBlock(u16 *map_ptr)
         se_mem[i] = (map_ptr[i*2+1] << 8) + map_ptr[i*2];
 }
 
-/*----------Map Check Functions----------*/
+/*----------Level Change Functions----------*/
 u16 *map_ptr;
 
-void map_update(u8 game_state)
+void map_update(void)
 {
     if (game_state == LEVEL_ONE)
     {
@@ -151,14 +158,39 @@ void map_update(u8 game_state)
     fillScreenBlock(map_ptr);
 }
 
-bool check_map_change(void)
+void enemy_update(void)
+{
+    if (game_state == LEVEL_ONE)
+    {  
+        enemy1_hp = ENEMY_HP;
+        enemy2_hp = ENEMY_HP;
+        enemy1_x = 200;
+        enemy1_y = 112;
+
+        enemy2_x = 336;
+        enemy2_y = 200;
+    }
+    if (game_state == LEVEL_TWO)
+    {
+        enemy1_hp = ENEMY_HP;
+        enemy2_hp = ENEMY_HP;
+        enemy1_x = 200;
+        enemy1_y = 112;
+
+        enemy2_x = 336;
+        enemy2_y = 200;
+    }
+}
+
+void check_map_change(void)
 {
     if (game_state == LEVEL_ONE)
     {
         if (map_dy >= 10*4*8 && map_dx >= 0 && map_dx<= 256)
         {
             game_state = LEVEL_TWO;
-            map_update(game_state);
+            map_update();
+            enemy_update();
             map_dx = 0;
             map_dy = 0;
             REG_BG2X = (int)map_dx;
@@ -216,7 +248,6 @@ void animateStart(void)
 
 /*----------Collision Functions----------*/
 
-
 // check if player is colliding with map
 // check specifically pixel 4 and pixel 11 for each direction
 // and see if next pixel in the direction is a empty tile
@@ -255,7 +286,7 @@ bool canPlayerMove(u8 direction, u16 *map_ptr)
     return FALSE;
 }
 
-/*----------Falling & Jumping Functions----------*/
+/*----------Moving, Falling & Jumping Functions----------*/
 void move(u8 direction)
 {   
     switch (direction)
@@ -313,7 +344,7 @@ void fallcheck(void)
         y_speed += GRAVITY ; // add affect of gravity to speed
 
         // if falling speed is larger than terminal vel of -1.5 pixel/s or if down button is pressed, fall at terminal vel
-        if (y_speed< TERM_VEL ||(buttons & KEY_DOWN) == KEY_DOWN)
+        if (y_speed< TERM_VEL || (buttons & KEY_DOWN) == KEY_DOWN)
         {
             y_speed = TERM_VEL;
         }
@@ -340,16 +371,15 @@ void fallcheck(void)
 
 /*----------Enemy Functions----------*/
 
-float enemy1_x_movement = 0.5;
-
 void enemy1Move(u16 tick_counter) // move and draw enemy1
 {   
     if (tick_counter%180 == 0)
     {
-        enemy1_x_movement *= -1;
+        enemy1_x_ms *= -1;
     }
-    enemy1_x += enemy1_x_movement;
-    if (enemy1_x < 0 || enemy1_y < 0)
+    enemy1_x += enemy1_x_ms;
+    // if enemy1 out of screen or dead, delSprite
+    if (enemy1_x < 0 || enemy1_y < 0 || enemy1_hp == 0)
     {
         delSprite(ENEMY1_INDEX);
     }
@@ -359,16 +389,16 @@ void enemy1Move(u16 tick_counter) // move and draw enemy1
     }
 }
 
-float enemy2_x_movement = 0.75;
-
 void enemy2Move(u16 tick_counter) // move and draw enemy2
 {   
     if (tick_counter%180 == 0)
     {
-        enemy2_x_movement *= -1;
+        enemy2_x_ms *= -1;
     }
-    enemy2_x += enemy2_x_movement;
-    if (enemy2_x < 0 || enemy2_y < 0)
+    enemy2_x += enemy2_x_ms;
+
+    // if enemy2 out of screen or dead, delSprite
+    if (enemy2_x < 0 || enemy2_y < 0 || enemy2_hp == 0)
     {
         delSprite(ENEMY2_INDEX);
     }
@@ -404,6 +434,34 @@ void attack(void)
     }
 }
 
+void damage_check(void)
+{
+    // check right attack on enemy
+    if (pose == MATTACK && player_direction == RIGHT)
+    {
+        // if enemy1 is alive and within range
+        if (enemy1_hp>0 && (int)enemy1_x >= 120 + SPRITE_SIZE/2 && (int)enemy1_x <= 120 + SPRITE_SIZE*2 && (int)enemy1_y >= 80 - SPRITE_SIZE/2 && (int)enemy1_y <= 80 + SPRITE_SIZE*1.5)
+        {
+            enemy1_hp -= 1;
+        }
+        // if enemy2 is alive and within range       
+        if (enemy2_hp>0 && (int)enemy2_x >= 120 + SPRITE_SIZE/2 && (int)enemy2_x <= 120 + SPRITE_SIZE*2 && (int)enemy2_y >= 80 - SPRITE_SIZE/2 && (int)enemy2_y <= 80 + SPRITE_SIZE*1.5)
+        {
+            enemy2_hp -= 1;
+        }
+    }
+    
+    // check if enemy damages player if enemy hp > 0 and player hp>0
+    if (player_hp > 0 && enemy1_hp > 0 && enemy1_x >= 120 && enemy1_x <= 120 + SPRITE_SIZE && enemy1_y >= 80 - SPRITE_SIZE/2 && enemy1_y <= 80 + SPRITE_SIZE*1.5)
+    {
+        player_hp -=1;
+    }
+
+    if (player_hp == 0)
+    {
+        drawSprite(PLAYERONE,50,0,0);
+    }
+}
 
 /*----------Button Functions----------*/
 
@@ -427,28 +485,12 @@ void buttonA(void)
     attack();
 }
 
-// temp func to change map (works with collision and all)
-// void buttonB(void)
-// {
-//     if (game_state == LEVEL_ONE)
-//     {
-//         game_state = LEVEL_TWO;
-//         map_update(game_state);     
-//     }
-
-//     else if (game_state == LEVEL_TWO)
-//     {
-//         game_state = LEVEL_ONE;
-//         map_update(game_state);      
-//     }
-// }
-
 void buttonS(void)
 {
     if (game_state == 0)
     {
         game_state = 1;
-        map_update(game_state);
+        map_update();
         delStartScreen();
     }
 }
