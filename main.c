@@ -37,6 +37,7 @@ void Handler(void)
                 damage_check();
                 animate();
                 cooldown_check();
+                drawHP();
             }
         }
 

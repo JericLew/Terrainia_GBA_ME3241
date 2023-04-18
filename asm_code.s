@@ -29,19 +29,10 @@ damagePlayer:
     @ code into sub-macros you can branch
     @ to/from, and comment each line with
     @ the corresponding C instruction
-	 mov r5,r0 @ r5 = current x
-	 mov r6,r1 @ r6 = current y
-	 add r7,r0,r2 @ r7 = max x
-	 add r8,r1,r3 @ r8 = max y
-loop:
-	 drawPixelM r5 r6 r4 @ colour current pixel
-	 add r5,r5,#1 @ move 1 pixel in x direction
-	 teq r5,r7 @ test if curren x (r5) reached limit
-	 bne loop
-	 mov r5,r0 @ reset r5 back to inital x
-	 teq r6,r8 @ test if curren y (r6) reached limit
-	 addne r6,r6,#1
-	 bne loop 
+
+	ldr r1,[r0,#0] @ load value at address r0 (&player_hp) to r1 (current hp)
+	sub r1,#1 @ current hp - 1
+	str r1,[r0,#0] @ str value at r1 (current hp - 1) back to &player_hp
 
     @ Here, you can use r4-r11 as temporary variables for the algorithm
 

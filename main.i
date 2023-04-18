@@ -1691,16 +1691,19 @@ const u16 lvl2_map[(64*64)] =
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 };
 # 5 "mygbalib.h" 2
-
-
-
-extern void damagePlayer(u32 x,u32 y, u32 width, u32 height);
-# 17 "mygbalib.h"
+# 15 "mygbalib.h"
 u8 game_state = 0;
-# 32 "mygbalib.h"
-float enemy1_x = 200;
+# 27 "mygbalib.h"
+u8 player_hp = 5;
+u8 *player_hp_ptr = &player_hp;
+extern void damagePlayer(u8 *player_hp_ptr);
+
+
+
+
+float enemy1_x = 224;
 float enemy1_y = 112;
-float enemy1_x_ms = 0.5;
+float enemy1_x_ms = 0.0;
 u8 enemy1_hp = 2;
 
 
@@ -1709,7 +1712,7 @@ float enemy2_x = 336;
 float enemy2_y = 200;
 float enemy2_x_ms = 0.5;
 u8 enemy2_hp = 2;
-# 55 "mygbalib.h"
+# 57 "mygbalib.h"
 float map_dx, map_dy;
 
 
@@ -2090,7 +2093,6 @@ void attack(void)
     }
 }
 
-u8 player_hp = 6;
 
 void damage_check(void)
 {
@@ -2109,15 +2111,45 @@ void damage_check(void)
         }
     }
 
-
-    if (player_hp > 0 && enemy1_hp > 0 && enemy1_x >= 120 && enemy1_x <= 120 + 16 && enemy1_y >= 80 - 16/2 && enemy1_y <= 80 + 16*1.5)
+    if (pose == 2 && player_direction == 0)
     {
-        player_hp -=1;
+
+        if (enemy1_hp>0 && (int)enemy1_x <= 120 + 16/2 && (int)enemy1_x + 16 >= 120 - 16 && (int)enemy1_y >= 80 - 16/2 && (int)enemy1_y <= 80 + 16*1.5)
+        {
+            enemy1_hp -= 1;
+        }
+
+        if (enemy2_hp>0 && (int)enemy2_x <= 120 + 16/2 && (int)enemy2_x + 16 >= 120 - 16 && (int)enemy2_y >= 80 - 16/2 && (int)enemy2_y <= 80 + 16*1.5)
+        {
+            enemy2_hp -= 1;
+        }
     }
 
-    if (player_hp == 0)
+
+    if (player_hp > 0 && enemy1_hp > 0 && enemy1_x + 16/2 >= 120 && enemy1_x + 16/2 <= 120 + 16
+    && enemy1_y + 16/2 >= 80 && enemy1_y + 16/2 <= 80 + 16)
     {
-        drawSprite(0 +1,50,0,0);
+        damagePlayer(player_hp_ptr);
+    }
+
+    if (player_hp > 0 && enemy2_hp > 0 && enemy2_x + 16/2 >= 120 && enemy2_x + 16/2 <= 120 + 16
+    && enemy2_y + 16/2 >= 80 && enemy2_y + 16/2 <= 80 + 16)
+    {
+        damagePlayer(player_hp_ptr);
+    }
+}
+
+void drawHP(void)
+{
+    int i;
+    for (i = 0; i < 5; i++)
+    {
+        delSprite(15 + i);
+    }
+
+    for (i = 0; i < player_hp; i++)
+    {
+        drawSprite(0 +1,15 + i,0 + i * 16,0);
     }
 }
 
@@ -2327,12 +2359,13 @@ void Handler(void)
                 damage_check();
                 animate();
                 cooldown_check();
+                drawHP();
             }
         }
 
         TICK_COUNTER += 1;
     }
-# 57 "main.c"
+# 58 "main.c"
     *(volatile u16*)0x4000202 = *(volatile u16*)0x4000202;
 
     *(u16*)0x4000208 = 0x01;
@@ -2346,7 +2379,7 @@ int main(void)
 {
 
     *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000 | 0x400;
-# 82 "main.c"
+# 83 "main.c"
     *(u16*)0x400000C |= 0x8880;
     *(u16*)0x4000004 |= 0x0008;
 

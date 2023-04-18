@@ -5,8 +5,6 @@
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
-extern void damagePlayer(u32 x,u32 y, u32 width, u32 height);
-
 /*----------Global Variables----------*/
 // Game state
 #define START_SCREEN 0
@@ -17,6 +15,7 @@ extern void damagePlayer(u32 x,u32 y, u32 width, u32 height);
 u8 game_state = START_SCREEN;
 
 // start screen
+#define HP_SPIRTE_INDEX 15
 #define LETTER_SPRITE_INDEX 20
 
 // Tracking Player position and sprite index
@@ -25,15 +24,16 @@ u8 game_state = START_SCREEN;
 #define PLAYERONE_y 80
 #define PLAYERONE_INDEX 0
 #define PLAYERONE_ATTACK_INDEX 1
-u8 player_hp = 6;
-
+u8 player_hp = 5;
+u8 *player_hp_ptr = &player_hp;
+extern void damagePlayer(u8 *player_hp_ptr);
 
 // Enemy position and variable
 #define ENEMY_HP 2
 
-float enemy1_x = 200;
+float enemy1_x = 224;
 float enemy1_y = 112;
-float enemy1_x_ms = 0.5;
+float enemy1_x_ms = 0.0;
 u8 enemy1_hp = ENEMY_HP;
 #define ENEMY1_INDEX 127
 #define ENEMY1_SPRITE PLAYERONE
@@ -434,6 +434,7 @@ void attack(void)
     }
 }
 
+/*----------Damage and Health Functions----------*/
 void damage_check(void)
 {
     // check right attack on enemy
@@ -450,16 +451,46 @@ void damage_check(void)
             enemy2_hp -= 1;
         }
     }
-    
-    // check if enemy damages player if enemy hp > 0 and player hp>0
-    if (player_hp > 0 && enemy1_hp > 0 && enemy1_x >= 120 && enemy1_x <= 120 + SPRITE_SIZE && enemy1_y >= 80 - SPRITE_SIZE/2 && enemy1_y <= 80 + SPRITE_SIZE*1.5)
+    // check left attack on enemy
+    if (pose == MATTACK && player_direction == LEFT)
     {
-        player_hp -=1;
+        // if enemy1 is alive and within range
+        if (enemy1_hp>0 && (int)enemy1_x <= 120 + SPRITE_SIZE/2 && (int)enemy1_x + SPRITE_SIZE >= 120 - SPRITE_SIZE && (int)enemy1_y >= 80 - SPRITE_SIZE/2 && (int)enemy1_y <= 80 + SPRITE_SIZE*1.5)
+        {
+            enemy1_hp -= 1;
+        }
+        // if enemy2 is alive and within range       
+        if (enemy2_hp>0 && (int)enemy2_x <= 120 + SPRITE_SIZE/2 && (int)enemy2_x + SPRITE_SIZE >= 120 - SPRITE_SIZE && (int)enemy2_y >= 80 - SPRITE_SIZE/2 && (int)enemy2_y <= 80 + SPRITE_SIZE*1.5)
+        {
+            enemy2_hp -= 1;
+        }
+    }
+        
+    // check if enemy1 damages player if enemy1 hp > 0 and player hp>0
+    if (player_hp > 0 && enemy1_hp > 0 && enemy1_x + SPRITE_SIZE/2 >= 120 && enemy1_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
+    && enemy1_y + SPRITE_SIZE/2 >= 80 && enemy1_y + SPRITE_SIZE/2 <= 80 + SPRITE_SIZE)
+    {
+        damagePlayer(player_hp_ptr);
+    }
+    // check if enemy1 damages player if enemy1 hp > 0 and player hp>0
+    if (player_hp > 0 && enemy2_hp > 0 && enemy2_x + SPRITE_SIZE/2 >= 120 && enemy2_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
+    && enemy2_y + SPRITE_SIZE/2 >= 80 && enemy2_y + SPRITE_SIZE/2 <= 80 + SPRITE_SIZE)
+    {
+        damagePlayer(player_hp_ptr);
+    }
+}
+
+void drawHP(void)
+{
+    int i;
+    for (i = 0; i < 5; i++)
+    {
+        delSprite(HP_SPIRTE_INDEX + i);
     }
 
-    if (player_hp == 0)
+    for (i = 0; i < player_hp; i++)
     {
-        drawSprite(PLAYERONE,50,0,0);
+        drawSprite(PLAYERONE,HP_SPIRTE_INDEX + i,0 + i * SPRITE_SIZE,0);
     }
 }
 
