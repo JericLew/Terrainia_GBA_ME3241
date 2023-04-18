@@ -2094,6 +2094,9 @@ void attack(void)
 }
 
 
+u8 iFrameCounter = 0;
+
+
 void damage_check(void)
 {
 
@@ -2126,19 +2129,32 @@ void damage_check(void)
     }
 
 
-    if (player_hp > 0 && enemy1_hp > 0 && enemy1_x + 16/2 >= 120 && enemy1_x + 16/2 <= 120 + 16
-    && enemy1_y + 16/2 >= 80 && enemy1_y + 16/2 <= 80 + 16)
+    if (!iFrameCounter)
     {
-        damagePlayer(player_hp_ptr);
-    }
 
-    if (player_hp > 0 && enemy2_hp > 0 && enemy2_x + 16/2 >= 120 && enemy2_x + 16/2 <= 120 + 16
-    && enemy2_y + 16/2 >= 80 && enemy2_y + 16/2 <= 80 + 16)
-    {
-        damagePlayer(player_hp_ptr);
+        if (!iFrameCounter && player_hp > 0 && enemy1_hp > 0 && enemy1_x + 16/2 >= 120 && enemy1_x + 16/2 <= 120 + 16
+        && enemy1_y + 16/2 >= 80 && enemy1_y + 16/2 <= 80 + 16)
+        {
+            damagePlayer(player_hp_ptr);
+            iFrameCounter = 4;
+        }
+
+        if (!iFrameCounter && player_hp > 0 && enemy2_hp > 0 && enemy2_x + 16/2 >= 120 && enemy2_x + 16/2 <= 120 + 16
+        && enemy2_y + 16/2 >= 80 && enemy2_y + 16/2 <= 80 + 16)
+        {
+            damagePlayer(player_hp_ptr);
+            iFrameCounter = 4;
+        }
     }
 }
 
+void iFrame(void)
+{
+    if (iFrameCounter != 0)
+    {
+        iFrameCounter -= 1;
+    }
+}
 void drawHP(void)
 {
     int i;
@@ -2322,6 +2338,11 @@ void animate(void)
         }
         state = 1;
     }
+
+    if (iFrameCounter % 2 == 1)
+    {
+        delSprite(0);
+    }
 }
 # 5 "main.c" 2
 u16 TICK_COUNTER = 0;
@@ -2354,6 +2375,7 @@ void Handler(void)
             enemy1Move(TICK_COUNTER);
             enemy2Move(TICK_COUNTER);
 
+
             if (TICK_COUNTER%15 == 0)
             {
                 damage_check();
@@ -2365,7 +2387,18 @@ void Handler(void)
 
         TICK_COUNTER += 1;
     }
-# 58 "main.c"
+
+    if ((*(volatile u16*)0x4000202 & 0x8) == 0x8)
+    {
+        iFrame();
+    }
+
+
+
+
+
+
+
     *(volatile u16*)0x4000202 = *(volatile u16*)0x4000202;
 
     *(u16*)0x4000208 = 0x01;
@@ -2379,7 +2412,7 @@ int main(void)
 {
 
     *(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000 | 0x400;
-# 83 "main.c"
+# 84 "main.c"
     *(u16*)0x400000C |= 0x8880;
     *(u16*)0x4000004 |= 0x0008;
 

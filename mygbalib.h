@@ -435,6 +435,9 @@ void attack(void)
 }
 
 /*----------Damage and Health Functions----------*/
+u8 iFrameCounter = 0;
+#define IMMUNE_DURATION 4 // in 0.25s ticks
+
 void damage_check(void)
 {
     // check right attack on enemy
@@ -465,21 +468,34 @@ void damage_check(void)
             enemy2_hp -= 1;
         }
     }
-        
-    // check if enemy1 damages player if enemy1 hp > 0 and player hp>0
-    if (player_hp > 0 && enemy1_hp > 0 && enemy1_x + SPRITE_SIZE/2 >= 120 && enemy1_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
-    && enemy1_y + SPRITE_SIZE/2 >= 80 && enemy1_y + SPRITE_SIZE/2 <= 80 + SPRITE_SIZE)
+    
+    // if iFrame == 0 means not immune
+    if (!iFrameCounter)
     {
-        damagePlayer(player_hp_ptr);
-    }
-    // check if enemy1 damages player if enemy1 hp > 0 and player hp>0
-    if (player_hp > 0 && enemy2_hp > 0 && enemy2_x + SPRITE_SIZE/2 >= 120 && enemy2_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
-    && enemy2_y + SPRITE_SIZE/2 >= 80 && enemy2_y + SPRITE_SIZE/2 <= 80 + SPRITE_SIZE)
-    {
-        damagePlayer(player_hp_ptr);
+        // check if enemy1 damages player && enemy1 hp > 0 && player hp>0
+        if (!iFrameCounter && player_hp > 0 && enemy1_hp > 0 && enemy1_x + SPRITE_SIZE/2 >= 120 && enemy1_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
+        && enemy1_y + SPRITE_SIZE/2 >= 80 && enemy1_y + SPRITE_SIZE/2 <= 80 + SPRITE_SIZE)
+        {
+            damagePlayer(player_hp_ptr);
+            iFrameCounter = IMMUNE_DURATION;
+        }
+        // check if enemy2 damages player && enemy2 hp > 0 && player hp>0
+        if (!iFrameCounter && player_hp > 0 && enemy2_hp > 0 && enemy2_x + SPRITE_SIZE/2 >= 120 && enemy2_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
+        && enemy2_y + SPRITE_SIZE/2 >= 80 && enemy2_y + SPRITE_SIZE/2 <= 80 + SPRITE_SIZE)
+        {
+            damagePlayer(player_hp_ptr);
+            iFrameCounter = IMMUNE_DURATION;
+        }        
     }
 }
 
+void iFrame(void)
+{
+    if (iFrameCounter != 0)
+    {
+        iFrameCounter -= 1;
+    }
+}
 void drawHP(void)
 {
     int i;
@@ -662,6 +678,11 @@ void animate(void)
                 break;
         }
         state = 1;
+    }
+
+    if (iFrameCounter % 2 == 1)
+    {
+        delSprite(PLAYERONE_INDEX);
     }
 }
 
