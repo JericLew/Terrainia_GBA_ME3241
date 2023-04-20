@@ -27,10 +27,14 @@ void Handler(void)
             if(game_state == DEATH_SCREEN)
             {
                 drawDeath();
+                drawSprite(DEATH_POSE_1,PLAYERONE_INDEX,PLAYERONE_x,PLAYERONE_y);
+                
             }
             if(game_state == END_SCREEN)
             {
                 drawEnd();
+                drawSprite(VICTORY_POSE_1,PLAYERONE_INDEX,PLAYERONE_x,PLAYERONE_y);
+                drawSprite(VICTORY_POSE_2,PLAYERONE_ATTACK_INDEX,PLAYERONE_x,PLAYERONE_y-SPRITE_SIZE);
             }
         }
 
