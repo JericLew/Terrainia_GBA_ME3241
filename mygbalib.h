@@ -17,11 +17,13 @@ u8 game_state = START_SCREEN;
 // Sprite index 0-4 for player effects
 // Sprite index 120-127 for enemy
 // Sprite index 15-19 for HP
-// Sprite index 20-?? for words
+// Sprite index 20-29 for Press Start
+// Sprite index 30-?? for Game Screens
 
 // start screen
 #define HP_SPIRTE_INDEX 15
-#define LETTER_SPRITE_INDEX 20
+#define PRESS_START_INDEX_START 20
+#define GAME_SCREEN_INDEX_START 30
 
 // Tracking Player position and sprite index
 #define SPRITE_SIZE 16
@@ -42,14 +44,14 @@ float enemy1_y;
 float enemy1_x_ms = 0.0;
 u8 enemy1_hp = ENEMY_HP;
 #define ENEMY1_INDEX 127
-#define ENEMY1_SPRITE PLAYERONE
+#define ENEMY1_SPRITE ENEMY
 
 float enemy2_x;
 float enemy2_y;
 float enemy2_x_ms = 0.5;
 u8 enemy2_hp = ENEMY_HP;
 #define ENEMY2_INDEX 126
-#define ENEMY2_SPRITE PLAYERONE
+#define ENEMY2_SPRITE ENEMY
 
 // background & scrolling variables
 #define LEFT 0
@@ -118,6 +120,96 @@ void fillSprites(void)
 	// draw all sprites on screen, but all of them outside screen (240,160)
     for(i = 0; i < 128; i++)
         drawSprite(EMPTY, i, 240, 160);
+}
+
+/*----------Game Screen Functions----------*/
+void drawPressStart(void)
+{
+    drawSprite(LETTER_P,PRESS_START_INDEX_START+0,80+16*0,120);
+    drawSprite(LETTER_R,PRESS_START_INDEX_START+1,80+16*1,120);
+    drawSprite(LETTER_E,PRESS_START_INDEX_START+2,80+16*2,120);
+    drawSprite(LETTER_S,PRESS_START_INDEX_START+3,80+16*3,120);
+    drawSprite(LETTER_S,PRESS_START_INDEX_START+4,80+16*4,120);
+    drawSprite(LETTER_S,PRESS_START_INDEX_START+5,80+16*0,136);
+    drawSprite(LETTER_T,PRESS_START_INDEX_START+6,80+16*1,136);
+    drawSprite(LETTER_A,PRESS_START_INDEX_START+7,80+16*2,136);
+    drawSprite(LETTER_R,PRESS_START_INDEX_START+8,80+16*3,136);
+    drawSprite(LETTER_T,PRESS_START_INDEX_START+9,80+16*4,136);
+}
+
+void delPressStart(void)
+{
+    delSprite(PRESS_START_INDEX_START+0);
+    delSprite(PRESS_START_INDEX_START+1);
+    delSprite(PRESS_START_INDEX_START+2);
+    delSprite(PRESS_START_INDEX_START+3);
+    delSprite(PRESS_START_INDEX_START+4);
+    delSprite(PRESS_START_INDEX_START+5);
+    delSprite(PRESS_START_INDEX_START+6);
+    delSprite(PRESS_START_INDEX_START+7);
+    delSprite(PRESS_START_INDEX_START+8);
+    delSprite(PRESS_START_INDEX_START+9);
+}
+
+void animatePressStart(void)
+{
+    if (state == 0)
+    {
+        drawPressStart();
+        state = 1;
+    }
+    else
+    {
+        delPressStart();
+        state = 0;
+    }
+}
+
+void drawTitle(void)
+{
+    drawSprite(LETTER_T,GAME_SCREEN_INDEX_START+0,56+16*0,10);
+    drawSprite(LETTER_E,GAME_SCREEN_INDEX_START+1,56+16*1,10);
+    drawSprite(LETTER_R,GAME_SCREEN_INDEX_START+2,56+16*2,10);
+    drawSprite(LETTER_R,GAME_SCREEN_INDEX_START+3,56+16*3,10);
+    drawSprite(LETTER_A,GAME_SCREEN_INDEX_START+4,56+16*4,10);
+    drawSprite(LETTER_I,GAME_SCREEN_INDEX_START+5,56+16*5,10);
+    drawSprite(LETTER_N,GAME_SCREEN_INDEX_START+6,56+16*6,10);
+    drawSprite(LETTER_A,GAME_SCREEN_INDEX_START+7,56+16*7,10);
+}
+
+void drawEnd(void)
+{
+    drawSprite(LETTER_Y,GAME_SCREEN_INDEX_START+0,64+16*0,10);
+    drawSprite(LETTER_O,GAME_SCREEN_INDEX_START+1,64+16*1,10);
+    drawSprite(LETTER_U,GAME_SCREEN_INDEX_START+2,64+16*2,10);
+    drawSprite(EMPTY   ,GAME_SCREEN_INDEX_START+3,64+16*3,10);
+    drawSprite(LETTER_W,GAME_SCREEN_INDEX_START+4,64+16*4,10);
+    drawSprite(LETTER_I,GAME_SCREEN_INDEX_START+5,64+16*5,10);
+    drawSprite(LETTER_N,GAME_SCREEN_INDEX_START+6,64+16*6,10);
+}
+
+void drawDeath(void)
+{
+    drawSprite(LETTER_Y,GAME_SCREEN_INDEX_START+0,56+16*0,10);
+    drawSprite(LETTER_O,GAME_SCREEN_INDEX_START+1,56+16*1,10);
+    drawSprite(LETTER_U,GAME_SCREEN_INDEX_START+2,56+16*2,10);
+    drawSprite(EMPTY   ,GAME_SCREEN_INDEX_START+3,56+16*3,10);
+    drawSprite(LETTER_D,GAME_SCREEN_INDEX_START+4,56+16*4,10);
+    drawSprite(LETTER_I,GAME_SCREEN_INDEX_START+5,56+16*5,10);
+    drawSprite(LETTER_E,GAME_SCREEN_INDEX_START+6,56+16*6,10);
+    drawSprite(LETTER_D,GAME_SCREEN_INDEX_START+7,56+16*7,10);
+}
+
+void delGameScreen(void)
+{
+    delSprite(GAME_SCREEN_INDEX_START+0);
+    delSprite(GAME_SCREEN_INDEX_START+1);
+    delSprite(GAME_SCREEN_INDEX_START+2);
+    delSprite(GAME_SCREEN_INDEX_START+3);
+    delSprite(GAME_SCREEN_INDEX_START+4);
+    delSprite(GAME_SCREEN_INDEX_START+5);
+    delSprite(GAME_SCREEN_INDEX_START+6);
+    delSprite(GAME_SCREEN_INDEX_START+7);
 }
 
 /*----------Background Functions----------*/
@@ -204,7 +296,8 @@ void check_game_state_change(void)
         if ((buttons & KEY_START) == KEY_START)
         {
             game_state = LEVEL_ONE;
-            delStartScreen();
+            delPressStart();
+            delGameScreen();
             map_update();
             enemy_update();
             player_hp = 5;
@@ -216,7 +309,7 @@ void check_game_state_change(void)
     }
     if (game_state == LEVEL_ONE)
     {
-        if (map_dy >= 10*4*8 && map_dx >= 0 && map_dx<= 256)
+        if (map_dy >= 500 && map_dx >= 0 && map_dx<= 512)
         {
             game_state = LEVEL_TWO;
             map_update();
@@ -229,53 +322,10 @@ void check_game_state_change(void)
     }
     if (game_state == LEVEL_TWO)
     {
-        if (map_dy >= 10*4*8 && map_dx >= 0 && map_dx<= 256)
+        if (map_dy >= 10*4*8 && map_dx >= 0 && map_dx<= 512)
         {
             game_state = END_SCREEN;
         }
-    }
-}
-
-/*----------Start Screen Functions----------*/
-void drawStartScreen(void)
-{
-    drawSprite(letter_p,LETTER_SPRITE_INDEX,80+16*0,10);
-    drawSprite(letter_r,LETTER_SPRITE_INDEX+1,80+16*1,10);
-    drawSprite(letter_e,LETTER_SPRITE_INDEX+2,80+16*2,10);
-    drawSprite(letter_s,LETTER_SPRITE_INDEX+3,80+16*3,10);
-    drawSprite(letter_s,LETTER_SPRITE_INDEX+4,80+16*4,10);
-    drawSprite(letter_s,LETTER_SPRITE_INDEX+5,80+16*0,26);
-    drawSprite(letter_t,LETTER_SPRITE_INDEX+6,80+16*1,26);
-    drawSprite(letter_a,LETTER_SPRITE_INDEX+7,80+16*2,26);
-    drawSprite(letter_r,LETTER_SPRITE_INDEX+8,80+16*3,26);
-    drawSprite(letter_t,LETTER_SPRITE_INDEX+9,80+16*4,26);
-}
-
-void delStartScreen(void)
-{
-    delSprite(LETTER_SPRITE_INDEX);
-    delSprite(LETTER_SPRITE_INDEX+1);
-    delSprite(LETTER_SPRITE_INDEX+2);
-    delSprite(LETTER_SPRITE_INDEX+3);
-    delSprite(LETTER_SPRITE_INDEX+4);
-    delSprite(LETTER_SPRITE_INDEX+5);
-    delSprite(LETTER_SPRITE_INDEX+6);
-    delSprite(LETTER_SPRITE_INDEX+7);
-    delSprite(LETTER_SPRITE_INDEX+8);
-    delSprite(LETTER_SPRITE_INDEX+9);
-}
-
-void animateStart(void)
-{
-    if (state == 0)
-    {
-        drawStartScreen();
-        state = 1;
-    }
-    else
-    {
-        delStartScreen();
-        state = 0;
     }
 }
 
@@ -477,11 +527,11 @@ bool isPlayerInLava(u16 *map_ptr)
 {   
     bool left_check, right_check;
 
-    left_check = map_ptr[(PLAYERONE_x + (int)map_dx)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == LAV
-    || map_ptr[(PLAYERONE_x + (int)map_dx)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == LAV;
+    left_check = map_ptr[(PLAYERONE_x + (int)map_dx)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == LVA
+    || map_ptr[(PLAYERONE_x + (int)map_dx)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == LVA;
 
-    right_check = map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == LAV
-    || map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == LAV;
+    right_check = map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == LVA
+    || map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == LVA;
 
     return left_check || right_check;
 }
@@ -595,8 +645,6 @@ void buttonA(void)
     attack();
 }
 
-
-
 // checks which button is pressed and calls a function related to button pressed
 void checkbutton(void)
 {
@@ -631,7 +679,6 @@ void checkbutton(void)
         buttonU();
     }
 }
-
 
 /*----------Animate Functions----------*/
 void animate(void)

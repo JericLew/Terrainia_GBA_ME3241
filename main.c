@@ -15,12 +15,22 @@ void Handler(void)
         // only when in start, end or death screen
         if (game_state == START_SCREEN || game_state == END_SCREEN || game_state == DEATH_SCREEN)
         {
-            // add functions to draw start, end and death screen screen
-
             // flash start screen at 2hz
             if (TICK_COUNTER%30 == 0)
             {
-                animateStart();
+                animatePressStart();
+            }
+            if(game_state == START_SCREEN)
+            {
+                drawTitle();
+            }
+            if(game_state == DEATH_SCREEN)
+            {
+                drawDeath();
+            }
+            if(game_state == END_SCREEN)
+            {
+                drawEnd();
             }
         }
 
