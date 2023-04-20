@@ -284,7 +284,7 @@ sprites_palette:
 	.global	sprites
 	.align	1
 	.type	sprites, %object
-	.size	sprites, 17408
+	.size	sprites, 17920
 sprites:
 	.short	0
 	.short	0
@@ -4643,254 +4643,510 @@ sprites:
 	.short	0
 	.short	0
 	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	202
-	.short	202
-	.short	9
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	202
-	.short	202
-	.short	9
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	202
-	.short	202
-	.short	9
-	.short	9
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	202
-	.short	202
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	202
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	202
-	.short	202
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	202
-	.short	202
-	.short	202
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	0
-	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	202
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	202
-	.short	202
-	.short	9
-	.short	9
-	.short	9
-	.short	202
-	.short	202
-	.short	202
-	.short	202
-	.short	9
-	.short	9
-	.short	9
-	.short	0
-	.short	202
-	.short	202
-	.short	9
-	.short	9
-	.short	9
-	.short	9
 	.short	0
 	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
 	.short	0
 	.short	0
-	.short	9
-	.short	9
-	.short	9
-	.short	9
-	.short	9
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	78
+	.short	78
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	79
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	79
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	79
+	.short	79
+	.short	79
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	79
+	.short	79
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	78
+	.short	78
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	79
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	78
+	.short	78
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	78
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	79
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	78
+	.short	78
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	79
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	79
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	0
+	.short	0
+	.short	78
+	.short	36
+	.short	36
+	.short	78
+	.short	78
+	.short	78
+	.short	0
+	.short	0
+	.short	78
+	.short	78
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	79
+	.short	79
+	.short	79
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	79
+	.short	79
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	36
+	.short	78
+	.short	0
+	.short	0
+	.short	36
+	.short	36
+	.short	78
+	.short	78
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	78
+	.short	78
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -17743,8 +17999,13 @@ player_hp_ptr:
 	.size	enemy1_x_ms, 4
 enemy1_x_ms:
 	.space	4
-	.global	enemy1_hp
+	.global	enemy1_sprite
 	.data
+	.type	enemy1_sprite, %object
+	.size	enemy1_sprite, 1
+enemy1_sprite:
+	.byte	18
+	.global	enemy1_hp
 	.type	enemy1_hp, %object
 	.size	enemy1_hp, 1
 enemy1_hp:
@@ -17760,6 +18021,11 @@ enemy2_x_ms:
 	.size	enemy2_hp, 1
 enemy2_hp:
 	.byte	2
+	.global	enemy2_sprite
+	.type	enemy2_sprite, %object
+	.size	enemy2_sprite, 1
+enemy2_sprite:
+	.byte	18
 	.global	y_speed
 	.bss
 	.global	y_speed
@@ -17925,53 +18191,53 @@ drawPressStart:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
 	stmfd	sp!, {fp, ip, lr, pc}
-	mov	r0, #24
+	mov	r0, #25
 	sub	fp, ip, #-4294967292
 	mov	r1, #20
 	mov	r2, #80
 	mov	r3, #120
 	bl	drawSprite
-	mov	r0, #25
+	mov	r0, #26
 	mov	r1, #21
 	mov	r2, #96
 	mov	r3, #120
 	bl	drawSprite
-	mov	r0, #20
+	mov	r0, #21
 	mov	r1, #22
 	mov	r2, #112
 	mov	r3, #120
 	bl	drawSprite
-	mov	r0, #26
+	mov	r0, #27
 	mov	r1, #23
 	mov	r2, #128
 	mov	r3, #120
 	bl	drawSprite
-	mov	r0, #26
+	mov	r0, #27
 	mov	r1, #24
 	mov	r2, #144
 	mov	r3, #120
 	bl	drawSprite
-	mov	r0, #26
+	mov	r0, #27
 	mov	r1, #25
 	mov	r2, #80
 	mov	r3, #136
 	bl	drawSprite
-	mov	r0, #27
+	mov	r0, #28
 	mov	r1, #26
 	mov	r2, #96
 	mov	r3, #136
 	bl	drawSprite
-	mov	r0, #18
+	mov	r0, #19
 	mov	r1, #27
 	mov	r2, #112
 	mov	r3, #136
 	bl	drawSprite
-	mov	r0, #25
+	mov	r0, #26
 	mov	r1, #28
 	mov	r2, #128
 	mov	r3, #136
 	bl	drawSprite
-	mov	r0, #27
+	mov	r0, #28
 	mov	r1, #29
 	mov	r2, #144
 	mov	r3, #136
@@ -18048,43 +18314,43 @@ drawTitle:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
 	stmfd	sp!, {fp, ip, lr, pc}
-	mov	r0, #27
+	mov	r0, #28
 	sub	fp, ip, #-4294967292
 	mov	r1, #30
 	mov	r2, #56
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #20
+	mov	r0, #21
 	mov	r1, #31
 	mov	r2, #72
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #25
+	mov	r0, #26
 	mov	r1, #32
 	mov	r2, #88
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #25
+	mov	r0, #26
 	mov	r1, #33
 	mov	r2, #104
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #18
+	mov	r0, #19
 	mov	r1, #34
 	mov	r2, #120
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #21
+	mov	r0, #22
 	mov	r1, #35
 	mov	r2, #136
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #22
+	mov	r0, #23
 	mov	r1, #36
 	mov	r2, #152
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #18
+	mov	r0, #19
 	mov	r1, #37
 	mov	r2, #168
 	mov	r3, #10
@@ -18099,19 +18365,19 @@ drawEnd:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
-	mov	r0, #30
 	stmfd	sp!, {fp, ip, lr, pc}
-	mov	r1, r0
+	mov	r0, #31
 	sub	fp, ip, #-4294967292
+	mov	r1, #30
 	mov	r2, #64
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #23
+	mov	r0, #24
 	mov	r1, #31
 	mov	r2, #80
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #28
+	mov	r0, #29
 	mov	r1, #32
 	mov	r2, #96
 	mov	r3, #10
@@ -18121,17 +18387,17 @@ drawEnd:
 	mov	r2, #112
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #29
+	mov	r0, #30
 	mov	r1, #34
 	mov	r2, #128
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #21
+	mov	r0, #22
 	mov	r1, #35
 	mov	r2, #144
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #22
+	mov	r0, #23
 	mov	r1, #36
 	mov	r2, #160
 	mov	r3, #10
@@ -18146,19 +18412,19 @@ drawDeath:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
-	mov	r0, #30
 	stmfd	sp!, {fp, ip, lr, pc}
-	mov	r1, r0
+	mov	r0, #31
 	sub	fp, ip, #-4294967292
+	mov	r1, #30
 	mov	r2, #56
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #23
+	mov	r0, #24
 	mov	r1, #31
 	mov	r2, #72
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #28
+	mov	r0, #29
 	mov	r1, #32
 	mov	r2, #88
 	mov	r3, #10
@@ -18168,22 +18434,22 @@ drawDeath:
 	mov	r2, #104
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #19
+	mov	r0, #20
 	mov	r1, #34
 	mov	r2, #120
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #21
+	mov	r0, #22
 	mov	r1, #35
 	mov	r2, #136
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #20
+	mov	r0, #21
 	mov	r1, #36
 	mov	r2, #152
 	mov	r3, #10
 	bl	drawSprite
-	mov	r0, #19
+	mov	r0, #20
 	mov	r1, #37
 	mov	r2, #168
 	mov	r3, #10
@@ -19056,7 +19322,7 @@ enemy1Move:
 	mov	ip, sp
 	mov	r1, r0, lsr #18
 	add	r2, r2, #23
-	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
 	sub	fp, ip, #-4294967292
 	umull	ip, r3, r2, r1
 	mov	r3, r3, lsr #2
@@ -19065,65 +19331,79 @@ enemy1Move:
 	mov	r3, r3, asl #2
 	rsb	r3, r3, r0, lsr #16
 	movs	r3, r3, asl #16
-	ldr	r5, .L149
-	ldrne	r5, .L149
+	ldrne	r5, .L153
 	bne	.L144
+	ldr	r5, .L153
+	ldr	r3, .L153+4
 	ldr	r0, [r5, #0]	@ float	@  enemy1_x_ms
-	ldr	r3, .L149+4
 	mov	lr, pc
 	bx	r3
 	str	r0, [r5, #0]	@ float	@  enemy1_x_ms
 .L144:
-	ldr	r4, .L149+8
-	ldr	r1, [r5, #0]	@ float	@  enemy1_x_ms
-	ldr	r0, [r4, #0]	@ float	@  enemy1_x
-	ldr	r3, .L149+12
+	ldr	r3, .L153+8
+	ldr	r0, [r5, #0]	@ float	@  enemy1_x_ms
+	mov	r1, #0
 	mov	lr, pc
 	bx	r3
-	ldr	r7, .L149+16
+	cmp	r0, #0
+	ldrgt	r8, .L153+12
+	ldrle	r8, .L153+12
+	ldr	r4, .L153+16
+	movgt	r3, #18
+	movle	r3, #17
+	ldr	r1, [r5, #0]	@ float	@  enemy1_x_ms
+	strb	r3, [r8, #0]	@  enemy1_sprite
+	ldr	r0, [r4, #0]	@ float	@  enemy1_x
+	ldr	r3, .L153+20
+	mov	lr, pc
+	bx	r3
+	ldr	r6, .L153+24
 	mov	r1, #0
 	str	r0, [r4, #0]	@ float	@  enemy1_x
 	mov	r5, r0
 	mov	lr, pc
-	bx	r7
+	bx	r6
 	cmp	r0, #0
+	blt	.L149
+	ldr	r3, .L153+28
+	ldr	r7, [r3, #0]	@ float	@  enemy1_y
 	mov	r1, #0
-	blt	.L146
-	ldr	r3, .L149+20
-	ldr	r6, [r3, #0]	@ float	@  enemy1_y
-	mov	r0, r6
+	mov	r0, r7
 	mov	lr, pc
-	bx	r7
+	bx	r6
 	cmp	r0, #0
-	blt	.L146
-	ldr	r3, .L149+24
+	blt	.L149
+	ldr	r3, .L153+32
 	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  enemy1_hp
 	cmp	r2, #0
-	ldr	r7, .L149+28
-	mov	r0, r5
-	bne	.L145
-.L146:
-	mov	r0, #127
-	ldmea	fp, {r4, r5, r6, r7, fp, sp, lr}
-	b	delSprite
-.L145:
-	mov	lr, pc
-	bx	r7
-	mov	r4, r0
-	mov	r0, r6
-	mov	lr, pc
-	bx	r7
-	mov	r2, r4
-	mov	r3, r0
-	mov	r1, #127
-	mov	r0, #17
-	ldmea	fp, {r4, r5, r6, r7, fp, sp, lr}
-	b	drawSprite
-.L150:
-	.align	2
+	bne	.L148
 .L149:
+	mov	r0, #127
+	ldmea	fp, {r4, r5, r6, r7, r8, fp, sp, lr}
+	b	delSprite
+.L148:
+	ldr	r4, .L153+36
+	mov	r0, r5
+	mov	lr, pc
+	bx	r4
+	mov	r5, r0
+	mov	r0, r7
+	mov	lr, pc
+	bx	r4
+	ldrb	r6, [r8, #0]	@ zero_extendqisi2	@  enemy1_sprite
+	mov	r3, r0
+	mov	r2, r5
+	mov	r0, r6
+	mov	r1, #127
+	ldmea	fp, {r4, r5, r6, r7, r8, fp, sp, lr}
+	b	drawSprite
+.L154:
+	.align	2
+.L153:
 	.word	enemy1_x_ms
 	.word	__negsf2
+	.word	__gtsf2
+	.word	enemy1_sprite
 	.word	enemy1_x
 	.word	__addsf3
 	.word	__ltsf2
@@ -19144,7 +19424,7 @@ enemy2Move:
 	mov	ip, sp
 	mov	r1, r0, lsr #18
 	add	r2, r2, #23
-	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
 	sub	fp, ip, #-4294967292
 	umull	ip, r3, r2, r1
 	mov	r3, r3, lsr #2
@@ -19153,65 +19433,79 @@ enemy2Move:
 	mov	r3, r3, asl #2
 	rsb	r3, r3, r0, lsr #16
 	movs	r3, r3, asl #16
-	ldr	r5, .L157
-	ldrne	r5, .L157
-	bne	.L152
+	ldrne	r5, .L165
+	bne	.L156
+	ldr	r5, .L165
+	ldr	r3, .L165+4
 	ldr	r0, [r5, #0]	@ float	@  enemy2_x_ms
-	ldr	r3, .L157+4
 	mov	lr, pc
 	bx	r3
 	str	r0, [r5, #0]	@ float	@  enemy2_x_ms
-.L152:
-	ldr	r4, .L157+8
-	ldr	r1, [r5, #0]	@ float	@  enemy2_x_ms
-	ldr	r0, [r4, #0]	@ float	@  enemy2_x
-	ldr	r3, .L157+12
+.L156:
+	ldr	r3, .L165+8
+	ldr	r0, [r5, #0]	@ float	@  enemy2_x_ms
+	mov	r1, #0
 	mov	lr, pc
 	bx	r3
-	ldr	r7, .L157+16
+	cmp	r0, #0
+	ldrgt	r8, .L165+12
+	ldrle	r8, .L165+12
+	ldr	r4, .L165+16
+	movgt	r3, #18
+	movle	r3, #17
+	ldr	r1, [r5, #0]	@ float	@  enemy2_x_ms
+	strb	r3, [r8, #0]	@  enemy2_sprite
+	ldr	r0, [r4, #0]	@ float	@  enemy2_x
+	ldr	r3, .L165+20
+	mov	lr, pc
+	bx	r3
+	ldr	r6, .L165+24
 	mov	r1, #0
 	str	r0, [r4, #0]	@ float	@  enemy2_x
 	mov	r5, r0
 	mov	lr, pc
-	bx	r7
+	bx	r6
 	cmp	r0, #0
+	blt	.L161
+	ldr	r3, .L165+28
+	ldr	r7, [r3, #0]	@ float	@  enemy2_y
 	mov	r1, #0
-	blt	.L154
-	ldr	r3, .L157+20
-	ldr	r6, [r3, #0]	@ float	@  enemy2_y
-	mov	r0, r6
+	mov	r0, r7
 	mov	lr, pc
-	bx	r7
+	bx	r6
 	cmp	r0, #0
-	blt	.L154
-	ldr	r3, .L157+24
+	blt	.L161
+	ldr	r3, .L165+32
 	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  enemy2_hp
 	cmp	r2, #0
-	ldr	r7, .L157+28
-	mov	r0, r5
-	bne	.L153
-.L154:
+	bne	.L160
+.L161:
 	mov	r0, #126
-	ldmea	fp, {r4, r5, r6, r7, fp, sp, lr}
+	ldmea	fp, {r4, r5, r6, r7, r8, fp, sp, lr}
 	b	delSprite
-.L153:
+.L160:
+	ldr	r4, .L165+36
+	mov	r0, r5
 	mov	lr, pc
-	bx	r7
-	mov	r4, r0
-	mov	r0, r6
+	bx	r4
+	mov	r5, r0
+	mov	r0, r7
 	mov	lr, pc
-	bx	r7
-	mov	r2, r4
+	bx	r4
+	ldrb	r6, [r8, #0]	@ zero_extendqisi2	@  enemy2_sprite
 	mov	r3, r0
+	mov	r2, r5
+	mov	r0, r6
 	mov	r1, #126
-	mov	r0, #17
-	ldmea	fp, {r4, r5, r6, r7, fp, sp, lr}
+	ldmea	fp, {r4, r5, r6, r7, r8, fp, sp, lr}
 	b	drawSprite
-.L158:
+.L166:
 	.align	2
-.L157:
+.L165:
 	.word	enemy2_x_ms
 	.word	__negsf2
+	.word	__gtsf2
+	.word	enemy2_sprite
 	.word	enemy2_x
 	.word	__addsf3
 	.word	__ltsf2
@@ -19227,8 +19521,8 @@ cooldown_check:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	ldr	r0, .L162
-	ldr	ip, .L162+4
+	ldr	r0, .L170
+	ldr	ip, .L170+4
 	ldrb	r3, [r0, #0]	@ zero_extendqisi2	@  attack_cd_timer
 	ldrb	r2, [ip, #0]	@ zero_extendqisi2	@  attack_tick
 	cmp	r3, #0
@@ -19237,7 +19531,7 @@ cooldown_check:
 	cmp	r2, #0
 	@ lr needed for prologue
 	bxeq	lr
-	ldr	r3, .L162+8
+	ldr	r3, .L170+8
 	mov	r1, #2
 	strb	r1, [r3, #0]	@  pose
 	mov	r2, #0
@@ -19245,9 +19539,9 @@ cooldown_check:
 	strb	r2, [ip, #0]	@  attack_tick
 	strb	r3, [r0, #0]	@  attack_cd_timer
 	bx	lr
-.L163:
+.L171:
 	.align	2
-.L162:
+.L170:
 	.word	attack_cd_timer
 	.word	attack_tick
 	.word	pose
@@ -19260,23 +19554,23 @@ attack:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	ldr	r3, .L166
+	ldr	r3, .L174
 	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  attack_cd_timer
 	cmp	r2, #0
 	@ lr needed for prologue
-	ldr	r0, .L166+4
+	ldr	r0, .L174+4
 	bxne	lr
 	ldrb	r3, [r0, #0]	@ zero_extendqisi2	@  attack_tick
 	cmp	r3, #0
-	ldreq	r2, .L166+8
+	ldreq	r2, .L174+8
 	moveq	r3, #2
 	moveq	r1, #1
 	streqb	r3, [r2, #0]	@  pose
 	streqb	r1, [r0, #0]	@  attack_tick
 	bx	lr
-.L167:
+.L175:
 	.align	2
-.L166:
+.L174:
 	.word	attack_cd_timer
 	.word	attack_tick
 	.word	pose
@@ -19304,15 +19598,15 @@ isPlayerInLava:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
 	stmfd	sp!, {r4, r5, r6, r7, r8, sl, fp, ip, lr, pc}
-	ldr	r5, .L175
+	ldr	r5, .L183
 	ldr	r3, [r5, #0]	@ float	@  map_ptr,  map_dx
 	sub	fp, ip, #-4294967292
-	ldr	r7, .L175+4
+	ldr	r7, .L183+4
 	mov	r6, r0	@  map_ptr
 	mov	r0, r3	@  map_ptr
 	mov	lr, pc
 	bx	r7
-	ldr	sl, .L175+8
+	ldr	sl, .L183+8
 	add	r4, r0, #120	@  map_ptr
 	mov	r3, r4, asr #31
 	ldr	r0, [sl, #0]	@ float	@  map_ptr,  map_dy
@@ -19337,11 +19631,11 @@ isPlayerInLava:
 	ldr	r0, [r5, #0]	@ float	@  map_ptr,  map_dx
 	mov	r2, r2, asl #1
 	mov	r5, #0
-	beq	.L170
+	beq	.L178
 	ldrh	r3, [r2, r6]	@ * map_ptr
 	cmp	r3, #1
-	beq	.L170
-.L169:
+	beq	.L178
+.L177:
 	mov	lr, pc
 	bx	r7
 	add	r4, r0, #136	@  map_ptr
@@ -19367,32 +19661,32 @@ isPlayerInLava:
 	and	r5, r5, #255	@  left_check
 	mov	r8, #0
 	mov	r3, r3, asl #1
-	beq	.L172
+	beq	.L180
 	ldrh	r3, [r3, r6]	@ * map_ptr
 	cmp	r3, #1
-	beq	.L172
-.L171:
+	beq	.L180
+.L179:
 	cmp	r5, #0	@  left_check
 	and	r3, r8, #255	@  right_check
 	mov	r0, #0
-	bne	.L174
+	bne	.L182
 	cmp	r3, #0	@  right_check
-	beq	.L173
-.L174:
+	beq	.L181
+.L182:
 	mov	r0, #1
-.L173:
+.L181:
 	and	r0, r0, #255	@  map_ptr
 	ldmea	fp, {r4, r5, r6, r7, r8, sl, fp, sp, lr}
 	bx	lr
-.L172:
+.L180:
 	mov	r8, #1
-	b	.L171
-.L170:
+	b	.L179
+.L178:
 	mov	r5, #1
-	b	.L169
-.L176:
+	b	.L177
+.L184:
 	.align	2
-.L175:
+.L183:
 	.word	map_dx
 	.word	__fixsfsi
 	.word	map_dy
@@ -19408,101 +19702,101 @@ damage_check:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
 	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
-	ldr	r4, .L206+8
+	ldr	r4, .L214+8
 	ldrb	r3, [r4, #0]	@ zero_extendqisi2	@  pose
 	cmp	r3, #2
 	sub	fp, ip, #-4294967292
-	beq	.L201
-.L183:
-	ldr	r5, .L206+12
+	beq	.L209
+.L191:
+	ldr	r5, .L214+12
 	ldrb	r3, [r5, #0]	@ zero_extendqisi2	@  iFrameCounter
 	cmp	r3, #0
-	bne	.L177
-	ldr	r3, .L206+16
+	bne	.L185
+	ldr	r3, .L214+16
 	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  player_hp
 	cmp	r2, #0
-	beq	.L177
-	ldr	r3, .L206+20
+	beq	.L185
+	ldr	r3, .L214+20
 	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  enemy1_hp
 	cmp	r2, #0
-	beq	.L189
-	ldr	r3, .L206+24
+	beq	.L197
+	ldr	r3, .L214+24
 	mov	r1, #1090519040
 	ldr	r0, [r3, #0]	@ float	@  enemy1_x
-	ldr	r6, .L206+28
+	ldr	r6, .L214+28
 	mov	lr, pc
 	bx	r6
 	mov	r1, #1107296256
-	ldr	r7, .L206+32
+	ldr	r7, .L214+32
 	add	r1, r1, #15728640
 	mov	r4, r0
 	mov	lr, pc
 	bx	r7
 	cmp	r0, #0
-	blt	.L189
+	blt	.L197
 	mov	r1, #1124073472
-	ldr	r8, .L206+36
+	ldr	r8, .L214+36
 	add	r1, r1, #524288
 	mov	r0, r4
 	mov	lr, pc
 	bx	r8
 	cmp	r0, #0
-	ble	.L202
-.L189:
+	ble	.L210
+.L197:
 	ldrb	r3, [r5, #0]	@ zero_extendqisi2	@  iFrameCounter
 	cmp	r3, #0
-	bne	.L194
-	ldr	r3, .L206+40
+	bne	.L202
+	ldr	r3, .L214+40
 	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  enemy2_hp
 	cmp	r2, #0
-	beq	.L194
-	ldr	r3, .L206+44
+	beq	.L202
+	ldr	r3, .L214+44
 	mov	r1, #1090519040
 	ldr	r0, [r3, #0]	@ float	@  enemy2_x
-	ldr	r6, .L206+28
+	ldr	r6, .L214+28
 	mov	lr, pc
 	bx	r6
 	mov	r1, #1107296256
-	ldr	r7, .L206+32
+	ldr	r7, .L214+32
 	add	r1, r1, #15728640
 	mov	r4, r0
 	mov	lr, pc
 	bx	r7
 	cmp	r0, #0
-	blt	.L194
+	blt	.L202
 	mov	r1, #1124073472
-	ldr	r8, .L206+36
+	ldr	r8, .L214+36
 	add	r1, r1, #524288
 	mov	r0, r4
 	mov	lr, pc
 	bx	r8
 	cmp	r0, #0
-	ble	.L203
-.L194:
-	ldr	r3, .L206+48
+	ble	.L211
+.L202:
+	ldr	r3, .L214+48
 	ldr	r0, [r3, #0]	@  map_ptr
 	bl	isPlayerInLava
 	ands	r0, r0, #255
-	ldreq	r3, .L206+52
+	ldreq	r3, .L214+52
 	streqb	r0, [r3, #0]	@  onFire
-	bne	.L204
-.L177:
+	bne	.L212
+.L185:
 	ldmea	fp, {r4, r5, r6, r7, r8, fp, sp, lr}
 	bx	lr
-.L204:
-	ldr	r3, .L206+56
+.L212:
+	ldr	r3, .L214+56
 	ldr	r0, [r3, #0]	@  player_hp_ptr
-	ldr	r3, .L206+52
+	ldr	r3, .L214+52
 	mov	r1, #1
 	strb	r1, [r3, #0]	@  onFire
-	ldr	r2, .L206+60
+	ldr	r2, .L214+60
 	mov	lr, pc
 	bx	r2
 	mov	r3, #4
 	strb	r3, [r5, #0]	@  iFrameCounter
-	b	.L177
-.L203:
-	ldr	r3, .L206+64
+	b	.L185
+.L211:
+	ldr	r3, .L214+64
 	mov	r1, #1090519040
 	ldr	r0, [r3, #0]	@ float	@  enemy2_y
 	mov	lr, pc
@@ -19513,24 +19807,24 @@ damage_check:
 	mov	lr, pc
 	bx	r7
 	cmp	r0, #0
-	blt	.L194
+	blt	.L202
 	mov	r1, #1107296256
 	add	r1, r1, #12582912
 	mov	r0, r4
 	mov	lr, pc
 	bx	r8
 	cmp	r0, #0
-	bgt	.L194
-	ldr	r3, .L206+56
+	bgt	.L202
+	ldr	r3, .L214+56
 	ldr	r0, [r3, #0]	@  player_hp_ptr
-	ldr	r3, .L206+60
+	ldr	r3, .L214+60
 	mov	lr, pc
 	bx	r3
 	mov	r2, #4
 	strb	r2, [r5, #0]	@  iFrameCounter
-	b	.L194
-.L202:
-	ldr	r3, .L206+68
+	b	.L202
+.L210:
+	ldr	r3, .L214+68
 	mov	r1, #1090519040
 	ldr	r0, [r3, #0]	@ float	@  enemy1_y
 	mov	lr, pc
@@ -19541,165 +19835,165 @@ damage_check:
 	mov	lr, pc
 	bx	r7
 	cmp	r0, #0
-	blt	.L189
+	blt	.L197
 	mov	r1, #1107296256
 	add	r1, r1, #12582912
 	mov	r0, r4
 	mov	lr, pc
 	bx	r8
 	cmp	r0, #0
-	bgt	.L189
-	ldr	r3, .L206+56
+	bgt	.L197
+	ldr	r3, .L214+56
 	ldr	r0, [r3, #0]	@  player_hp_ptr
-	ldr	r3, .L206+60
+	ldr	r3, .L214+60
 	mov	lr, pc
 	bx	r3
 	mov	r2, #4
 	strb	r2, [r5, #0]	@  iFrameCounter
-	b	.L189
-.L201:
-	ldr	r3, .L206+72
+	b	.L197
+.L209:
+	ldr	r3, .L214+72
 	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  player_direction
 	cmp	r2, #1
-	beq	.L205
-.L178:
+	beq	.L213
+.L186:
 	ldrb	r3, [r4, #0]	@ zero_extendqisi2	@  pose
 	cmp	r3, #2
-	bne	.L183
-	ldr	r3, .L206+72
+	bne	.L191
+	ldr	r3, .L214+72
 	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  player_direction
 	cmp	r2, #0
-	bne	.L183
-	ldr	r6, .L206+20
+	bne	.L191
+	ldr	r6, .L214+20
 	ldrb	r4, [r6, #0]	@ zero_extendqisi2	@  enemy1_hp
 	cmp	r4, #0
-	beq	.L184
-	ldr	r3, .L206+24
-	ldr	r5, .L206+76
+	beq	.L192
+	ldr	r3, .L214+24
+	ldr	r5, .L214+76
 	ldr	r0, [r3, #0]	@ float	@  enemy1_x
 	mov	lr, pc
 	bx	r5
 	cmp	r0, #128
-	bgt	.L184
+	bgt	.L192
 	add	r3, r0, #16
 	cmp	r3, #103
-	ble	.L184
-	ldr	r3, .L206+68
+	ble	.L192
+	ldr	r3, .L214+68
 	ldr	r0, [r3, #0]	@ float	@  enemy1_y
 	mov	lr, pc
 	bx	r5
 	cmp	r0, #71
-	ble	.L184
-	ldr	r3, .L206+80
+	ble	.L192
+	ldr	r3, .L214+80
 	mov	lr, pc
 	bx	r3
-	adr	r2, .L206
+	adr	r2, .L214
 	ldmia	r2, {r2-r3}
-	ldr	ip, .L206+84
+	ldr	ip, .L214+84
 	mov	lr, pc
 	bx	ip
 	cmp	r0, #0
 	suble	r3, r4, #1
 	strleb	r3, [r6, #0]	@  enemy1_hp
-.L184:
-	ldr	r6, .L206+40
+.L192:
+	ldr	r6, .L214+40
 	ldrb	r4, [r6, #0]	@ zero_extendqisi2	@  enemy2_hp
 	cmp	r4, #0
-	beq	.L183
-	ldr	r3, .L206+44
-	ldr	r5, .L206+76
+	beq	.L191
+	ldr	r3, .L214+44
+	ldr	r5, .L214+76
 	ldr	r0, [r3, #0]	@ float	@  enemy2_x
 	mov	lr, pc
 	bx	r5
 	cmp	r0, #128
-	bgt	.L183
+	bgt	.L191
 	add	r3, r0, #16
 	cmp	r3, #103
-	ble	.L183
-	ldr	r3, .L206+64
+	ble	.L191
+	ldr	r3, .L214+64
 	ldr	r0, [r3, #0]	@ float	@  enemy2_y
 	mov	lr, pc
 	bx	r5
 	cmp	r0, #71
-	ble	.L183
-	ldr	r3, .L206+80
+	ble	.L191
+	ldr	r3, .L214+80
 	mov	lr, pc
 	bx	r3
-	adr	r2, .L206
+	adr	r2, .L214
 	ldmia	r2, {r2-r3}
-	ldr	ip, .L206+84
+	ldr	ip, .L214+84
 	mov	lr, pc
 	bx	ip
 	cmp	r0, #0
 	suble	r3, r4, #1
 	strleb	r3, [r6, #0]	@  enemy2_hp
-	b	.L183
-.L205:
-	ldr	r7, .L206+20
+	b	.L191
+.L213:
+	ldr	r7, .L214+20
 	ldrb	r5, [r7, #0]	@ zero_extendqisi2	@  enemy1_hp
 	cmp	r5, #0
-	beq	.L179
-	ldr	r3, .L206+24
-	ldr	r6, .L206+76
+	beq	.L187
+	ldr	r3, .L214+24
+	ldr	r6, .L214+76
 	ldr	r0, [r3, #0]	@ float	@  enemy1_x
 	mov	lr, pc
 	bx	r6
 	cmp	r0, #127
-	ble	.L179
+	ble	.L187
 	cmp	r0, #152
-	bgt	.L179
-	ldr	r3, .L206+68
+	bgt	.L187
+	ldr	r3, .L214+68
 	ldr	r0, [r3, #0]	@ float	@  enemy1_y
 	mov	lr, pc
 	bx	r6
 	cmp	r0, #71
-	ble	.L179
-	ldr	r3, .L206+80
+	ble	.L187
+	ldr	r3, .L214+80
 	mov	lr, pc
 	bx	r3
-	adr	r2, .L206
+	adr	r2, .L214
 	ldmia	r2, {r2-r3}
-	ldr	ip, .L206+84
+	ldr	ip, .L214+84
 	mov	lr, pc
 	bx	ip
 	cmp	r0, #0
 	suble	r3, r5, #1
 	strleb	r3, [r7, #0]	@  enemy1_hp
-.L179:
-	ldr	r7, .L206+40
+.L187:
+	ldr	r7, .L214+40
 	ldrb	r5, [r7, #0]	@ zero_extendqisi2	@  enemy2_hp
 	cmp	r5, #0
-	beq	.L178
-	ldr	r3, .L206+44
-	ldr	r6, .L206+76
+	beq	.L186
+	ldr	r3, .L214+44
+	ldr	r6, .L214+76
 	ldr	r0, [r3, #0]	@ float	@  enemy2_x
 	mov	lr, pc
 	bx	r6
 	cmp	r0, #127
-	ble	.L178
+	ble	.L186
 	cmp	r0, #152
-	bgt	.L178
-	ldr	r3, .L206+64
+	bgt	.L186
+	ldr	r3, .L214+64
 	ldr	r0, [r3, #0]	@ float	@  enemy2_y
 	mov	lr, pc
 	bx	r6
 	cmp	r0, #71
-	ble	.L178
-	ldr	r3, .L206+80
+	ble	.L186
+	ldr	r3, .L214+80
 	mov	lr, pc
 	bx	r3
-	adr	r2, .L206
+	adr	r2, .L214
 	ldmia	r2, {r2-r3}
-	ldr	ip, .L206+84
+	ldr	ip, .L214+84
 	mov	lr, pc
 	bx	ip
 	cmp	r0, #0
 	suble	r3, r5, #1
 	strleb	r3, [r7, #0]	@  enemy2_hp
-	b	.L178
-.L207:
+	b	.L186
+.L215:
 	.align	2
-.L206:
+.L214:
 	.word	1079640064
 	.word	0
 	.word	pose
@@ -19731,16 +20025,16 @@ iFrame:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	ldr	r1, .L210
+	ldr	r1, .L218
 	ldrb	r3, [r1, #0]	@ zero_extendqisi2	@  iFrameCounter
 	sub	r2, r3, #1
 	cmp	r3, #0
 	@ lr needed for prologue
 	strneb	r2, [r1, #0]	@  iFrameCounter
 	bx	lr
-.L211:
+.L219:
 	.align	2
-.L210:
+.L218:
 	.word	iFrameCounter
 	.size	iFrame, .-iFrame
 	.align	2
@@ -19754,34 +20048,34 @@ drawHP:
 	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
 	sub	fp, ip, #-4294967292
 	mov	r4, #0	@  i
-.L217:
+.L225:
 	add	r0, r4, #15	@  i
 	add	r4, r4, #1	@  i,  i
 	bl	delSprite
 	cmp	r4, #4	@  i
-	ble	.L217
-	ldr	r5, .L227
+	ble	.L225
+	ldr	r5, .L235
 	ldrb	r3, [r5, #0]	@ zero_extendqisi2	@  player_hp
 	mov	r4, #0	@  i
 	cmp	r4, r3	@  i
-	blt	.L222
-.L226:
+	blt	.L230
+.L234:
 	ldmea	fp, {r4, r5, fp, sp, lr}
 	bx	lr
-.L222:
+.L230:
 	add	r1, r4, #15	@  i
 	mov	r2, r4, asl #4	@  i
 	mov	r3, #0
-	mov	r0, #33
+	mov	r0, #34
 	bl	drawSprite
 	ldrb	r3, [r5, #0]	@ zero_extendqisi2	@  player_hp
 	add	r4, r4, #1	@  i,  i
 	cmp	r4, r3	@  i
-	blt	.L222
-	b	.L226
-.L228:
+	blt	.L230
+	b	.L234
+.L236:
 	.align	2
-.L227:
+.L235:
 	.word	player_hp
 	.size	drawHP, .-drawHP
 	.align	2
@@ -19847,36 +20141,36 @@ checkbutton:
 	mov	r4, r4, lsr #22
 	tst	r4, #1
 	sub	fp, ip, #-4294967292
-	bne	.L241
-.L234:
+	bne	.L249
+.L242:
 	tst	r4, #16
-	bne	.L242
-.L237:
+	bne	.L250
+.L245:
 	tst	r4, #32
-	bne	.L243
-.L238:
+	bne	.L251
+.L246:
 	tst	r4, #64
-	bne	.L244
-.L239:
+	bne	.L252
+.L247:
 	tst	r4, #256
-	bne	.L245
+	bne	.L253
 	ldmea	fp, {r4, fp, sp, lr}
 	bx	lr
-.L245:
+.L253:
 	ldmea	fp, {r4, fp, sp, lr}
 	b	buttonU
-.L244:
+.L252:
 	bl	buttonU
-	b	.L239
-.L243:
+	b	.L247
+.L251:
 	bl	buttonL
-	b	.L238
-.L242:
+	b	.L246
+.L250:
 	bl	buttonR
-	b	.L237
-.L241:
+	b	.L245
+.L249:
 	bl	buttonA
-	b	.L234
+	b	.L242
 	.size	checkbutton, .-checkbutton
 	.align	2
 	.global	animate
@@ -19887,82 +20181,82 @@ animate:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
 	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
-	ldr	r6, .L300
+	ldr	r6, .L308
 	ldrb	r3, [r6, #0]	@ zero_extendqisi2	@  state
 	cmp	r3, #0
 	sub	fp, ip, #-4294967292
-	beq	.L247
-	ldr	r3, .L300+4
+	beq	.L255
+	ldr	r3, .L308+4
 	ldrb	r0, [r3, #0]	@ zero_extendqisi2	@  player_direction
 	cmp	r0, #1
-	beq	.L297
-.L247:
+	beq	.L305
+.L255:
 	ldrb	r4, [r6, #0]	@ zero_extendqisi2	@  state
 	cmp	r4, #0
-	bne	.L287
-	ldr	r3, .L300+4
+	bne	.L295
+	ldr	r3, .L308+4
 	ldrb	r1, [r3, #0]	@ zero_extendqisi2	@  player_direction
 	cmp	r1, #1
-	beq	.L298
+	beq	.L306
 	ldrb	r3, [r6, #0]	@ zero_extendqisi2	@  state
 	cmp	r3, #0
-	bne	.L287
-.L288:
-	ldr	r3, .L300+4
+	bne	.L295
+.L296:
+	ldr	r3, .L308+4
 	ldrb	r5, [r3, #0]	@ zero_extendqisi2	@  player_direction
 	cmp	r5, #0
-	bne	.L255
-	ldr	r7, .L300+8
+	bne	.L263
+	ldr	r7, .L308+8
 	ldrb	r4, [r7, #0]	@ zero_extendqisi2	@  pose
 	cmp	r4, #1
-	beq	.L277
-	bgt	.L281
+	beq	.L285
+	bgt	.L289
 	cmp	r4, #0
-	beq	.L276
-.L275:
+	beq	.L284
+.L283:
 	mov	r3, #1
-.L293:
+.L301:
 	strb	r3, [r6, #0]	@  state
-.L255:
-	ldr	r3, .L300+12
+.L263:
+	ldr	r3, .L308+12
 	ldrb	r0, [r3, #0]	@ zero_extendqisi2	@  onFire
 	cmp	r0, #0
-	beq	.L282
+	beq	.L290
 	ldrb	r1, [r6, #0]	@ zero_extendqisi2	@  state
 	cmp	r1, #0
-	movne	r0, #31
+	movne	r0, #32
 	movne	r1, #0
-	moveq	r0, #32
+	moveq	r0, #33
 	mov	r2, #120
 	mov	r3, #80
 	bl	drawSprite
-.L285:
-	ldr	r3, .L300+16
+.L293:
+	ldr	r3, .L308+16
 	ldrb	r2, [r3, #0]	@ zero_extendqisi2	@  iFrameCounter
 	and	r0, r2, #1
 	cmp	r0, #1
-	beq	.L299
+	beq	.L307
 	ldmea	fp, {r4, r5, r6, r7, fp, sp, lr}
 	bx	lr
-.L299:
+.L307:
 	ldmea	fp, {r4, r5, r6, r7, fp, sp, lr}
 	b	delSprite
-.L282:
+.L290:
 	bl	delSprite
-	b	.L285
-.L276:
+	b	.L293
+.L284:
 	mov	r0, #6
 	mov	r1, #1
-.L296:
+.L304:
 	mov	r2, #120
 	mov	r3, #80
 	bl	drawSprite
 	mov	r0, #2
 	bl	delSprite
-	b	.L275
-.L281:
+	b	.L283
+.L289:
 	cmp	r4, #2
-	bne	.L275
+	bne	.L283
 	mov	r0, #14
 	mov	r1, #1
 	mov	r2, #120
@@ -19973,10 +20267,10 @@ animate:
 	mov	r2, #104
 	mov	r3, #80
 	bl	drawSprite
-.L292:
+.L300:
 	strb	r5, [r7, #0]	@  pose
-	b	.L275
-.L277:
+	b	.L283
+.L285:
 	mov	r1, r4
 	mov	r0, #8
 	mov	r2, #120
@@ -19984,35 +20278,35 @@ animate:
 	bl	drawSprite
 	mov	r0, #2
 	bl	delSprite
-	b	.L292
-.L287:
-	ldr	r3, .L300+4
+	b	.L300
+.L295:
+	ldr	r3, .L308+4
 	ldrb	r5, [r3, #0]	@ zero_extendqisi2	@  player_direction
 	cmp	r5, #0
-	bne	.L265
-	ldr	r7, .L300+8
+	bne	.L273
+	ldr	r7, .L308+8
 	ldrb	r4, [r7, #0]	@ zero_extendqisi2	@  pose
 	cmp	r4, #1
-	beq	.L268
-	bgt	.L272
+	beq	.L276
+	bgt	.L280
 	cmp	r4, #0
-	beq	.L267
-.L266:
+	beq	.L275
+.L274:
 	mov	r3, #0
-	b	.L293
-.L267:
+	b	.L301
+.L275:
 	mov	r0, #5
 	mov	r1, #1
-.L295:
+.L303:
 	mov	r2, #120
 	mov	r3, #80
 	bl	drawSprite
 	mov	r0, #2
 	bl	delSprite
-	b	.L266
-.L272:
+	b	.L274
+.L280:
 	cmp	r4, #2
-	bne	.L266
+	bne	.L274
 	mov	r0, #13
 	mov	r1, #1
 	mov	r2, #120
@@ -20023,10 +20317,10 @@ animate:
 	mov	r2, #104
 	mov	r3, #80
 	bl	drawSprite
-.L291:
+.L299:
 	strb	r5, [r7, #0]	@  pose
-	b	.L266
-.L268:
+	b	.L274
+.L276:
 	mov	r1, r4
 	mov	r0, #7
 	mov	r2, #120
@@ -20034,25 +20328,25 @@ animate:
 	bl	drawSprite
 	mov	r0, #2
 	bl	delSprite
-	b	.L291
-.L265:
+	b	.L299
+.L273:
 	ldrb	r3, [r6, #0]	@ zero_extendqisi2	@  state
 	cmp	r3, #0
-	bne	.L255
-	b	.L288
-.L298:
-	ldr	r7, .L300+8
+	bne	.L263
+	b	.L296
+.L306:
+	ldr	r7, .L308+8
 	ldrb	r5, [r7, #0]	@ zero_extendqisi2	@  pose
 	cmp	r5, #1
-	beq	.L259
-	bgt	.L263
+	beq	.L267
+	bgt	.L271
 	cmp	r5, #0
-	bne	.L275
+	bne	.L283
 	mov	r0, #2
-	b	.L296
-.L263:
+	b	.L304
+.L271:
 	cmp	r5, #2
-	bne	.L275
+	bne	.L283
 	mov	r0, #10
 	mov	r2, #120
 	mov	r3, #80
@@ -20062,10 +20356,10 @@ animate:
 	mov	r2, #136
 	mov	r3, #80
 	bl	drawSprite
-.L290:
+.L298:
 	strb	r4, [r7, #0]	@  pose
-	b	.L275
-.L259:
+	b	.L283
+.L267:
 	mov	r1, r5
 	mov	r0, #4
 	mov	r2, #120
@@ -20073,20 +20367,20 @@ animate:
 	bl	drawSprite
 	mov	r0, #2
 	bl	delSprite
-	b	.L290
-.L297:
-	ldr	r5, .L300+8
+	b	.L298
+.L305:
+	ldr	r5, .L308+8
 	ldrb	r4, [r5, #0]	@ zero_extendqisi2	@  pose
 	cmp	r4, #1
-	beq	.L250
-	bgt	.L254
+	beq	.L258
+	bgt	.L262
 	cmp	r4, #0
-	bne	.L266
+	bne	.L274
 	mov	r1, r0
-	b	.L295
-.L254:
+	b	.L303
+.L262:
 	cmp	r4, #2
-	bne	.L266
+	bne	.L274
 	mov	r1, r0
 	mov	r2, #120
 	mov	r0, #9
@@ -20097,11 +20391,11 @@ animate:
 	mov	r2, #136
 	mov	r3, #80
 	bl	drawSprite
-.L289:
+.L297:
 	mov	r3, #0
 	strb	r3, [r5, #0]	@  pose
-	b	.L266
-.L250:
+	b	.L274
+.L258:
 	mov	r1, r4
 	mov	r0, #3
 	mov	r2, #120
@@ -20109,10 +20403,10 @@ animate:
 	bl	drawSprite
 	mov	r0, #2
 	bl	delSprite
-	b	.L289
-.L301:
+	b	.L297
+.L309:
 	.align	2
-.L300:
+.L308:
 	.word	state
 	.word	player_direction
 	.word	pose
@@ -20146,14 +20440,14 @@ Handler:
 	ldrh	r3, [r2, #0]
 	tst	r3, #1
 	sub	fp, ip, #-4294967292
-	bne	.L314
-.L303:
+	bne	.L322
+.L311:
 	mov	r4, #512
 	add	r4, r4, #67108866
 	ldrh	r3, [r4, #0]
 	tst	r3, #8
-	bne	.L315
-.L312:
+	bne	.L323
+.L320:
 	ldrh	r2, [r4, #0]
 	mov	r3, #67108864
 	add	r3, r3, #520
@@ -20162,31 +20456,31 @@ Handler:
 	strh	r1, [r3, #0]	@ movhi 
 	ldmea	fp, {r4, r5, fp, sp, lr}
 	bx	lr
-.L315:
+.L323:
 	bl	iFrame
-	b	.L312
-.L314:
-	ldr	r4, .L320
+	b	.L320
+.L322:
+	ldr	r4, .L328
 	bl	check_game_state_change
 	ldrb	r0, [r4, #0]	@ zero_extendqisi2	@  game_state
 	and	r3, r0, #255
 	cmp	r3, #3
 	cmpne	r3, #0
-	beq	.L305
+	beq	.L313
 	cmp	r3, #4
-	ldrne	r5, .L320+4
-	beq	.L305
-.L304:
+	ldrne	r5, .L328+4
+	beq	.L313
+.L312:
 	ldrb	r3, [r4, #0]	@ zero_extendqisi2	@  game_state
 	sub	r3, r3, #1
 	cmp	r3, #1
-	bls	.L316
-.L310:
+	bls	.L324
+.L318:
 	ldrh	r3, [r5, #0]	@  TICK_COUNTER
 	add	r3, r3, #1
 	strh	r3, [r5, #0]	@ movhi 	@  TICK_COUNTER
-	b	.L303
-.L316:
+	b	.L311
+.L324:
 	bl	checkbutton
 	bl	fallcheck
 	ldrh	r0, [r5, #0]	@  TICK_COUNTER
@@ -20194,54 +20488,54 @@ Handler:
 	ldrh	r0, [r5, #0]	@  TICK_COUNTER
 	bl	enemy2Move
 	ldrh	r1, [r5, #0]	@  TICK_COUNTER
-	ldr	r2, .L320+8
+	ldr	r2, .L328+8
 	umull	r0, r3, r2, r1
 	mov	r3, r3, lsr #3
 	rsb	r3, r3, r3, asl #4
 	rsb	r1, r3, r1
 	movs	r1, r1, asl #16
-	bne	.L310
+	bne	.L318
 	bl	damage_check
 	bl	animate
 	bl	cooldown_check
 	bl	drawHP
-	b	.L310
-.L305:
-	ldr	r5, .L320+4
-	ldr	r2, .L320+8
+	b	.L318
+.L313:
+	ldr	r5, .L328+4
+	ldr	r2, .L328+8
 	ldrh	r1, [r5, #0]	@  TICK_COUNTER
 	umull	ip, r3, r2, r1
 	mov	r3, r3, lsr #4
 	rsb	r3, r3, r3, asl #4
 	sub	r1, r1, r3, asl #1
 	movs	r1, r1, asl #16
-	beq	.L317
-.L306:
+	beq	.L325
+.L314:
 	cmp	r0, #0
-	beq	.L318
-.L307:
+	beq	.L326
+.L315:
 	cmp	r0, #4
-	beq	.L319
-.L308:
+	beq	.L327
+.L316:
 	cmp	r0, #3
-	bne	.L304
+	bne	.L312
 	bl	drawEnd
-	b	.L304
-.L319:
+	b	.L312
+.L327:
 	bl	drawDeath
 	ldrb	r0, [r4, #0]	@ zero_extendqisi2	@  game_state
-	b	.L308
-.L318:
+	b	.L316
+.L326:
 	bl	drawTitle
 	ldrb	r0, [r4, #0]	@ zero_extendqisi2	@  game_state
-	b	.L307
-.L317:
+	b	.L315
+.L325:
 	bl	animatePressStart
 	ldrb	r0, [r4, #0]	@ zero_extendqisi2	@  game_state
-	b	.L306
-.L321:
+	b	.L314
+.L329:
 	.align	2
-.L320:
+.L328:
 	.word	game_state
 	.word	TICK_COUNTER
 	.word	-2004318071
@@ -20271,7 +20565,7 @@ main:
 	sub	fp, ip, #-4294967292
 	bl	fillBGPal
 	bl	fillTileMem
-	ldr	r0, .L326
+	ldr	r0, .L334
 	bl	fillScreenBlock
 	bl	fillPalette
 	bl	fillSprites
@@ -20295,18 +20589,18 @@ main:
 	ldrh	r2, [ip, #0]
 	orr	r2, r2, #16640
 	orr	r2, r2, #251
-	ldr	r3, .L326+4
+	ldr	r3, .L334+4
 	mov	r1, #50331648
 	strh	r2, [ip, #0]	@ movhi 
 	add	r1, r1, #32512
 	mov	lr, #67108864
-	ldr	ip, .L326+8
+	ldr	ip, .L334+8
 	mov	r5, #0
 	str	r3, [r1, #252]
 	add	lr, lr, #520
 	mov	r3, #1	@ movhi
 	mov	r0, #1
-	ldr	r4, .L326+12
+	ldr	r4, .L334+12
 	strh	r3, [lr, #0]	@ movhi 
 	mov	r1, r0
 	mov	r2, #120
@@ -20314,11 +20608,11 @@ main:
 	str	r5, [ip, #0]	@ float	@  map_dy
 	str	r5, [r4, #0]	@ float	@  map_dx
 	bl	drawSprite
-.L323:
-	b	.L323
-.L327:
+.L331:
+	b	.L331
+.L335:
 	.align	2
-.L326:
+.L334:
 	.word	lvl1_map
 	.word	Handler
 	.word	map_dy

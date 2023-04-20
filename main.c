@@ -10,7 +10,7 @@ void Handler(void)
     
     if ((REG_IF & INT_VBLANK) == INT_VBLANK) // 59.73 Hz roughly 60hz
     {
-        check_game_state_change();
+        checkGameState();
 
         // only when in start, end or death screen
         if (game_state == START_SCREEN || game_state == END_SCREEN || game_state == DEATH_SCREEN)
@@ -38,16 +38,16 @@ void Handler(void)
         if (game_state == LEVEL_ONE || game_state == LEVEL_TWO)
         {   
             checkbutton();
-            fallcheck(); // calulate y coords for bg and sprites
+            fallCheck(); // calulate y coords for bg and sprites
             enemy1Move(TICK_COUNTER); // s and draw sprites
             enemy2Move(TICK_COUNTER);
             
             // animate and draws main charac @ 4hz, every 0.25
             if (TICK_COUNTER%15 == 0)
             {
-                damage_check();
+                damageCheck();
                 animate();
-                cooldown_check();
+                cooldownCheck();
                 drawHP();
             }
         }
@@ -55,9 +55,9 @@ void Handler(void)
         TICK_COUNTER += 1;
     }
     
-    if ((REG_IF & INT_TIMER0) == INT_TIMER0) // Animation and CD timer, every 0.25s 4hz
+    if ((REG_IF & INT_TIMER0) == INT_TIMER0) // iFrame timer, every 0.25s 4hz
     {          
-        iFrame();
+        iFrameCountdown();
     }
 
     // BUTTON INTERRUPT DOES NOT WORK WELL ON ACTUAL GBA

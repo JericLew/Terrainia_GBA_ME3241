@@ -5,6 +5,11 @@
 
 #define INPUT (KEY_MASK & (~REG_KEYS))
 
+/*----------Conventions----------*/
+// ANY_CONSTANTS
+// any_varible
+// anyFunctions
+
 /*----------Global Variables----------*/
 // Game state
 #define START_SCREEN 0
@@ -20,12 +25,12 @@ u8 game_state = START_SCREEN;
 // Sprite index 20-29 for Press Start
 // Sprite index 30-?? for Game Screens
 
-// start screen
+// Game screens
 #define HP_SPIRTE_INDEX 15
 #define PRESS_START_INDEX_START 20
 #define GAME_SCREEN_INDEX_START 30
 
-// Tracking Player position and sprite index
+// Player
 #define SPRITE_SIZE 16
 #define PLAYERONE_x 120
 #define PLAYERONE_y 80
@@ -36,24 +41,24 @@ u8 player_hp = 5;
 u8 *player_hp_ptr = &player_hp;
 extern void damagePlayer(u8 *player_hp_ptr);
 
-// Enemy position and variable
+// Enemy 
 #define ENEMY_HP 2
 
 float enemy1_x;
 float enemy1_y;
 float enemy1_x_ms = 0.0;
+u8 enemy1_sprite = ENEMY_RIGHT;
 u8 enemy1_hp = ENEMY_HP;
 #define ENEMY1_INDEX 127
-#define ENEMY1_SPRITE ENEMY
 
 float enemy2_x;
 float enemy2_y;
 float enemy2_x_ms = 0.5;
 u8 enemy2_hp = ENEMY_HP;
+u8 enemy2_sprite = ENEMY_RIGHT;
 #define ENEMY2_INDEX 126
-#define ENEMY2_SPRITE ENEMY
 
-// background & scrolling variables
+// Background & scrolling
 #define LEFT 0
 #define RIGHT 1
 #define UP 2
@@ -61,10 +66,9 @@ u8 enemy2_hp = ENEMY_HP;
 #define FLOATPIXEL 256 //set to 256 2**8 (1 pixel) as REG_BG2X uses 24.8 fixed point format
 #define PLAYER_MOVESPEED 1
 
-
 float map_dx, map_dy; // in pixel, represents screen displacement from background
 
-// jumping & falling
+// Jumping & falling
 #define TERM_VEL -1.5
 #define JUMP_VEL 1.3
 #define GRAVITY -0.05 // in pixel/s**2
@@ -243,7 +247,7 @@ void fillScreenBlock(u16 *map_ptr)
 /*----------Level Change Functions----------*/
 u16 *map_ptr;
 
-void map_update(void)
+void mapUpdate(void)
 {
     if (game_state == LEVEL_ONE)
     {
@@ -256,12 +260,13 @@ void map_update(void)
     fillScreenBlock(map_ptr);
 }
 
-void enemy_update(void)
+void enemyUpdate(void)
 {
     if (game_state == LEVEL_ONE)
     {  
         enemy1_hp = ENEMY_HP;
         enemy2_hp = ENEMY_HP;
+
         enemy1_x = 200;
         enemy1_y = 112;
 
@@ -272,6 +277,7 @@ void enemy_update(void)
     {
         enemy1_hp = ENEMY_HP;
         enemy2_hp = ENEMY_HP;
+        
         enemy1_x = 200;
         enemy1_y = 112;
 
@@ -282,7 +288,7 @@ void enemy_update(void)
 
 // game state updater
 // check for condition to change game state
-void check_game_state_change(void)
+void checkGameState(void)
 {
     u16 buttons = INPUT;
 
@@ -298,8 +304,8 @@ void check_game_state_change(void)
             game_state = LEVEL_ONE;
             delPressStart();
             delGameScreen();
-            map_update();
-            enemy_update();
+            mapUpdate();
+            enemyUpdate();
             player_hp = 5;
             map_dx = 0;
             map_dy = 0;
@@ -312,8 +318,8 @@ void check_game_state_change(void)
         if (map_dy >= 500 && map_dx >= 0 && map_dx<= 512)
         {
             game_state = LEVEL_TWO;
-            map_update();
-            enemy_update();
+            mapUpdate();
+            enemyUpdate();
             map_dx = 0;
             map_dy = 0;
             REG_BG2X = (int)map_dx;
@@ -410,7 +416,7 @@ void jump(void)
 }
 
 // function called by VBLANK at ard 60hz to check for falling
-void fallcheck(void)
+void fallCheck(void)
 {
     u16 buttons = INPUT;
     bool ground_check;
@@ -460,6 +466,14 @@ void enemy1Move(u16 tick_counter) // move and draw enemy1
     {
         enemy1_x_ms *= -1;
     }
+    if (enemy1_x_ms>0)
+    {
+        enemy1_sprite = ENEMY_RIGHT;
+    }
+    else
+    {
+        enemy1_sprite = ENEMY_LEFT;
+    }
     enemy1_x += enemy1_x_ms;
     // if enemy1 out of screen or dead, delSprite
     if (enemy1_x < 0 || enemy1_y < 0 || enemy1_hp == 0)
@@ -468,7 +482,7 @@ void enemy1Move(u16 tick_counter) // move and draw enemy1
     }
     else
     {
-        drawSprite(ENEMY1_SPRITE, ENEMY1_INDEX, (int)enemy1_x,(int)enemy1_y);
+        drawSprite(enemy1_sprite, ENEMY1_INDEX, (int)enemy1_x,(int)enemy1_y);
     }
 }
 
@@ -478,8 +492,15 @@ void enemy2Move(u16 tick_counter) // move and draw enemy2
     {
         enemy2_x_ms *= -1;
     }
+    if (enemy2_x_ms>0)
+    {
+        enemy2_sprite = ENEMY_RIGHT;
+    }
+    else
+    {
+        enemy2_sprite = ENEMY_LEFT;
+    }
     enemy2_x += enemy2_x_ms;
-
     // if enemy2 out of screen or dead, delSprite
     if (enemy2_x < 0 || enemy2_y < 0 || enemy2_hp == 0)
     {
@@ -487,14 +508,14 @@ void enemy2Move(u16 tick_counter) // move and draw enemy2
     }
     else
     {
-        drawSprite(ENEMY2_SPRITE, ENEMY2_INDEX, (int)enemy2_x,(int)enemy2_y);
+        drawSprite(enemy2_sprite, ENEMY2_INDEX, (int)enemy2_x,(int)enemy2_y);
     }
 }
 
 /*----------Attack & Cooldown Functions----------*/
 
 // Check if attack is on CD, if CD decreases timer, if Mattack happened, second Mattack
-void cooldown_check(void)
+void cooldownCheck(void)
 {
     if (attack_cd_timer != 0)
     {
@@ -536,7 +557,7 @@ bool isPlayerInLava(u16 *map_ptr)
     return left_check || right_check;
 }
 
-void damage_check(void)
+void damageCheck(void)
 { 
     // check right attack on enemy
     if (pose == MATTACK && player_direction == RIGHT)
@@ -600,7 +621,7 @@ void damage_check(void)
     }
 }
 
-void iFrame(void)
+void iFrameCountdown(void)
 {
     if (iFrameCounter != 0)
     {
