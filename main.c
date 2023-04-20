@@ -10,8 +10,7 @@ void Handler(void)
     
     if ((REG_IF & INT_VBLANK) == INT_VBLANK) // 59.73 Hz roughly 60hz
     {
-        check_map_change();
-        checkbutton();
+        check_game_state_change();
 
         // only when in start, end or death screen
         if (game_state == START_SCREEN || game_state == END_SCREEN || game_state == DEATH_SCREEN)
@@ -27,7 +26,8 @@ void Handler(void)
 
         // game functions for level one or two
         if (game_state == LEVEL_ONE || game_state == LEVEL_TWO)
-        {
+        {   
+            checkbutton();
             fallcheck(); // calulate y coords for bg and sprites
             enemy1Move(TICK_COUNTER); // s and draw sprites
             enemy2Move(TICK_COUNTER);
@@ -102,19 +102,15 @@ int main(void)
     REG_TM0D = 49510; // every 0.25s 4hz
     REG_TM0CNT = TIMER_FREQUENCY_256 | TIMER_INTERRUPTS | TIMER_ENABLE;
 
-    REG_P1CNT |= 0x4000 | KEY_RIGHT | KEY_LEFT | KEY_UP | KEY_DOWN | KEY_A | KEY_B | KEY_START;
+    REG_P1CNT |= 0x4000 | KEY_RIGHT | KEY_LEFT | KEY_UP | KEY_DOWN | KEY_A | KEY_B | KEY_START | KEY_R;
 	REG_IME = 0x1;		// Enable interrupt handling
 
     // init map coords
     map_dx = 0;
     map_dy = 0;
-    REG_BG2X = (int)map_dx;
-    REG_BG2Y = (int)map_dy;
     
     //spawn charac
     drawSprite(RIGHTIDLE1,PLAYERONE_INDEX,PLAYERONE_x,PLAYERONE_y);
-    drawSprite(ENEMY1_SPRITE,ENEMY1_INDEX,(int)enemy1_x,(int)enemy1_y);
-    drawSprite(ENEMY2_SPRITE,ENEMY2_INDEX,(int)enemy2_x,(int)enemy2_y);
 
     while(1)
     {

@@ -14,6 +14,11 @@
 #define DEATH_SCREEN 4
 u8 game_state = START_SCREEN;
 
+// Sprite index 0-4 for player effects
+// Sprite index 120-127 for enemy
+// Sprite index 15-19 for HP
+// Sprite index 20-?? for words
+
 // start screen
 #define HP_SPIRTE_INDEX 15
 #define LETTER_SPRITE_INDEX 20
@@ -22,8 +27,9 @@ u8 game_state = START_SCREEN;
 #define SPRITE_SIZE 16
 #define PLAYERONE_x 120
 #define PLAYERONE_y 80
-#define PLAYERONE_INDEX 0
-#define PLAYERONE_ATTACK_INDEX 1
+#define PLAYERONE_INDEX 1
+#define PLAYERONE_ATTACK_INDEX 2
+#define PLAYERONE_EFFECT_INDEX 0
 u8 player_hp = 5;
 u8 *player_hp_ptr = &player_hp;
 extern void damagePlayer(u8 *player_hp_ptr);
@@ -31,15 +37,15 @@ extern void damagePlayer(u8 *player_hp_ptr);
 // Enemy position and variable
 #define ENEMY_HP 2
 
-float enemy1_x = 224;
-float enemy1_y = 112;
+float enemy1_x;
+float enemy1_y;
 float enemy1_x_ms = 0.0;
 u8 enemy1_hp = ENEMY_HP;
 #define ENEMY1_INDEX 127
 #define ENEMY1_SPRITE PLAYERONE
 
-float enemy2_x = 336;
-float enemy2_y = 200;
+float enemy2_x;
+float enemy2_y;
 float enemy2_x_ms = 0.5;
 u8 enemy2_hp = ENEMY_HP;
 #define ENEMY2_INDEX 126
@@ -182,8 +188,32 @@ void enemy_update(void)
     }
 }
 
-void check_map_change(void)
+// game state updater
+// check for condition to change game state
+void check_game_state_change(void)
 {
+    u16 buttons = INPUT;
+
+    if (player_hp == 0)
+    {
+        game_state = DEATH_SCREEN;
+    }
+
+    if (game_state == START_SCREEN || game_state == END_SCREEN || game_state == DEATH_SCREEN)
+    {
+        if ((buttons & KEY_START) == KEY_START)
+        {
+            game_state = LEVEL_ONE;
+            delStartScreen();
+            map_update();
+            enemy_update();
+            player_hp = 5;
+            map_dx = 0;
+            map_dy = 0;
+            REG_BG2X = (int)map_dx;
+            REG_BG2Y = (int)map_dy;
+        }
+    }
     if (game_state == LEVEL_ONE)
     {
         if (map_dy >= 10*4*8 && map_dx >= 0 && map_dx<= 256)
@@ -197,10 +227,13 @@ void check_map_change(void)
             REG_BG2Y = (int)map_dy;
         }
     }
-    // if (game_state == LEVEL_TWO)
-    // {
-    //     map_ptr = lvl2_map;
-    // }
+    if (game_state == LEVEL_TWO)
+    {
+        if (map_dy >= 10*4*8 && map_dx >= 0 && map_dx<= 256)
+        {
+            game_state = END_SCREEN;
+        }
+    }
 }
 
 /*----------Start Screen Functions----------*/
@@ -254,17 +287,17 @@ void animateStart(void)
 bool canPlayerMove(u8 direction, u16 *map_ptr)
 {   
     bool bot_check, top_check, left_check, right_check;
-    bot_check = map_ptr[(PLAYERONE_x + (int)map_dx + 4)/8 + (PLAYERONE_y+ (int)map_dy + SPRITE_SIZE )/8*64] == 0x00
-    && map_ptr[(PLAYERONE_x + (int)map_dx + 11)/8 + (PLAYERONE_y + (int)map_dy + SPRITE_SIZE)/8*64] == 0x00;
+    bot_check = map_ptr[(PLAYERONE_x + (int)map_dx + 4)/8 + (PLAYERONE_y+ (int)map_dy + SPRITE_SIZE )/8*64] <= SKY
+    && map_ptr[(PLAYERONE_x + (int)map_dx + 11)/8 + (PLAYERONE_y + (int)map_dy + SPRITE_SIZE)/8*64] <= SKY;
 
-    top_check = map_ptr[(PLAYERONE_x + (int)map_dx + 4)/8 + (PLAYERONE_y + (int)map_dy - 1)/8*64] == 0x00
-    && map_ptr[(PLAYERONE_x + (int)map_dx + 11)/8 + (PLAYERONE_y + (int)map_dy - 1)/8*64] == 0x00;
+    top_check = map_ptr[(PLAYERONE_x + (int)map_dx + 4)/8 + (PLAYERONE_y + (int)map_dy - 1)/8*64] <= SKY
+    && map_ptr[(PLAYERONE_x + (int)map_dx + 11)/8 + (PLAYERONE_y + (int)map_dy - 1)/8*64] <= SKY;
 
-    left_check = map_ptr[(PLAYERONE_x + (int)map_dx - 1)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == 0x00
-    && map_ptr[(PLAYERONE_x + (int)map_dx - 1)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == 0x00;
+    left_check = map_ptr[(PLAYERONE_x + (int)map_dx - 1)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] <= SKY
+    && map_ptr[(PLAYERONE_x + (int)map_dx - 1)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] <= SKY;
 
-    right_check = map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == 0x00
-    && map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == 0x00;
+    right_check = map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] <= SKY
+    && map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] <= SKY;
 
     if (direction == LEFT)
     {
@@ -350,8 +383,8 @@ void fallcheck(void)
         }
 
         // check if will hit ground after adding displacement this tick
-        ground_check = map_ptr[(PLAYERONE_x + (int)(map_dx) + 4)/8 + (PLAYERONE_y+ (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00
-        && map_ptr[(PLAYERONE_x + (int)(map_dx) + 11)/8 + (PLAYERONE_y + (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] != 0x00;
+        ground_check = map_ptr[(PLAYERONE_x + (int)(map_dx) + 4)/8 + (PLAYERONE_y+ (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] > SKY
+        && map_ptr[(PLAYERONE_x + (int)(map_dx) + 11)/8 + (PLAYERONE_y + (int)(map_dy - y_speed) + SPRITE_SIZE)/8*64] > SKY;
 
         // if will collide on next tick, place on top of ground to prevent landing inside ground tile
         map_dy -= y_speed;
@@ -438,8 +471,23 @@ void attack(void)
 u8 iFrameCounter = 0;
 #define IMMUNE_DURATION 4 // in 0.25s ticks
 
+u8 onFire = 0;
+
+bool isPlayerInLava(u16 *map_ptr)
+{   
+    bool left_check, right_check;
+
+    left_check = map_ptr[(PLAYERONE_x + (int)map_dx)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == LAV
+    || map_ptr[(PLAYERONE_x + (int)map_dx)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == LAV;
+
+    right_check = map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 4)/8*64] == LAV
+    || map_ptr[(PLAYERONE_x + (int)map_dx + SPRITE_SIZE)/8 + (PLAYERONE_y + (int)map_dy + 11)/8*64] == LAV;
+
+    return left_check || right_check;
+}
+
 void damage_check(void)
-{
+{ 
     // check right attack on enemy
     if (pose == MATTACK && player_direction == RIGHT)
     {
@@ -469,23 +517,36 @@ void damage_check(void)
         }
     }
     
-    // if iFrame == 0 means not immune
-    if (!iFrameCounter)
+    // player damage goes here
+    // if iFrame == 0 means not immune && player hp > 0
+    if (!iFrameCounter &&  player_hp > 0)
     {
-        // check if enemy1 damages player && enemy1 hp > 0 && player hp>0
-        if (!iFrameCounter && player_hp > 0 && enemy1_hp > 0 && enemy1_x + SPRITE_SIZE/2 >= 120 && enemy1_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
+        // check if enemy1 damages player && enemy1 hp > 0
+        if (!iFrameCounter && enemy1_hp > 0 && enemy1_x + SPRITE_SIZE/2 >= 120 && enemy1_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
         && enemy1_y + SPRITE_SIZE/2 >= 80 && enemy1_y + SPRITE_SIZE/2 <= 80 + SPRITE_SIZE)
         {
             damagePlayer(player_hp_ptr);
             iFrameCounter = IMMUNE_DURATION;
         }
-        // check if enemy2 damages player && enemy2 hp > 0 && player hp>0
-        if (!iFrameCounter && player_hp > 0 && enemy2_hp > 0 && enemy2_x + SPRITE_SIZE/2 >= 120 && enemy2_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
+        // check if enemy2 damages player && enemy2 hp > 0
+        if (!iFrameCounter && enemy2_hp > 0 && enemy2_x + SPRITE_SIZE/2 >= 120 && enemy2_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
         && enemy2_y + SPRITE_SIZE/2 >= 80 && enemy2_y + SPRITE_SIZE/2 <= 80 + SPRITE_SIZE)
         {
             damagePlayer(player_hp_ptr);
             iFrameCounter = IMMUNE_DURATION;
-        }        
+        }
+
+        // check if player is in lava
+        if (isPlayerInLava(map_ptr))
+        {
+            onFire = 1;
+            damagePlayer(player_hp_ptr);
+            iFrameCounter = IMMUNE_DURATION;
+        }
+        else
+        {
+            onFire = 0;
+        }
     }
 }
 
@@ -496,6 +557,7 @@ void iFrame(void)
         iFrameCounter -= 1;
     }
 }
+
 void drawHP(void)
 {
     int i;
@@ -506,9 +568,10 @@ void drawHP(void)
 
     for (i = 0; i < player_hp; i++)
     {
-        drawSprite(PLAYERONE,HP_SPIRTE_INDEX + i,0 + i * SPRITE_SIZE,0);
+        drawSprite(HEART,HP_SPIRTE_INDEX + i,0 + i * SPRITE_SIZE,0);
     }
 }
+
 
 /*----------Button Functions----------*/
 
@@ -532,64 +595,43 @@ void buttonA(void)
     attack();
 }
 
-void buttonS(void)
-{
-    if (game_state == 0)
-    {
-        game_state = 1;
-        map_update();
-        delStartScreen();
-    }
-}
+
 
 // checks which button is pressed and calls a function related to button pressed
 void checkbutton(void)
 {
     u16 buttons = INPUT;
 
-    // Start Button only works when in START, END or DEATH SCREEN
-    if (game_state == START_SCREEN || game_state == END_SCREEN || game_state == DEATH_SCREEN)
+    if ((buttons & KEY_A) == KEY_A)
     {
-        if ((buttons & KEY_START) == KEY_START)
-        {
-            buttonS();
-        }
+        buttonA();
     }
-
-    // all other game buttons work only when in LEVEL ONE or TWO
-    if (game_state == LEVEL_ONE || game_state == LEVEL_TWO)
+    if ((buttons & KEY_B) == KEY_B)
     {
-        if ((buttons & KEY_A) == KEY_A)
-        {
-            buttonA();
-        }
-        if ((buttons & KEY_B) == KEY_B)
-        {
-            // buttonB();
-        }
-        if ((buttons & KEY_SELECT) == KEY_SELECT)
-        {
-            // buttonSel();
-        }
-
-        if ((buttons & KEY_RIGHT) == KEY_RIGHT)
-        {
-            buttonR();
-        }
-        if ((buttons & KEY_LEFT) == KEY_LEFT)
-        {
-            buttonL();
-        }
-        if ((buttons & KEY_UP) == KEY_UP)
-        {
-            buttonU();
-        }
-        if ((buttons & KEY_DOWN) == KEY_DOWN)
-        {
-            // buttonD();
-        }
+        // buttonB();
+    }
+    if ((buttons & KEY_SELECT) == KEY_SELECT)
+    {
+        // buttonSel();
+    }
+    if ((buttons & KEY_RIGHT) == KEY_RIGHT)
+    {
+        buttonR();
+    }
+    if ((buttons & KEY_LEFT) == KEY_LEFT)
+    {
+        buttonL();
+    }
+    if ((buttons & KEY_UP) == KEY_UP)
+    {
+        buttonU();
+    }
+    if ((buttons & KEY_R) == KEY_R)
+    {
+        buttonU();
     }
 }
+
 
 /*----------Animate Functions----------*/
 void animate(void)
@@ -678,6 +720,22 @@ void animate(void)
                 break;
         }
         state = 1;
+    }
+
+    if (onFire)
+    {
+        if (state)
+        {
+        drawSprite(FIRE_1,PLAYERONE_EFFECT_INDEX,PLAYERONE_x,PLAYERONE_y);            
+        }
+        else
+        {
+        drawSprite(FIRE_2,PLAYERONE_EFFECT_INDEX,PLAYERONE_x,PLAYERONE_y);            
+        }
+    }
+    else
+    {
+        delSprite(PLAYERONE_EFFECT_INDEX);
     }
 
     if (iFrameCounter % 2 == 1)
