@@ -20,6 +20,7 @@
 u8 game_state = START_SCREEN;
 
 // Sprite index 0-4 for player effects
+// Sprite index 5 for relic
 // Sprite index 120-127 for enemy
 // Sprite index 15-19 for HP
 // Sprite index 20-29 for Press Start
@@ -46,17 +47,52 @@ extern void damagePlayer(u8 *player_hp_ptr);
 
 float enemy1_x;
 float enemy1_y;
-float enemy1_x_ms = 0.0;
+float enemy1_x_ms;
 u8 enemy1_sprite = ENEMY_RIGHT;
 u8 enemy1_hp = ENEMY_HP;
 #define ENEMY1_INDEX 127
 
 float enemy2_x;
 float enemy2_y;
-float enemy2_x_ms = 0.5;
+float enemy2_x_ms;
 u8 enemy2_hp = ENEMY_HP;
 u8 enemy2_sprite = ENEMY_RIGHT;
 #define ENEMY2_INDEX 126
+
+float enemy3_x;
+float enemy3_y;
+float enemy3_x_ms;
+u8 enemy3_hp = ENEMY_HP;
+u8 enemy3_sprite = ENEMY_RIGHT;
+#define ENEMY3_INDEX 125
+
+float enemy4_x;
+float enemy4_y;
+float enemy4_x_ms;
+u8 enemy4_hp = ENEMY_HP;
+u8 enemy4_sprite = ENEMY_RIGHT;
+#define ENEMY4_INDEX 124
+
+// float enemy5_x;
+// float enemy5_y;
+// float enemy5_x_ms = 0;
+// u8 enemy5_hp = ENEMY_HP;
+// u8 enemy5_sprite = ENEMY_RIGHT;
+// #define ENEMY5_INDEX 123
+
+// float enemy6_x;
+// float enemy6_y;
+// float enemy6_x_ms = 0;
+// u8 enemy6_hp = ENEMY_HP;
+// u8 enemy6_sprite = ENEMY_RIGHT;
+// #define ENEMY6_INDEX 122
+
+// Relic
+float relic_x;
+float relic_y;
+#define RELIC_X 480
+#define RELIC_Y 480
+#define RELIC_INDEX 5
 
 // Background & scrolling
 #define LEFT 0
@@ -216,6 +252,25 @@ void delGameScreen(void)
     delSprite(GAME_SCREEN_INDEX_START+7);
 }
 
+void updateHP(void)
+{
+
+    if (player_hp<5)
+    {
+        delSprite(HP_SPIRTE_INDEX + player_hp);
+    }
+
+}
+
+void initHP(void)
+{
+    int i;
+    for (i = 0; i < player_hp; i++)
+    {
+        drawSprite(HEART,HP_SPIRTE_INDEX + i,0 + i * SPRITE_SIZE,0);
+    }
+}
+
 /*----------Background Functions----------*/
 
 // load BG pal in GBA memory (same custom 256 WEB Safe colour as sprites)
@@ -266,23 +321,54 @@ void enemyUpdate(void)
     {  
         enemy1_hp = ENEMY_HP;
         enemy2_hp = ENEMY_HP;
+        enemy3_hp = ENEMY_HP;
+        enemy4_hp = ENEMY_HP;
+        enemy1_x_ms = 0.25;
+        enemy2_x_ms = 0.25;
+        enemy3_x_ms = 0.5;
+        enemy4_x_ms = 0.25;
 
-        enemy1_x = 200;
+        enemy1_x = 240;
         enemy1_y = 112;
 
-        enemy2_x = 336;
-        enemy2_y = 200;
+        enemy2_x = 176;
+        enemy2_y = 240;
+
+        enemy3_x = 176;
+        enemy3_y = 432;
+
+        enemy4_x = 368;
+        enemy4_y = 400;
+        
+        relic_x = -16;
+        relic_y = -16;
+
     }
     if (game_state == LEVEL_TWO)
     {
         enemy1_hp = ENEMY_HP;
         enemy2_hp = ENEMY_HP;
-        
-        enemy1_x = 200;
-        enemy1_y = 112;
+        enemy3_hp = ENEMY_HP;
+        enemy4_hp = ENEMY_HP;
+        enemy1_x_ms = 0.5;
+        enemy2_x_ms = 0.75;
+        enemy3_x_ms = 0.75;
+        enemy4_x_ms = 0.75;
 
-        enemy2_x = 336;
-        enemy2_y = 200;
+        enemy1_x = 304;
+        enemy1_y = 104;
+
+        enemy2_x = 224;
+        enemy2_y = 272;
+
+        enemy3_x = 168;
+        enemy3_y = 328;
+
+        enemy4_x = 232;
+        enemy4_y = 456;
+
+        relic_x = RELIC_X;
+        relic_y = RELIC_Y;
     }
 }
 
@@ -307,6 +393,7 @@ void checkGameState(void)
             mapUpdate();
             enemyUpdate();
             player_hp = 5;
+            initHP();
             map_dx = 0;
             map_dy = 0;
             REG_BG2X = (int)map_dx;
@@ -315,7 +402,7 @@ void checkGameState(void)
     }
     if (game_state == LEVEL_ONE)
     {
-        if (map_dy >= 500 && map_dx >= 0 && map_dx<= 512)
+        if (map_dy >= 400 && map_dx >= 328 && map_dx<= 512)
         {
             game_state = LEVEL_TWO;
             mapUpdate();
@@ -328,7 +415,7 @@ void checkGameState(void)
     }
     if (game_state == LEVEL_TWO)
     {
-        if (map_dy >= 10*4*8 && map_dx >= 0 && map_dx<= 512)
+        if (map_dy >= 400 && map_dx >= 328 && map_dx<= 512)
         {
             game_state = END_SCREEN;
         }
@@ -390,6 +477,9 @@ void move(u8 direction)
 
             enemy1_x -= PLAYER_MOVESPEED;
             enemy2_x -= PLAYER_MOVESPEED;
+            enemy3_x -= PLAYER_MOVESPEED;
+            enemy4_x -= PLAYER_MOVESPEED;
+            relic_x  -= PLAYER_MOVESPEED;
         }
         break;
     case LEFT:
@@ -402,6 +492,9 @@ void move(u8 direction)
 
             enemy1_x += PLAYER_MOVESPEED;
             enemy2_x += PLAYER_MOVESPEED;
+            enemy3_x += PLAYER_MOVESPEED;
+            enemy4_x += PLAYER_MOVESPEED;
+            relic_x  += PLAYER_MOVESPEED;
         }
         break;
     }
@@ -446,6 +539,9 @@ void fallCheck(void)
         map_dy -= y_speed;
         enemy1_y += y_speed;
         enemy2_y += y_speed;
+        enemy3_y += y_speed;
+        enemy4_y += y_speed;
+        relic_y  += y_speed;
         if (ground_check) 
         {
             REG_BG2Y = FLOATPIXEL * ((int)(map_dy)/8*8); // special stuff to ensure it lands on tile
@@ -460,7 +556,7 @@ void fallCheck(void)
 
 /*----------Enemy Functions----------*/
 
-void enemy1Move(u16 tick_counter) // move and draw enemy1
+void enemy1Move(u16 tick_counter) // move and draw enemy
 {   
     if (tick_counter%180 == 0)
     {
@@ -475,8 +571,8 @@ void enemy1Move(u16 tick_counter) // move and draw enemy1
         enemy1_sprite = ENEMY_LEFT;
     }
     enemy1_x += enemy1_x_ms;
-    // if enemy1 out of screen or dead, delSprite
-    if (enemy1_x < 0 || enemy1_y < 0 || enemy1_hp == 0)
+    // if enemy out of screen or dead, delSprite
+    if (enemy1_x < 0 || enemy1_y < 0 || enemy1_x > 240 || enemy1_y > 160 || enemy1_hp == 0)
     {
         delSprite(ENEMY1_INDEX);
     }
@@ -486,7 +582,7 @@ void enemy1Move(u16 tick_counter) // move and draw enemy1
     }
 }
 
-void enemy2Move(u16 tick_counter) // move and draw enemy2
+void enemy2Move(u16 tick_counter)
 {   
     if (tick_counter%180 == 0)
     {
@@ -501,8 +597,7 @@ void enemy2Move(u16 tick_counter) // move and draw enemy2
         enemy2_sprite = ENEMY_LEFT;
     }
     enemy2_x += enemy2_x_ms;
-    // if enemy2 out of screen or dead, delSprite
-    if (enemy2_x < 0 || enemy2_y < 0 || enemy2_hp == 0)
+    if (enemy2_x < 0 || enemy2_y < 0 || enemy2_x > 240 || enemy2_y > 160 || enemy2_hp == 0)
     {
         delSprite(ENEMY2_INDEX);
     }
@@ -512,6 +607,67 @@ void enemy2Move(u16 tick_counter) // move and draw enemy2
     }
 }
 
+void enemy3Move(u16 tick_counter)
+{   
+    if (tick_counter%180 == 0)
+    {
+        enemy3_x_ms *= -1;
+    }
+    if (enemy3_x_ms>0)
+    {
+        enemy3_sprite = ENEMY_RIGHT;
+    }
+    else
+    {
+        enemy3_sprite = ENEMY_LEFT;
+    }
+    enemy3_x += enemy3_x_ms;
+    if (enemy3_x < 0 || enemy3_y < 0 || enemy3_x > 240 || enemy3_y > 160 ||enemy3_hp == 0)
+    {
+        delSprite(ENEMY3_INDEX);
+    }
+    else
+    {
+        drawSprite(enemy3_sprite, ENEMY3_INDEX, (int)enemy3_x,(int)enemy3_y);
+    }
+}
+
+void enemy4Move(u16 tick_counter)
+{   
+    if (tick_counter%180 == 0)
+    {
+        enemy4_x_ms *= -1;
+    }
+    if (enemy4_x_ms>0)
+    {
+        enemy4_sprite = ENEMY_RIGHT;
+    }
+    else
+    {
+        enemy4_sprite = ENEMY_LEFT;
+    }
+    enemy4_x += enemy4_x_ms;
+    if (enemy4_x < 0 || enemy4_y < 0 || enemy4_x > 240 || enemy4_y > 160 || enemy4_hp == 0)
+    {
+        delSprite(ENEMY4_INDEX);
+    }
+    else
+    {
+        drawSprite(enemy4_sprite, ENEMY4_INDEX, (int)enemy4_x,(int)enemy4_y);
+    }
+}
+
+void relicMove() // move and draw relic
+{   
+    if (relic_x < 0 || relic_y < 0 || relic_x > 240 || relic_y > 160)
+    {
+        delSprite(RELIC_INDEX);
+    }
+    else
+    {
+        drawSprite(RELIC, RELIC_INDEX, (int)relic_x,(int)relic_y);
+    }
+}
 /*----------Attack & Cooldown Functions----------*/
 
 // Check if attack is on CD, if CD decreases timer, if Mattack happened, second Mattack
@@ -538,7 +694,7 @@ void attack(void)
     }
 }
 
-/*----------Damage and Health Functions----------*/
+/*----------Damage Functions----------*/
 u8 iFrameCounter = 0;
 #define IMMUNE_DURATION 4 // in 0.25s ticks
 
@@ -562,29 +718,43 @@ void damageCheck(void)
     // check right attack on enemy
     if (pose == MATTACK && player_direction == RIGHT)
     {
-        // if enemy1 is alive and within range
-        if (enemy1_hp>0 && (int)enemy1_x >= 120 + SPRITE_SIZE/2 && (int)enemy1_x <= 120 + SPRITE_SIZE*2 && (int)enemy1_y >= 80 - SPRITE_SIZE/2 && (int)enemy1_y <= 80 + SPRITE_SIZE*1.5)
+        // if enemy is alive and within range
+        if (enemy1_hp>0 && (int)enemy1_x > 120 + SPRITE_SIZE/2 && (int)enemy1_x < 120 + SPRITE_SIZE*1.75 && (int)enemy1_y + SPRITE_SIZE > 80 && (int)enemy1_y < 80 + SPRITE_SIZE)
         {
             enemy1_hp -= 1;
-        }
-        // if enemy2 is alive and within range       
-        if (enemy2_hp>0 && (int)enemy2_x >= 120 + SPRITE_SIZE/2 && (int)enemy2_x <= 120 + SPRITE_SIZE*2 && (int)enemy2_y >= 80 - SPRITE_SIZE/2 && (int)enemy2_y <= 80 + SPRITE_SIZE*1.5)
+        }     
+        if (enemy2_hp>0 && (int)enemy2_x > 120 + SPRITE_SIZE/2 && (int)enemy2_x < 120 + SPRITE_SIZE*1.75 && (int)enemy2_y + SPRITE_SIZE > 80 && (int)enemy2_y < 80 + SPRITE_SIZE)
         {
             enemy2_hp -= 1;
+        }
+        if (enemy3_hp>0 && (int)enemy3_x > 120 + SPRITE_SIZE/2 && (int)enemy3_x < 120 + SPRITE_SIZE*1.75 && (int)enemy3_y + SPRITE_SIZE > 80 && (int)enemy3_y < 80 + SPRITE_SIZE)
+        {
+            enemy3_hp -= 1;
+        }
+        if (enemy4_hp>0 && (int)enemy4_x > 120 + SPRITE_SIZE/2 && (int)enemy4_x < 120 + SPRITE_SIZE*1.75 && (int)enemy4_y + SPRITE_SIZE > 80 && (int)enemy4_y < 80 + SPRITE_SIZE)
+        {
+            enemy4_hp -= 1;
         }
     }
     // check left attack on enemy
     if (pose == MATTACK && player_direction == LEFT)
     {
-        // if enemy1 is alive and within range
-        if (enemy1_hp>0 && (int)enemy1_x <= 120 + SPRITE_SIZE/2 && (int)enemy1_x + SPRITE_SIZE >= 120 - SPRITE_SIZE && (int)enemy1_y >= 80 - SPRITE_SIZE/2 && (int)enemy1_y <= 80 + SPRITE_SIZE*1.5)
+        // if enemy is alive and within range
+        if (enemy1_hp>0 && (int)enemy1_x + SPRITE_SIZE < 120 + SPRITE_SIZE/2 && (int)enemy1_x + SPRITE_SIZE > 120 - SPRITE_SIZE*3/4 && (int)enemy1_y + SPRITE_SIZE > 80 && (int)enemy1_y < 80 + SPRITE_SIZE)
         {
             enemy1_hp -= 1;
-        }
-        // if enemy2 is alive and within range       
-        if (enemy2_hp>0 && (int)enemy2_x <= 120 + SPRITE_SIZE/2 && (int)enemy2_x + SPRITE_SIZE >= 120 - SPRITE_SIZE && (int)enemy2_y >= 80 - SPRITE_SIZE/2 && (int)enemy2_y <= 80 + SPRITE_SIZE*1.5)
+        }   
+        if (enemy2_hp>0 && (int)enemy2_x + SPRITE_SIZE < 120 + SPRITE_SIZE/2 && (int)enemy2_x + SPRITE_SIZE > 120 - SPRITE_SIZE*3/4 && (int)enemy2_y + SPRITE_SIZE > 80 && (int)enemy2_y < 80 + SPRITE_SIZE)
         {
             enemy2_hp -= 1;
+        }
+        if (enemy3_hp>0 && (int)enemy3_x + SPRITE_SIZE < 120 + SPRITE_SIZE/2 && (int)enemy3_x + SPRITE_SIZE > 120 - SPRITE_SIZE*3/4 && (int)enemy3_y + SPRITE_SIZE > 80 && (int)enemy3_y < 80 + SPRITE_SIZE)
+        {
+            enemy3_hp -= 1;
+        }
+        if (enemy4_hp>0 && (int)enemy4_x + SPRITE_SIZE < 120 + SPRITE_SIZE/2 && (int)enemy4_x + SPRITE_SIZE > 120 - SPRITE_SIZE*3/4 && (int)enemy4_y + SPRITE_SIZE > 80 && (int)enemy4_y < 80 + SPRITE_SIZE)
+        {
+            enemy4_hp -= 1;
         }
     }
     
@@ -592,21 +762,31 @@ void damageCheck(void)
     // if iFrame == 0 means not immune && player hp > 0
     if (!iFrameCounter &&  player_hp > 0)
     {
-        // check if enemy1 damages player && enemy1 hp > 0
-        if (!iFrameCounter && enemy1_hp > 0 && enemy1_x + SPRITE_SIZE/2 >= 120 && enemy1_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
-        && enemy1_y + SPRITE_SIZE/2 >= 80 && enemy1_y + SPRITE_SIZE/2 <= 80 + SPRITE_SIZE)
+        // check if enemy damages player && enemy hp > 0
+        if (!iFrameCounter && enemy1_hp > 0 && enemy1_x + SPRITE_SIZE - 3 > 120 && enemy1_x + 3 < 120 + SPRITE_SIZE
+        && enemy1_y + SPRITE_SIZE > 80 && enemy1_y + 3 < 80 + SPRITE_SIZE)
         {
             damagePlayer(player_hp_ptr);
             iFrameCounter = IMMUNE_DURATION;
         }
-        // check if enemy2 damages player && enemy2 hp > 0
-        if (!iFrameCounter && enemy2_hp > 0 && enemy2_x + SPRITE_SIZE/2 >= 120 && enemy2_x + SPRITE_SIZE/2 <= 120 + SPRITE_SIZE
-        && enemy2_y + SPRITE_SIZE/2 >= 80 && enemy2_y + SPRITE_SIZE/2 <= 80 + SPRITE_SIZE)
+        if (!iFrameCounter && enemy2_hp > 0 && enemy2_x + SPRITE_SIZE - 3 > 120 && enemy2_x + 3 < 120 + SPRITE_SIZE
+        && enemy2_y + SPRITE_SIZE > 80 && enemy2_y + 3 < 80 + SPRITE_SIZE)
         {
             damagePlayer(player_hp_ptr);
             iFrameCounter = IMMUNE_DURATION;
         }
-
+        if (!iFrameCounter && enemy3_hp > 0 && enemy3_x + SPRITE_SIZE - 3 > 120 && enemy3_x + 3 < 120 + SPRITE_SIZE
+        && enemy3_y + SPRITE_SIZE > 80 && enemy3_y + 3 < 80 + SPRITE_SIZE)
+        {
+            damagePlayer(player_hp_ptr);
+            iFrameCounter = IMMUNE_DURATION;
+        }
+        if (!iFrameCounter && enemy4_hp > 0 && enemy4_x + SPRITE_SIZE - 3 > 120 && enemy4_x + 3 < 120 + SPRITE_SIZE
+        && enemy4_y + SPRITE_SIZE > 80 && enemy4_y + 3 < 80 + SPRITE_SIZE)
+        {
+            damagePlayer(player_hp_ptr);
+            iFrameCounter = IMMUNE_DURATION;
+        }
         // check if player is in lava
         if (isPlayerInLava(map_ptr))
         {
@@ -629,19 +809,6 @@ void iFrameCountdown(void)
     }
 }
 
-void drawHP(void)
-{
-    int i;
-    for (i = 0; i < 5; i++)
-    {
-        delSprite(HP_SPIRTE_INDEX + i);
-    }
-
-    for (i = 0; i < player_hp; i++)
-    {
-        drawSprite(HEART,HP_SPIRTE_INDEX + i,0 + i * SPRITE_SIZE,0);
-    }
-}
 
 
 /*----------Button Functions----------*/
@@ -666,6 +833,10 @@ void buttonA(void)
     attack();
 }
 
+void buttonB(void)
+{
+    jump();
+}
 // checks which button is pressed and calls a function related to button pressed
 void checkbutton(void)
 {
@@ -677,11 +848,7 @@ void checkbutton(void)
     }
     if ((buttons & KEY_B) == KEY_B)
     {
-        // buttonB();
-    }
-    if ((buttons & KEY_SELECT) == KEY_SELECT)
-    {
-        // buttonSel();
+        buttonB();
     }
     if ((buttons & KEY_RIGHT) == KEY_RIGHT)
     {
@@ -692,10 +859,6 @@ void checkbutton(void)
         buttonL();
     }
     if ((buttons & KEY_UP) == KEY_UP)
-    {
-        buttonU();
-    }
-    if ((buttons & KEY_R) == KEY_R)
     {
         buttonU();
     }
@@ -811,27 +974,3 @@ void animate(void)
         delSprite(PLAYERONE_INDEX);
     }
 }
-
-// void drawLaser(void)
-// {
-// 	// Gift function showing you how to draw an example sprite defined in sprite.h on screen, using drawSprite()
-// 	// Note that this code uses largeer sprites with a palette, so the main code needs to be initialized in graphical mode 2, using:
-//     //		*(unsigned short *) 0x4000000 = 0x40 | 0x2 | 0x1000;
-// 	// at the beginning of main() in main.c
-
-//     switch(lPlat) {
-//         case 16:
-//         {
-//             drawSprite(LASER, NPLATS*3 + 5 + NROCK + NMET, LaserX, LaserY);
-//             break;
-//         }
-//         case 9:
-//         {
-//             drawSprite(LASER, NPLATS*2 + 5 + NROCK + NMET, LaserX, LaserY);
-//             break;
-//         }
-//         default:
-//             break;
-//     }
-// }
-

@@ -45,6 +45,9 @@ void Handler(void)
             fallCheck(); // calulate y coords for bg and sprites
             enemy1Move(TICK_COUNTER); // s and draw sprites
             enemy2Move(TICK_COUNTER);
+            enemy3Move(TICK_COUNTER);
+            enemy4Move(TICK_COUNTER);
+            relicMove();
             
             // animate and draws main charac @ 4hz, every 0.25
             if (TICK_COUNTER%15 == 0)
@@ -52,7 +55,7 @@ void Handler(void)
                 damageCheck();
                 animate();
                 cooldownCheck();
-                drawHP();
+                updateHP();
             }
         }
 
@@ -63,15 +66,7 @@ void Handler(void)
     {          
         iFrameCountdown();
     }
-
-    // BUTTON INTERRUPT DOES NOT WORK WELL ON ACTUAL GBA
-    // if ((REG_IF & INT_BUTTON) == INT_BUTTON)
-    // {
-    //     checkbutton();
-    // }
-
     REG_IF = REG_IF; // Update interrupt table, to confirm we have handled this interrupt
-    
     REG_IME = 0x01;  // Re-enable interrupt handling
 }
 
