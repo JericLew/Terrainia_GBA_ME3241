@@ -10537,38 +10537,38 @@ tiles_palette:
 	.type	tiles_data, %object
 	.size	tiles_data, 640
 tiles_data:
-	.short	-30291
-	.short	-21075
-	.short	-30291
-	.short	-21075
-	.short	-8311
-	.short	-30327
-	.short	-21075
-	.short	-21111
-	.short	-21075
-	.short	-21075
-	.short	-21111
-	.short	-21025
-	.short	-30291
-	.short	-8225
-	.short	-30327
-	.short	-21025
-	.short	-30291
-	.short	-30291
-	.short	-21025
-	.short	-21075
-	.short	-21075
-	.short	-8311
-	.short	-30241
-	.short	24237
-	.short	-21075
-	.short	-30327
-	.short	-21075
-	.short	-21111
-	.short	24237
-	.short	-30327
-	.short	-21111
-	.short	-21025
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
+	.short	13107
 	.short	8995
 	.short	7453
 	.short	5917
@@ -11521,8 +11521,8 @@ lvl1_map:
 	.short	3
 	.short	3
 	.short	3
-	.short	3
-	.short	3
+	.short	6
+	.short	6
 	.short	3
 	.short	3
 	.short	3
@@ -14905,6 +14905,8 @@ lvl2_map:
 	.short	4
 	.short	4
 	.short	0
+	.short	1
+	.short	1
 	.short	0
 	.short	0
 	.short	0
@@ -14913,12 +14915,10 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	4
-	.short	4
-	.short	1
-	.short	1
-	.short	1
-	.short	1
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
 	.short	1
 	.short	1
@@ -14964,11 +14964,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
-	.short	1
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
-	.short	0
+	.short	4
+	.short	4
+	.short	4
+	.short	4
 	.short	0
 	.short	0
 	.short	0
@@ -14979,7 +14985,6 @@ lvl2_map:
 	.short	0
 	.short	4
 	.short	4
-	.short	5
 	.short	1
 	.short	1
 	.short	1
@@ -14997,11 +15002,6 @@ lvl2_map:
 	.short	1
 	.short	1
 	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	5
 	.short	5
 	.short	5
@@ -15028,11 +15028,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
-	.short	1
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
-	.short	0
+	.short	4
+	.short	4
+	.short	4
 	.short	0
 	.short	0
 	.short	0
@@ -15044,9 +15050,6 @@ lvl2_map:
 	.short	4
 	.short	4
 	.short	4
-	.short	5
-	.short	1
-	.short	1
 	.short	1
 	.short	1
 	.short	1
@@ -15057,19 +15060,16 @@ lvl2_map:
 	.short	1
 	.short	1
 	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	5
 	.short	5
 	.short	5
 	.short	5
 	.short	5
 	.short	5
-	.short	4
-	.short	4
-	.short	4
-	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
@@ -15092,12 +15092,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
-	.short	1
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
 	.short	4
-	.short	0
+	.short	4
 	.short	0
 	.short	0
 	.short	0
@@ -15108,11 +15113,9 @@ lvl2_map:
 	.short	0
 	.short	4
 	.short	4
+	.short	4
+	.short	4
 	.short	5
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	5
 	.short	5
 	.short	5
@@ -15125,15 +15128,12 @@ lvl2_map:
 	.short	5
 	.short	5
 	.short	5
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
@@ -15156,11 +15156,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
-	.short	1
-	.short	1
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	4
 	.short	4
 	.short	4
 	.short	4
+	.short	4
 	.short	0
 	.short	0
 	.short	0
@@ -15172,29 +15178,23 @@ lvl2_map:
 	.short	4
 	.short	4
 	.short	4
-	.short	4
 	.short	5
 	.short	5
 	.short	5
 	.short	5
 	.short	5
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
@@ -15220,12 +15220,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
-	.short	1
-	.short	1
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
 	.short	4
+	.short	4
 	.short	0
 	.short	0
 	.short	0
@@ -15233,25 +15238,20 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	4
+	.short	0
 	.short	4
 	.short	4
 	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	5
 	.short	5
 	.short	5
 	.short	5
 	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
@@ -15284,7 +15284,12 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
-	.short	1
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	1
 	.short	4
 	.short	4
@@ -15298,21 +15303,16 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	4
-	.short	4
-	.short	4
-	.short	4
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	4
 	.short	4
-	.short	4
+	.short	5
 	.short	5
 	.short	5
 	.short	5
 	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
@@ -15348,13 +15348,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	1
 	.short	1
 	.short	1
 	.short	4
 	.short	4
 	.short	4
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -15363,19 +15367,15 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	4
-	.short	4
 	.short	4
-	.short	1
-	.short	1
-	.short	1
 	.short	4
-	.short	4
-	.short	4
+	.short	5
 	.short	5
 	.short	5
 	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
@@ -15412,15 +15412,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	1
 	.short	1
 	.short	1
 	.short	4
 	.short	4
 	.short	4
-	.short	0
-	.short	0
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -15429,14 +15431,12 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	4
-	.short	4
-	.short	1
-	.short	1
-	.short	4
-	.short	4
 	.short	4
 	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
@@ -15476,13 +15476,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	1
 	.short	1
 	.short	1
-	.short	4
+	.short	1
+	.short	1
 	.short	4
 	.short	4
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -15491,15 +15495,11 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	0
-	.short	4
-	.short	4
-	.short	4
-	.short	1
 	.short	4
 	.short	4
-	.short	4
+	.short	5
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
@@ -15540,13 +15540,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	1
 	.short	1
 	.short	1
-	.short	4
+	.short	1
 	.short	4
 	.short	4
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -15555,14 +15559,10 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	0
-	.short	4
 	.short	4
-	.short	4
-	.short	4
-	.short	1
 	.short	4
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
@@ -15604,14 +15604,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	1
 	.short	1
 	.short	1
 	.short	1
-	.short	4
-	.short	4
+	.short	1
 	.short	4
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -15620,13 +15623,10 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	4
-	.short	4
 	.short	4
 	.short	4
-	.short	4
-	.short	4
+	.short	5
+	.short	5
 	.short	4
 	.short	4
 	.short	4
@@ -15668,16 +15668,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	1
 	.short	1
 	.short	1
 	.short	1
-	.short	4
-	.short	4
+	.short	1
+	.short	1
 	.short	4
-	.short	0
-	.short	0
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -15692,7 +15693,6 @@ lvl2_map:
 	.short	4
 	.short	4
 	.short	4
-	.short	4
 	.short	0
 	.short	0
 	.short	0
@@ -15732,16 +15732,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
+	.short	5
+	.short	5
+	.short	5
 	.short	1
 	.short	1
 	.short	1
 	.short	1
-	.short	4
-	.short	4
+	.short	1
+	.short	1
 	.short	4
-	.short	0
-	.short	0
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -15755,7 +15756,6 @@ lvl2_map:
 	.short	4
 	.short	4
 	.short	4
-	.short	4
 	.short	0
 	.short	0
 	.short	0
@@ -15796,15 +15796,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
+	.short	5
 	.short	5
+	.short	5
 	.short	1
 	.short	1
 	.short	1
-	.short	4
-	.short	4
+	.short	1
+	.short	1
+	.short	1
 	.short	4
-	.short	0
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -15813,9 +15815,7 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	5
-	.short	5
+	.short	4
 	.short	5
 	.short	5
 	.short	0
@@ -15860,17 +15860,17 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
+	.short	5
 	.short	5
+	.short	5
 	.short	1
 	.short	1
-	.short	5
-	.short	4
-	.short	4
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	4
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -15879,7 +15879,7 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	5
+	.short	4
 	.short	5
 	.short	0
 	.short	0
@@ -15924,12 +15924,16 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
 	.short	5
+	.short	5
+	.short	5
 	.short	1
 	.short	1
-	.short	5
-	.short	4
-	.short	4
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	4
 	.short	0
 	.short	0
@@ -15939,10 +15943,6 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	4
 	.short	0
 	.short	0
@@ -15988,12 +15988,16 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	4
+	.short	5
+	.short	5
 	.short	5
+	.short	5
 	.short	1
 	.short	1
 	.short	1
-	.short	4
-	.short	4
+	.short	1
+	.short	1
+	.short	1
 	.short	4
 	.short	0
 	.short	0
@@ -16016,10 +16020,6 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	4
 	.short	1
 	.short	1
@@ -16053,13 +16053,15 @@ lvl2_map:
 	.short	0
 	.short	4
 	.short	5
+	.short	5
 	.short	1
 	.short	1
 	.short	1
-	.short	4
-	.short	4
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	4
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -16080,8 +16082,6 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	0
 	.short	4
 	.short	4
 	.short	4
@@ -16119,13 +16119,13 @@ lvl2_map:
 	.short	5
 	.short	1
 	.short	1
-	.short	4
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	4
 	.short	4
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -16183,8 +16183,12 @@ lvl2_map:
 	.short	5
 	.short	1
 	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
+	.short	1
 	.short	4
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -16198,10 +16202,6 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	4
 	.short	4
 	.short	4
@@ -16245,14 +16245,14 @@ lvl2_map:
 	.short	4
 	.short	4
 	.short	5
+	.short	1
+	.short	1
 	.short	1
 	.short	1
+	.short	1
+	.short	1
 	.short	4
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
+	.short	4
 	.short	0
 	.short	0
 	.short	0
@@ -17109,12 +17109,12 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	4
 	.short	4
 	.short	4
 	.short	4
 	.short	4
 	.short	0
+	.short	0
 	.short	4
 	.short	4
 	.short	4
@@ -18586,7 +18586,7 @@ lvl2_map:
 	.short	0
 	.short	0
 	.short	0
-	.short	5
+	.short	0
 	.short	5
 	.short	0
 	.short	0
@@ -19074,6 +19074,18 @@ attack_cd_timer:
 	.type	attack_tick, %object
 	.size	attack_tick, 1
 attack_tick:
+	.space	1
+	.global	iFrameCounter
+	.global	iFrameCounter
+	.type	iFrameCounter, %object
+	.size	iFrameCounter, 1
+iFrameCounter:
+	.space	1
+	.global	onFire
+	.global	onFire
+	.type	onFire, %object
+	.size	onFire, 1
+onFire:
 	.space	1
 	.global	state
 	.global	state
@@ -21135,20 +21147,6 @@ attack:
 	.word	attack_tick
 	.word	pose
 	.size	attack, .-attack
-	.global	iFrameCounter
-	.bss
-	.global	iFrameCounter
-	.type	iFrameCounter, %object
-	.size	iFrameCounter, 1
-iFrameCounter:
-	.space	1
-	.global	onFire
-	.global	onFire
-	.type	onFire, %object
-	.size	onFire, 1
-onFire:
-	.space	1
-	.text
 	.align	2
 	.global	isPlayerInLava
 	.type	isPlayerInLava, %function
@@ -21945,9 +21943,9 @@ buttonB:
 	b	jump
 	.size	buttonB, .-buttonB
 	.align	2
-	.global	checkbutton
-	.type	checkbutton, %function
-checkbutton:
+	.global	checkButton
+	.type	checkButton, %function
+checkButton:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -21991,7 +21989,7 @@ checkbutton:
 .L299:
 	bl	buttonA
 	b	.L294
-	.size	checkbutton, .-checkbutton
+	.size	checkButton, .-checkButton
 	.align	2
 	.global	animate
 	.type	animate, %function
@@ -22301,7 +22299,7 @@ Handler:
 	strh	r3, [r5, #0]	@ movhi 	@  TICK_COUNTER
 	b	.L361
 .L374:
-	bl	checkbutton
+	bl	checkButton
 	bl	fallCheck
 	ldrh	r0, [r5, #0]	@  TICK_COUNTER
 	bl	enemy1Move
@@ -22389,19 +22387,16 @@ main:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	mov	ip, sp
 	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
-	mov	r0, #67108864
-	ldrh	r3, [r0, #12]
+	mov	r4, #67108864
+	ldrh	r3, [r4, #12]
 	orr	r3, r3, #-16777216
-	ldrh	r1, [r0, #4]
 	orr	r3, r3, #16711680
 	orr	r3, r3, #34816
 	mov	r2, #5184
-	orr	r1, r1, #8
 	add	r2, r2, #2
 	orr	r3, r3, #128
-	strh	r1, [r0, #4]	@ movhi 
-	strh	r2, [r0, #0]	@ movhi 
-	strh	r3, [r0, #12]	@ movhi 
+	strh	r2, [r4, #0]	@ movhi 
+	strh	r3, [r4, #12]	@ movhi 
 	sub	fp, ip, #-4294967292
 	bl	fillBGPal
 	bl	fillTileMem
@@ -22409,22 +22404,23 @@ main:
 	bl	fillScreenBlock
 	bl	fillPalette
 	bl	fillSprites
-	mov	ip, #67108864
-	add	ip, ip, #512
-	ldrh	r3, [ip, #0]
+	add	r2, r4, #512
+	ldrh	r3, [r2, #0]
 	orr	r3, r3, #4096
 	orr	r3, r3, #25
-	mov	r0, #67108864
-	mvn	r1, #16000
-	mov	r2, #256
-	strh	r3, [ip, #0]	@ movhi 
-	add	r0, r0, #256
-	sub	r1, r1, #25
-	add	r2, r2, #67108866
-	mov	r3, #194	@ movhi
-	strh	r1, [r0, #0]	@ movhi 
-	mov	ip, #304
 	strh	r3, [r2, #0]	@ movhi 
+	ldrh	r1, [r4, #4]
+	mvn	r2, #16000
+	add	r0, r4, #256
+	orr	r1, r1, #8
+	sub	r2, r2, #25
+	mov	r3, #256
+	strh	r1, [r4, #4]	@ movhi 
+	add	r3, r3, #67108866
+	strh	r2, [r0, #0]	@ movhi 
+	mov	r2, #194	@ movhi
+	strh	r2, [r3, #0]	@ movhi 
+	mov	ip, #304
 	add	ip, ip, #67108866
 	ldrh	r2, [ip, #0]
 	orr	r2, r2, #16640
@@ -22432,15 +22428,14 @@ main:
 	ldr	r3, .L384+4
 	mov	r1, #50331648
 	strh	r2, [ip, #0]	@ movhi 
+	add	lr, r4, #520
 	add	r1, r1, #32512
-	mov	lr, #67108864
 	ldr	ip, .L384+8
+	ldr	r4, .L384+12
 	mov	r5, #0
 	str	r3, [r1, #252]
-	add	lr, lr, #520
-	mov	r3, #1	@ movhi
 	mov	r0, #1
-	ldr	r4, .L384+12
+	mov	r3, #1	@ movhi
 	strh	r3, [lr, #0]	@ movhi 
 	mov	r1, r0
 	mov	r2, #120
@@ -22458,6 +22453,7 @@ main:
 	.word	map_dy
 	.word	map_dx
 	.size	main, .-main
+	.comm	map_ptr,4,4
 	.comm	enemy1_x,4,4
 	.comm	enemy1_y,4,4
 	.comm	enemy1_x_ms,4,4
@@ -22474,5 +22470,4 @@ main:
 	.comm	relic_y,4,4
 	.comm	map_dx,4,4
 	.comm	map_dy,4,4
-	.comm	map_ptr,4,4
 	.ident	"GCC: (GNU) 3.3.6"

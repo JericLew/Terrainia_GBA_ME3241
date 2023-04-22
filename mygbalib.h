@@ -31,6 +31,9 @@ u8 game_state = START_SCREEN;
 #define PRESS_START_INDEX_START 20
 #define GAME_SCREEN_INDEX_START 30
 
+// Level change
+u16 *map_ptr;
+
 // Player
 #define SPRITE_SIZE 16
 #define PLAYERONE_x 120
@@ -73,20 +76,6 @@ u8 enemy4_hp = ENEMY_HP;
 u8 enemy4_sprite = ENEMY_RIGHT;
 #define ENEMY4_INDEX 124
 
-// float enemy5_x;
-// float enemy5_y;
-// float enemy5_x_ms = 0;
-// u8 enemy5_hp = ENEMY_HP;
-// u8 enemy5_sprite = ENEMY_RIGHT;
-// #define ENEMY5_INDEX 123
-
-// float enemy6_x;
-// float enemy6_y;
-// float enemy6_x_ms = 0;
-// u8 enemy6_hp = ENEMY_HP;
-// u8 enemy6_sprite = ENEMY_RIGHT;
-// #define ENEMY6_INDEX 122
-
 // Relic
 float relic_x;
 float relic_y;
@@ -114,6 +103,11 @@ float y_speed = 0; // upwards positive, in pixels
 #define ATTACK_CD 4 // 4 ticks cd @ 0.25s/4Hz, 1s
 u8 attack_cd_timer = 0; // 4 ticks cd, 1s
 u8 attack_tick = 0; // attack last for 2 ticks@4hz, 0.5s
+
+// Damage
+u8 iFrameCounter = 0;
+u8 onFire = 0;
+#define IMMUNE_DURATION 4 // in 0.25s ticks
 
 // Animation
 #define IDLE 0
@@ -300,7 +294,6 @@ void fillScreenBlock(u16 *map_ptr)
 }
 
 /*----------Level Change Functions----------*/
-u16 *map_ptr;
 
 void mapUpdate(void)
 {
@@ -677,6 +670,8 @@ void cooldownCheck(void)
     {
         attack_cd_timer -= 1;
     }
+
+    // do second attack
     if (attack_tick)
     {
         pose = MATTACK;
@@ -695,11 +690,6 @@ void attack(void)
 }
 
 /*----------Damage Functions----------*/
-u8 iFrameCounter = 0;
-#define IMMUNE_DURATION 4 // in 0.25s ticks
-
-u8 onFire = 0;
-
 bool isPlayerInLava(u16 *map_ptr)
 {   
     bool left_check, right_check;
@@ -838,7 +828,7 @@ void buttonB(void)
     jump();
 }
 // checks which button is pressed and calls a function related to button pressed
-void checkbutton(void)
+void checkButton(void)
 {
     u16 buttons = INPUT;
 

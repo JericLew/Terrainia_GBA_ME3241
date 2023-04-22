@@ -41,7 +41,7 @@ void Handler(void)
         // game functions for level one or two
         if (game_state == LEVEL_ONE || game_state == LEVEL_TWO)
         {   
-            checkbutton();
+            checkButton();
             fallCheck(); // calulate y coords for bg and sprites
             enemy1Move(TICK_COUNTER); // s and draw sprites
             enemy2Move(TICK_COUNTER);
@@ -91,7 +91,6 @@ int main(void)
     // bit 1-0 layer priority 00 highest, 11 lowest
     // 1000 1000 1000 0000
     REG_BG2CNT |= 0x8880;
-    REG_DISPSTAT |= 0x0008;
 
     fillBGPal();    // load BGpal
     fillTileMem();  // load tiles into cbb 0
@@ -104,8 +103,11 @@ int main(void)
     // Set Handler Function for interrupts and enable selected interrupts
 	REG_IME = 0x0;		// Disable interrupt handling
     REG_INT = (int)&Handler;
-    REG_IE |= INT_TIMER0 | INT_TIMER1 | INT_BUTTON | INT_VBLANK; // Enable Timmer and Button interrupts
+
+    REG_IE |= INT_TIMER0 | INT_TIMER1 | INT_BUTTON | INT_VBLANK; // Enable Timmer, Button interrupts and VBlank interrupts
    
+    REG_DISPSTAT |= 0x0008; // enable VBlank interrupt
+
     // Set Timer Mode (fill that section and replace TMX with selected timer number)
 
     REG_TM0D = 49510; // every 0.25s 4hz
