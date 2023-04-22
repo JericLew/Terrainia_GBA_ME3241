@@ -2145,7 +2145,6 @@ u16 *map_ptr;
 # 44 "mygbalib.h"
 u8 player_hp = 5;
 u8 *player_hp_ptr = &player_hp;
-extern void damagePlayer(u8 *player_hp_ptr);
 
 
 
@@ -2181,7 +2180,7 @@ u8 enemy4_sprite = 0 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1 +1;
 
 float relic_x;
 float relic_y;
-# 94 "mygbalib.h"
+# 93 "mygbalib.h"
 float map_dx, map_dy;
 
 
@@ -2780,6 +2779,8 @@ void attack(void)
     }
 }
 
+
+extern void damagePlayer(u8 *player_hp_ptr);
 
 _Bool isPlayerInLava(u16 *map_ptr)
 {

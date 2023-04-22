@@ -43,7 +43,6 @@ u16 *map_ptr;
 #define PLAYERONE_EFFECT_INDEX 0
 u8 player_hp = 5;
 u8 *player_hp_ptr = &player_hp;
-extern void damagePlayer(u8 *player_hp_ptr);
 
 // Enemy 
 #define ENEMY_HP 2
@@ -690,6 +689,8 @@ void attack(void)
 }
 
 /*----------Damage Functions----------*/
+extern void damagePlayer(u8 *player_hp_ptr);
+
 bool isPlayerInLava(u16 *map_ptr)
 {   
     bool left_check, right_check;
